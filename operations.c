@@ -7,6 +7,8 @@ POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin){
 	
 	point.x = (((x + 0.5) * (xmax - xmin)) / H_SIZE) + xmin;
 	point.y = (((y + 0.5) * (ymax - ymin)) / V_SIZE) + ymin;
+
+	return point;
 }
 
 double pointProduct(POINT v1, POINT v2){
@@ -27,6 +29,8 @@ POINT normalizeVector(POINT vector){
 	vector.x = vector.x / magnitude;
 	vector.y = vector.y / magnitude;
 	vector.z = vector.z / magnitude;
+
+	return vector;
 }
 
 
