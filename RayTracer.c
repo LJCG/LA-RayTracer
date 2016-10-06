@@ -20,6 +20,8 @@ COLOR **frameBuffer;
 POINT eye;
 COLOR background;
 
+int xmax, ymax, xmin, ymin;
+
 
 void init_buffer(){
    int i, j;
@@ -101,148 +103,6 @@ void plot(int x, int y){
 
 
 
-
-
-// ------------------------------------------ BRESENHAM ------------------------------------------------
-void line4_4_8(int x0, int y0, int x1, int y1){
-	int d, delta_e, delta_se, xp, yp;
-	
-	delta_e = 2*(y0-y1);
-	delta_se = 2*(y0-y1) + 2*(x0-x1);
-	d = 2*(y1-y0) + (x1-x0);
-	
-	xp = x0;
-	yp = y0;
-	
-	plot(xp,yp);
-	
-	while(xp < x1){
-		if(d <= 0){
-			xp++;
-			d += delta_e;
-		}	
-		else{
-			xp++;
-			yp--;
-			d += delta_se;
-		}
-		plot(xp,yp);
-	}	
-}
-
-void line4_1_5(int x0, int y0, int x1, int y1){
-	int d, delta_e, delta_ne, xp, yp;
-	
-	delta_ne = 2*(y1-y0)-2*(x1-x0);
-	delta_e = 2*(y1-y0);
-	d = 2*(y1-y0)-(x1-x0);
-	
-	xp = x0;
-	yp =y0;
-	plot(xp, yp);
-	
-	while(xp < x1){
-		if(d <= 0){
-			// pintar E
-			xp++;
-			d += delta_e;
-		}
-		else{
-			//pinta NE
-			xp++;
-			yp++;
-			d += delta_ne;
-		}
-		plot(xp, yp);
-	}
-}
-
-void line4_3_7(int x0, int y0, int x1, int y1){
-	int d, delta_s, delta_se, xp, yp;
-	
-	delta_s = -2*(x0-x1);
-	delta_se = -2*(y0-y1) + -2*(x0-x1);
-	d = (y1-y0) +2*(x1-x0);
-	
-	xp = x0;
-	yp = y0;
-
-	plot(xp,yp);
-	
-	while(yp != y1){
-		if(d <= 0){
-			yp--;
-			d += delta_s;
-		}
-		else{
-			yp--;
-			xp++;
-			d += delta_se;
-		}
-		plot(xp,yp);
-	}
-}
-
-void line4_2_6(int x0, int y0, int x1, int y1){
-	int d, delta_n, delta_ne, xp, yp;
-	
-	delta_n = 2*(x1-x0);
-	delta_ne = -2*(y1-y0)+2*(x1-x0);
-	d = (y1-y0) -2*(x1-x0);
-	
-	xp = x0;
-	yp =y0;
-	
-	plot(xp,yp);
-	
-	while(yp < y1){
-		if(d <= 0){
-			yp++;
-			d += delta_n;
-		}
-		else{
-			yp++;
-			xp++;
-			d += delta_ne;
-		}
-		plot(xp,yp);
-	}
-}
-
-void line4(int x0, int y0, int x1, int y1){
-	double m = (double)(y1 - y0) / (double)(x1 - x0);
-	if(x0 > x1){	
-		int temp = x0;
-		x0 = x1;
-		x1 = temp;
-		
-		temp = y0;
-		y0 = y1;
-		y1 = temp;
-	}
-	
-	if(m >= 0){
-		if(m > 1){
-			line4_2_6(x0, y0, x1, y1);
-		}	
-		else{
-			line4_1_5(x0, y0, x1, y1);
-		}
-	}
-	else if(m < 0){
-		if(m < -1){
-			line4_3_7(x0, y0, x1, y1);
-		}
-		else{
-			line4_4_8(x0, y0, x1, y1);
-		}
-	}
-	else{
-		line4_2_6(x0, y0, x1, y1);
-	}
-}
-
-
 void tracer(){
 	int i, j;
 	POINT w; // (xw, yw, zw)
@@ -268,6 +128,14 @@ void setBackground(double r, double g, double b){
    background.r = r;
    background.g = g;
    background.b = b;
+}
+
+void setWindow(int pxmin, int pymin, int pxmax, int pymax){
+	xmin = pxmin;
+	ymin = pymin;
+	xmax = pxmax;
+	ymax = pymax;
+
 }
 
 /*COLOR getColor(POINT vectorW, POINT vectorD){

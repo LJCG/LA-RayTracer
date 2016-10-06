@@ -38,9 +38,29 @@ typedef struct{
 
 typedef struct{
 	double radius;
-	COLOR color;
 	POINT center;
 } SPHERE;
+
+typedef struct{
+	double radius;
+} CONE;
+
+typedef struct{
+	double radius;
+} CYLINDER;
+
+typedef struct{
+	POINT* points;
+	int sizePoints;
+} POLYGON;
+
+typedef struct{
+	char id;
+	COLOR color;
+	SPHERE sphere;
+	CONO cone;
+	CYLINDER cylinder;
+} OBJECT;
 
 typedef struct{
 	double t;
