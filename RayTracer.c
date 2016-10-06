@@ -173,6 +173,7 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 	for(i = 0; i < sizeObjects; i++){
 		object = objects[i];
 		//calcular interseccion
+		
 		if(object.id == 'S'){
 			//calcular interseccion esfera
 		}
