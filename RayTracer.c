@@ -133,6 +133,12 @@ void setBackground(double r, double g, double b){
    background.b = b;
 }
 
+void setEye(double x, double y, double z){
+   eye.x = x;
+   eye.y = y;
+   eye.z = z;
+}
+
 void setWindow(int pxmin, int pymin, int pxmax, int pymax){
 	xmin = pxmin;
 	ymin = pymin;
@@ -177,7 +183,7 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 		
 		if(object.id == 'S'){
 			//calcular interseccion esfera
-			intersection = findIntersection_sphere(vectorD, eye, object.sphere.center, object.sphere.radius);
+			intersection* = findIntersection_sphere(vectorD, eye, object.sphere.center, object.sphere.radius);
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro
@@ -188,7 +194,7 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 		else if(object.id == 'N'){
 			//calcular interseccion cono
 		}
-		if(interseccion != NULL && interseccion->tmin < tmin){
+		if(intersection != NULL && intersection->flag == 1 && intersection->tmin < tmin){
 			tmin = interseccion->tmin;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
 		}
