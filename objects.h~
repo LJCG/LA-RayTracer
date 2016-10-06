@@ -67,7 +67,7 @@ typedef struct{
 	double intensity; 
 	COLOR color;
 	// C1, C2, C3...
-} LIGHT;
+} LUZ;
 
 typedef struct{
 	double t;
