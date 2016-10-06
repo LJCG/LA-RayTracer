@@ -165,12 +165,26 @@ POINT getIntersectionPoint(POINT vectorW, POINT vectorD, double t){
 
 POINT firstIntersection(POINT vectorW, POINT vectorD){
 	INTERSECTION* intersection = NULL;
+	OBJECT object;
 	POINT intersectionPoint;
 	double tmin = 9000000;
 	int i = 0;
 
 	for(i = 0; i < sizeObjects; i++){
+		object = objects[i];
 		//calcular interseccion
+		if(object.id == 'S'){
+			//calcular interseccion esfera
+		}
+		else if(object.id == 'C'){
+			//calcular interseccion cilindro
+		}
+		else if(object.id == 'P'){
+			//calcular interseccion poligono
+		}
+		else if(object.id == 'N'){
+			//calcular interseccion cono
+		}
 		if(interseccion != NULL && interseccion->tmin < tmin){
 			tmin = interseccion->tmin;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
