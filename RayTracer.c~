@@ -177,7 +177,7 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 		
 		if(object.id == 'S'){
 			//calcular interseccion esfera
-			intersection = findIntersection_sphere(vectorD, eye, object.sphere.center, object.sphere.radius);
+			findIntersection_sphere(POINT direction, POINT eye, POINT center, double radius)
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro

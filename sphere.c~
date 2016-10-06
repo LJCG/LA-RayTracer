@@ -27,6 +27,7 @@ INTERSECTION findIntersection_sphere(POINT direction, POINT eye, POINT center, d
 			intersection.tmin = t2;
 			intersection.tmax = t1;
 		}
+
 		intersection.flag = 1;
 	}
 	else{ // hay una interseccion

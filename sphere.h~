@@ -1,6 +1,10 @@
 #ifndef SPHERE_H_   
 #define SPHERE_H_
 
+max(double val1, double val2);
+
+min(double val1, double val2);
+
 INTERSECTION firstIntersection_sphere(POINT direction, POINT eye, POINT center);
 
 #endif

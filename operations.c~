@@ -1,6 +1,20 @@
 #include "objects.h"
 #include <math.h>
 
+double max(double val1, double val2){ // Calcula el maximo entre dos valores
+	if(val1 > val2){
+		return val1;
+	}
+	return val2;
+}
+
+double min(double val1, double val2){ // Calcula el minimo entre dos valores
+	if(val1 < val2){
+		return val1;
+	}
+	return val2;
+}
+
 POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin){
 	POINT point;
 	point.z = 0.0;
@@ -43,7 +57,7 @@ POINT getL(POINT intersection, LIGHT light){
 	L = normalizeVector(L);
 	return L;
 }
-
+	
 
 
 

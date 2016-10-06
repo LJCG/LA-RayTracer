@@ -1,6 +1,7 @@
 #include "objects.h"
 #include <math.h>
 
+
 POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin){
 	POINT point;
 	point.z = 0.0;
