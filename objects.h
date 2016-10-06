@@ -6,16 +6,6 @@
 #define H_SIZE 800
 #define PI 3.141592
 
-typedef struct{
-	int x;
-	int y;
-}COORD;
-
-
-typedef struct{
-	long double x;
-	long double y;
-}UCOORD;
 
 typedef struct {
   double r;
@@ -75,5 +65,9 @@ typedef struct{
 	POINT direction;
 } RAY;
 
-
+typedef struct{
+	double tmin;
+	double tmax;
+	int flag;
+} INTERSECTION;
 

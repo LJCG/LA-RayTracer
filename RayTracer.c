@@ -19,6 +19,8 @@
 COLOR **frameBuffer;
 POINT eye;
 COLOR background;
+OBJECT objects[3000];
+int sizeObjects = 0;
 
 int xmax, ymax, xmin, ymin;
 
@@ -114,7 +116,7 @@ void tracer(){
 		for(j = 0; j < V_SIZE; j++){
 		
 			//mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin)
-			w = mapXY(i, j, 10, 10, 0, 0); // no se cuales son los valores de xmin, ymin,...
+			w = mapXY(i, j, xmax, ymax, xmin, ymin); // no se cuales son los valores de xmin, ymin,...
 			d = normalizeVector(w);
 			//color = getColor(eye, d);
 			frameBuffer[i][j] = color;
@@ -135,10 +137,49 @@ void setWindow(int pxmin, int pymin, int pxmax, int pymax){
 	ymin = pymin;
 	xmax = pxmax;
 	ymax = pymax;
-
 }
 
-/*COLOR getColor(POINT vectorW, POINT vectorD){
+
+void createSphere(double radius, POINT center, COLOR color){
+	SPHERE sphere;
+	sphere.radius = radius;
+	sphere.center = center;
+
+	OBJECT newObject;
+	newObject.id = 'S';
+	newObject.sphere = sphere;
+	newObject.color = COLOR;
+
+	objects[sizeObjects] = newObject;
+	sizeObjects++;
+}
+
+POINT getIntersectionPoint(POINT vectorW, POINT vectorD, double t){
+	POINT point;
+
+	point.x = vectorW.x + t*vectorD.x;
+	point.y = vectorW.y + t*vectorD.y;
+	point.z = vectorW.z + t*vectorD.z;
+	return point;
+}
+
+POINT firstIntersection(POINT vectorW, POINT vectorD){
+	INTERSECTION* intersection = NULL;
+	POINT intersectionPoint;
+	double tmin = 9000000;
+	int i = 0;
+
+	for(i = 0; i < sizeObjects; i++){
+		//calcular interseccion
+		if(interseccion != NULL && interseccion->tmin < tmin){
+			tmin = interseccion->tmin;
+			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
+		}
+	}
+	return intersectionPoint;
+}
+
+COLOR getColor(POINT vectorW, POINT vectorD){
 	COLOR color;
 	POINT intersection;
 
@@ -153,7 +194,7 @@ void setWindow(int pxmin, int pymin, int pxmax, int pymax){
 
 	return color;
 
-}*/
+}
 
 
 
