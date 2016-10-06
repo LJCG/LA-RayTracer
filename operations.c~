@@ -43,7 +43,7 @@ POINT getL(POINT intersection, LIGHT light){
 	L = normalizeVector(L);
 	return L;
 }
-	
+
 
 
 
