@@ -9,6 +9,6 @@ double getMagnitude(POINT vector);
 
 POINT normalizeVector(POINT vector);
 
-getL(POINT intersection, LIGHT light);
+POINT getL(POINT intersection, LIGHT light);
 
 #endif

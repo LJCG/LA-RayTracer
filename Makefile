@@ -1,7 +1,7 @@
 #Edit to change compiled program name
 TARGET = raytracer
 
-LIBS = -lm
+LIBS = -lGL -lGLU -lglut -lm
 CC = gcc
 CFLAGS = -std=gnu99
 

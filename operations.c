@@ -36,9 +36,9 @@ POINT normalizeVector(POINT vector){
 
 POINT getL(POINT intersection, LIGHT light){
 	POINT L;
-	L.x = light.x - intersection.x;
-	L.y = light.y - intersection.y; 
-	L.z = light.z - intersection.z;
+	L.x = light.location.x - intersection.x;
+	L.y = light.location.y - intersection.y; 
+	L.z = light.location.z - intersection.z;
 	
 	// Normaliza el vector
 	L = normalizeVector(L);

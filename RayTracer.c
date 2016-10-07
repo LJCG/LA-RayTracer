@@ -155,7 +155,7 @@ void createSphere(double radius, POINT center, COLOR color){
 	OBJECT newObject;
 	newObject.id = 'S';
 	newObject.sphere = sphere;
-	newObject.color = COLOR;
+	newObject.color = color;
 
 	objects[sizeObjects] = newObject;
 	sizeObjects++;
@@ -172,6 +172,7 @@ POINT getIntersectionPoint(POINT vectorW, POINT vectorD, double t){
 
 POINT firstIntersection(POINT vectorW, POINT vectorD){
 	INTERSECTION* intersection = NULL;
+	INTERSECTION inter;
 	OBJECT object;
 	POINT intersectionPoint;
 	double tmin = 9000000;
@@ -183,7 +184,7 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 		
 		if(object.id == 'S'){
 			//calcular interseccion esfera
-			intersection* = findIntersection_sphere(vectorD, eye, object.sphere.center, object.sphere.radius);
+			inter = findIntersection_sphere(vectorD, eye, object.sphere.center, object.sphere.radius);
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro
@@ -195,7 +196,7 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 			//calcular interseccion cono
 		}
 		if(intersection != NULL && intersection->flag == 1 && intersection->tmin < tmin){
-			tmin = interseccion->tmin;
+			tmin = intersection->tmin;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
 		}
 	}

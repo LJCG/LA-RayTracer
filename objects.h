@@ -48,7 +48,7 @@ typedef struct{
 	char id;
 	COLOR color;
 	SPHERE sphere;
-	CONO cone;
+	CONE cone;
 	CYLINDER cylinder;
 } OBJECT;
 

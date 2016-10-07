@@ -1,11 +1,11 @@
-#include "sphere.h"
+#include "objects.h"
 #include <math.h>
 
 INTERSECTION findIntersection_sphere(POINT direction, POINT eye, POINT center, double radius){
 	INTERSECTION intersection;
 	
-	// a = 0 en la esfera
-	double b = 2((direction.x * (eye.x - center.x)) + (direction.y * (eye.y - center.y)) + (direction.z * (eye.z - center.z)));
+	// a = 1 en la esfera
+	double b = 2*((direction.x * (eye.x - center.x)) + (direction.y * (eye.y - center.y)) + (direction.z * (eye.z - center.z)));
 	double c =  pow((eye.x - center.x), 2) + pow((eye.y - center.y), 2) + pow((eye.z - center.z), 2) - pow(radius, 2);
 	
 	double discriminante = sqrt(pow(b, 2) - (4 * c));
