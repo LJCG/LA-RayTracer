@@ -91,27 +91,6 @@ void clear(){
 
 
 
-void tracer(){
-	int i, j;
-	POINT w; // (xw, yw, zw)
-	VECTOR d; // (xd, yd, zd)
-	COLOR color;
-	
-	
-	for(i = 0; i < H_SIZE; i++){
-		for(j = 0; j < V_SIZE; j++){
-		
-			//mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin)
-			w = mapXY(i, j, xmax, ymax, xmin, ymin); // no se cuales son los valores de xmin, ymin,...
-			d = normalizeVector(w);
-			//color = getColor(eye, d);
-			frameBuffer[i][j] = color;
-		}
-	}
-	
-	//saveFile(frameBuffer);
-}
-
 void setBackground(double r, double g, double b){
    background.r = r;
    background.g = g;
@@ -155,6 +134,8 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 	return point;
 }
 
+COLOR colorAux;
+
 POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 	INTERSECTION* intersection = NULL;
 	INTERSECTION inter;
@@ -169,7 +150,8 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 		
 		if(object.id == 'S'){
 			//calcular interseccion esfera
-			inter = findIntersection_sphere(vectorD, eye, object.sphere.center, object.sphere.radius);
+			SPHERE sphere = object.sphere;
+			*intersection = findIntersection_sphere(vectorD, eye, sphere.center, sphere.radius);
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro
@@ -182,6 +164,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 		}
 		if(intersection != NULL && intersection->flag == 1 && intersection->tmin < tmin){
 			tmin = intersection->tmin;
+			colorAux = object.color;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
 		}
 	}
@@ -190,19 +173,48 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 
 COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	COLOR color;
-	POINT intersection;
 
-	intersection = firstIntersection(vectorW, vectorD);
+	POINT *intersection = NULL;
+
+	*intersection = firstIntersection(vectorW, vectorD);
 	if(!intersection){
 		color = background;
 	}
 
 	else{
-		color = intersection -> objeto.color;
+		color = colorAux;
 	}
 
 	return color;
+}
 
+VECTOR pointToVector(POINT point){
+	VECTOR vector;
+	vector.x = point.x;
+	vector.y = point.y;
+	vector.z = point.z;
+	return vector;
+}
+
+void tracer(){
+	int i, j;
+	POINT w; // (xw, yw, zw)
+	VECTOR d; // (xd, yd, zd)
+	COLOR color;
+	
+	
+	for(i = 0; i < H_SIZE; i++){
+		for(j = 0; j < V_SIZE; j++){
+		
+			//mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin)
+			w = mapXY(i, j, xmax, ymax, xmin, ymin); // no se cuales son los valores de xmin, ymin,...
+			d = normalizeVector(w);
+			color = getColor(pointToVector(eye), d);
+			frameBuffer[i][j] = color;
+		}
+	}
+	
+	//saveFile(frameBuffer);
 }
 
 
@@ -216,9 +228,23 @@ int main(int argc, char** argv){
    glClear(GL_COLOR_BUFFER_BIT);
    gluOrtho2D(-0.5, H_SIZE +0.5, -0.5, V_SIZE + 0.5);
    glutDisplayFunc(draw_scene);
-   
+   setBackground(0.0, 0.0, 0.0);
+   setEye(20.0, 50.0, -30.0);
+   setWindow(10, 10, 600, 600);
 
-   
+   POINT c;
+   COLOR cl;
+
+   c.x = 20.0;
+   c.y = 60.0;
+   c.z = 30.0;
+
+   cl.r = 1.0;
+   cl.g = 0.0;
+   cl.b = 0.0;
+
+   createSphere(10.0, c, cl);
+   tracer();
 
    glutMainLoop();
 	
