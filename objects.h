@@ -27,6 +27,12 @@ typedef struct{
 } POINT;
 
 typedef struct{
+	double x;
+	double y;
+	double z;
+} VECTOR;
+
+typedef struct{
 	double radius;
 	POINT center;
 } SPHERE;

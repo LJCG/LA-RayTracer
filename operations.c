@@ -12,7 +12,7 @@ POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin){
 	return point;
 }
 
-double pointProduct(POINT v1, POINT v2){
+double pointProduct(VECTOR v1, VECTOR v2){
 	double x = v1.x * v2.x;
 	double y = v1.y * v2.y;
 	double z = v1.z * v2.z;
@@ -20,12 +20,12 @@ double pointProduct(POINT v1, POINT v2){
 	return x + y + z;
 }
 
-double getMagnitude(POINT vector){
+double getMagnitude(VECTOR vector){
 	double magnitude = sqrt( pow(vector.x,2) + pow(vector.y,2) + pow(vector.z,2) );
 	return magnitude;
 }
 
-POINT normalizeVector(POINT vector){
+VECTOR normalizeVector(VECTOR vector){
 	double magnitude = getMagnitude(vector);
 	vector.x = vector.x / magnitude;
 	vector.y = vector.y / magnitude;
@@ -34,8 +34,8 @@ POINT normalizeVector(POINT vector){
 	return vector;
 }
 
-POINT getL(POINT intersection, LIGHT light){
-	POINT L;
+VECTOR getL(POINT intersection, LIGHT light){
+	VECTOR L;
 	L.x = light.location.x - intersection.x;
 	L.y = light.location.y - intersection.y; 
 	L.z = light.location.z - intersection.z;

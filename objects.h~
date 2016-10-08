@@ -48,7 +48,7 @@ typedef struct{
 	char id;
 	COLOR color;
 	SPHERE sphere;
-	CONO cone;
+	CONE cone;
 	CYLINDER cylinder;
 } OBJECT;
 
@@ -66,8 +66,8 @@ typedef struct{
 } RAY;
 
 typedef struct{
-	double t1;
-	double t2;
+	double tmin;
+	double tmax;
 	int flag;
 } INTERSECTION;
 

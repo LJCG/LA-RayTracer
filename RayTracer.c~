@@ -89,27 +89,12 @@ void clear(){
 	   glFlush();
 }
 
-// Enciende un pixel en las coordenadas x, y
-void plot(int x, int y){ 
-	if(x < H_SIZE && y < V_SIZE){
-		frameBuffer[x][y].r = 1.0;
-		frameBuffer[x][y].g = 1.0;
-		frameBuffer[x][y].b = 1.0;
-		
-		glColor3f (frameBuffer[x][y].r,frameBuffer[x][y].g,frameBuffer[x][y].b);
-		glBegin(GL_POINTS);
-		glVertex2i(x, y);
-		glEnd();
-		//glFlush();		
-	}
-}
-
 
 
 void tracer(){
 	int i, j;
-	POINT w; // (xw, yw, zw)
-	POINT d; // (xd, yd, zd)
+	VECTOR w; // (xw, yw, zw)
+	VECTOR d; // (xd, yd, zd)
 	COLOR color;
 	
 	
@@ -133,6 +118,12 @@ void setBackground(double r, double g, double b){
    background.b = b;
 }
 
+void setEye(double x, double y, double z){
+   eye.x = x;
+   eye.y = y;
+   eye.z = z;
+}
+
 void setWindow(int pxmin, int pymin, int pxmax, int pymax){
 	xmin = pxmin;
 	ymin = pymin;
@@ -149,13 +140,13 @@ void createSphere(double radius, POINT center, COLOR color){
 	OBJECT newObject;
 	newObject.id = 'S';
 	newObject.sphere = sphere;
-	newObject.color = COLOR;
+	newObject.color = color;
 
 	objects[sizeObjects] = newObject;
 	sizeObjects++;
 }
 
-POINT getIntersectionPoint(POINT vectorW, POINT vectorD, double t){
+POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 	POINT point;
 
 	point.x = vectorW.x + t*vectorD.x;
@@ -164,8 +155,9 @@ POINT getIntersectionPoint(POINT vectorW, POINT vectorD, double t){
 	return point;
 }
 
-POINT firstIntersection(POINT vectorW, POINT vectorD){
+POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 	INTERSECTION* intersection = NULL;
+	INTERSECTION inter;
 	OBJECT object;
 	POINT intersectionPoint;
 	double tmin = 9000000;
@@ -177,7 +169,7 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 		
 		if(object.id == 'S'){
 			//calcular interseccion esfera
-			findIntersection_sphere(POINT direction, POINT eye, POINT center, double radius)
+			inter = findIntersection_sphere(vectorD, eye, object.sphere.center, object.sphere.radius);
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro
@@ -188,15 +180,15 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 		else if(object.id == 'N'){
 			//calcular interseccion cono
 		}
-		if(interseccion != NULL && interseccion->tmin < tmin){
-			tmin = interseccion->tmin;
+		if(intersection != NULL && intersection->flag == 1 && intersection->tmin < tmin){
+			tmin = intersection->tmin;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
 		}
 	}
 	return intersectionPoint;
 }
 
-COLOR getColor(POINT vectorW, POINT vectorD){
+COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	COLOR color;
 	POINT intersection;
 

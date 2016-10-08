@@ -89,27 +89,12 @@ void clear(){
 	   glFlush();
 }
 
-// Enciende un pixel en las coordenadas x, y
-void plot(int x, int y){ 
-	if(x < H_SIZE && y < V_SIZE){
-		frameBuffer[x][y].r = 1.0;
-		frameBuffer[x][y].g = 1.0;
-		frameBuffer[x][y].b = 1.0;
-		
-		glColor3f (frameBuffer[x][y].r,frameBuffer[x][y].g,frameBuffer[x][y].b);
-		glBegin(GL_POINTS);
-		glVertex2i(x, y);
-		glEnd();
-		//glFlush();		
-	}
-}
-
 
 
 void tracer(){
 	int i, j;
 	POINT w; // (xw, yw, zw)
-	POINT d; // (xd, yd, zd)
+	VECTOR d; // (xd, yd, zd)
 	COLOR color;
 	
 	
@@ -161,7 +146,7 @@ void createSphere(double radius, POINT center, COLOR color){
 	sizeObjects++;
 }
 
-POINT getIntersectionPoint(POINT vectorW, POINT vectorD, double t){
+POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 	POINT point;
 
 	point.x = vectorW.x + t*vectorD.x;
@@ -170,7 +155,7 @@ POINT getIntersectionPoint(POINT vectorW, POINT vectorD, double t){
 	return point;
 }
 
-POINT firstIntersection(POINT vectorW, POINT vectorD){
+POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 	INTERSECTION* intersection = NULL;
 	INTERSECTION inter;
 	OBJECT object;
@@ -203,7 +188,7 @@ POINT firstIntersection(POINT vectorW, POINT vectorD){
 	return intersectionPoint;
 }
 
-COLOR getColor(POINT vectorW, POINT vectorD){
+COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	COLOR color;
 	POINT intersection;
 

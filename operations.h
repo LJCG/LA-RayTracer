@@ -7,8 +7,8 @@ double pointProduct(POINT v1, POINT v2);
 
 double getMagnitude(POINT vector);
 
-POINT normalizeVector(POINT vector);
+VECTOR normalizeVector(POINT vector);
 
-POINT getL(POINT intersection, LIGHT light);
+VECTOR getL(POINT intersection, LIGHT light);
 
 #endif

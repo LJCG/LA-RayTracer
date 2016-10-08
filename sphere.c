@@ -1,7 +1,8 @@
 #include "objects.h"
 #include <math.h>
+#define EPSILON 0.0005
 
-INTERSECTION findIntersection_sphere(POINT direction, POINT eye, POINT center, double radius){
+INTERSECTION findIntersection_sphere(VECTOR direction, POINT eye, POINT center, double radius){
 	INTERSECTION intersection;
 	
 	// a = 1 en la esfera
@@ -10,12 +11,12 @@ INTERSECTION findIntersection_sphere(POINT direction, POINT eye, POINT center, d
 	
 	double discriminante = sqrt(pow(b, 2) - (4 * c));
 	
-	if(discriminante < 0){ // no hay interseccion
+	if(discriminante < EPSILON){ // no hay interseccion
 		intersection.tmin = 0;
 		intersection.tmax = 0;
 		intersection.flag = 0;
 	}
-	else if(discriminante > 0){ // hay dos intersecciones
+	else if(discriminante > EPSILON){ // hay dos intersecciones
 		double t1 = (-b + discriminante)/2;
 		double t2 = (-b - discriminante)/2;
 		
