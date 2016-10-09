@@ -3,6 +3,21 @@
 #include <stdio.h>
 #define EPSILON 0.00005
 
+OBJECT createSphere(double radius, POINT center, COLOR color, long double kd, long double ka){
+	SPHERE sphere;
+	sphere.radius = radius;
+	sphere.center = center;
+
+	OBJECT newObject;
+	newObject.id = 'S';
+	newObject.sphere = sphere;
+	newObject.color = color;
+	// newObject.ka = ka;
+	// newObject.kd = kd;
+
+	return newObject;
+}
+
 INTERSECTION findIntersection_sphere(VECTOR direction, POINT eye, POINT center, double radius){
 	INTERSECTION intersection;
 	
@@ -39,3 +54,4 @@ INTERSECTION findIntersection_sphere(VECTOR direction, POINT eye, POINT center, 
 	
 	return intersection;
 }
+

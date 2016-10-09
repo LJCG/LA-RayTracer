@@ -52,6 +52,8 @@ typedef struct{
 
 typedef struct{
 	char id;
+	long double kd; // coef reflexión difusa
+	long double ka; // coef amb
 	COLOR color;
 	SPHERE sphere;
 	CONE cone;
@@ -60,9 +62,11 @@ typedef struct{
 
 typedef struct{
 	POINT location;
-	double intensity; 
+	long double intensity; 
 	COLOR color;
-	// C1, C2, C3...
+	long double c1;
+	long double c2;
+	long double c3;
 } LIGHT;
 
 typedef struct{

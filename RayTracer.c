@@ -7,24 +7,20 @@
 #include "objects.h"
 #include "operations.h"
 #include "sphere.h"
+#include "lights.h"
 
-// Necesario para leer el archivo avs
-#define SWAP(x) ( ((x) << 24) | \
-         (((x) << 8) & 0x00ff0000) | \
-         (((x) >> 8) & 0x0000ff00) | \
-         ((x) >> 24) )
-#define FIX(x) (*(unsigned *)&(x) = \
-         SWAP(*(unsigned *)&(x)))
-         
-  
 COLOR **frameBuffer;
 POINT eye;
 COLOR background;
+long double Ia; // INTENSIDAD DEL AMBIENTE
+
 OBJECT objects[3000];
 int sizeObjects = 0;
 
-int xmax, ymax, xmin, ymin;
+LIGHT lights[3000];
+int numLights = 0;
 
+int xmax, ymax, xmin, ymin;
 
 void init_buffer(){
    int i, j;
@@ -89,8 +85,6 @@ void clear(){
 	   glFlush();
 }
 
-
-
 void setBackground(double r, double g, double b){
    background.r = r;
    background.g = g;
@@ -110,17 +104,7 @@ void setWindow(int pxmin, int pymin, int pxmax, int pymax){
 	ymax = pymax;
 }
 
-
-void createSphere(double radius, POINT center, COLOR color){
-	SPHERE sphere;
-	sphere.radius = radius;
-	sphere.center = center;
-
-	OBJECT newObject;
-	newObject.id = 'S';
-	newObject.sphere = sphere;
-	newObject.color = color;
-
+void addObject(OBJECT newObject){
 	objects[sizeObjects] = newObject;
 	sizeObjects++;
 }
@@ -134,14 +118,14 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 	return point;
 }
 
-COLOR colorAux;
+OBJECT obj;
 int intersectionFlag = 0;
 POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 	INTERSECTION intersection;
 	OBJECT object;
 	POINT intersectionPoint;
 	double tmin = 9000000;
-	int i = 0;
+	int i;
 
 	for(i = 0; i < sizeObjects; i++){
 		object = objects[i];
@@ -163,7 +147,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 		}
 		if(intersection.flag == 1 && intersection.tmin < tmin){
 			tmin = intersection.tmin;
-			colorAux = object.color;
+			obj = object;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
 			intersectionFlag = 1;
 		}
@@ -174,10 +158,9 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 
 COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	COLOR color;
-
 	POINT intersection;
-
-
+	int k;
+	
 	intersection = firstIntersection(vectorW, vectorD);
 	if(intersectionFlag == 0){
 		//printf("BG\n");
@@ -185,8 +168,22 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	}
 
 	else{
-		color = colorAux;
-		printf("C\n");
+		/*
+		long double I = 0.0; // INTENSIDAD
+		for(k=0; k<numLights; k++){
+			VECTOR L = getL(intersection, lights[k]);
+			* CALCULAR VECTOR N *
+			double pointProd = pointProduct(L, N);
+			if(pointProd > 0.0){
+				long double fatt = getFatt(lights[k]);
+				I += getIntensity(pointProd, obj, fatt, light[k].intensity);
+			}
+		}
+		I += Ia*obj.ka;
+		I = min(1.0, I);
+		*/
+		color = obj.color; // * I;
+		printf("C\n");	
 	}
 	intersectionFlag = 0;
 	return color;

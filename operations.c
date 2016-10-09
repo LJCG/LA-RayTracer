@@ -1,6 +1,12 @@
 #include "objects.h"
 #include <math.h>
 
+long double min(long double val1, long double val2){ // Calcula el minimo entre dos valores
+	if(val1 < val2){
+		return val1;
+	}
+	return val2;
+}
 
 POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin){
 	POINT point;
