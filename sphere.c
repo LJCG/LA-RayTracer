@@ -11,7 +11,7 @@ INTERSECTION findIntersection_sphere(VECTOR direction, POINT eye, POINT center, 
 	double c =  pow((eye.x - center.x), 2) + pow((eye.y - center.y), 2) + pow((eye.z - center.z), 2) - pow(radius, 2);
 	
 	double discriminante = pow(b, 2) - (4 * c);
-	printf("%lf\n", discriminante);
+	//printf("%lf\n", discriminante);
 	if(discriminante < EPSILON){ // no hay interseccion
 		intersection.tmin = 0;
 		intersection.tmax = 0;

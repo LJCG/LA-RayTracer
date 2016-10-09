@@ -2,7 +2,7 @@
 #include <math.h>
 
 
-VECTOR mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin){
+POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin){
 	POINT point;
 	point.z = 0.0;
 	
@@ -46,6 +46,12 @@ VECTOR getL(POINT intersection, LIGHT light){
 }
 	
 
-
+VECTOR pointToVector(POINT point){
+	VECTOR vector;
+	vector.x = point.x;
+	vector.y = point.y;
+	vector.z = point.z;
+	return vector;
+}
 
 

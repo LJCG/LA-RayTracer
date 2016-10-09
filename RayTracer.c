@@ -168,6 +168,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 			intersectionFlag = 1;
 		}
 	}
+	//printf("X = %lf, Y = %lf, Z = %lf\n",intersectionPoint.x, intersectionPoint.y, intersectionPoint.z);
 	return intersectionPoint;
 }
 
@@ -185,7 +186,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 
 	else{
 		color = colorAux;
-		//printf("C\n");
+		printf("C\n");
 	}
 	intersectionFlag = 0;
 	return color;
@@ -227,15 +228,15 @@ int main(int argc, char** argv){
 
 
    setBackground(0.8, 0.8, 0.8);
-   setEye(20.0, 50.0, -30.0);
-   setWindow(10, 10, 600, 600);
+   setEye(50.0, 65.0, -50.0);
+   setWindow(0, 0, 400, 400);
 
    POINT c;
    COLOR cl;
 
-   c.x = 400.0;
-   c.y = 160.0;
-   c.z = 50.0;
+   c.x = 50.0;
+   c.y = 65.0;
+   c.z = 80.0;
 
    cl.r = 0.0;
    cl.g = 1.0;

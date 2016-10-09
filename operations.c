@@ -2,12 +2,12 @@
 #include <math.h>
 
 
-POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin){
+POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin){
 	POINT point;
 	point.z = 0.0;
 	
-	point.x = (((x + 0.5) * (xmax - xmin)) / H_SIZE) + xmin;
-	point.y = (((y + 0.5) * (ymax - ymin)) / V_SIZE) + ymin;
+	point.x = (((i + 0.5) * (xmax - xmin)) / H_SIZE) + xmin;
+	point.y = (((j + 0.5) * (ymax - ymin)) / V_SIZE) + ymin;
 
 	return point;
 }
