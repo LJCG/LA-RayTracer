@@ -46,6 +46,12 @@ VECTOR getL(POINT intersection, LIGHT light){
 }
 	
 
-
+VECTOR pointToVector(POINT point){
+	VECTOR vector;
+	vector.x = point.x;
+	vector.y = point.y;
+	vector.z = point.z;
+	return vector;
+}
 
 

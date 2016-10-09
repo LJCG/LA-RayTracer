@@ -11,4 +11,6 @@ VECTOR normalizeVector(POINT vector);
 
 VECTOR getL(POINT intersection, LIGHT light);
 
+VECTOR pointToVector(POINT point);
+
 #endif

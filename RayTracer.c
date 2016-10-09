@@ -179,25 +179,19 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 
 	intersection = firstIntersection(vectorW, vectorD);
 	if(intersectionFlag == 0){
-		printf("BG\n");
+		//printf("BG\n");
 		color = background;
 	}
 
 	else{
 		color = colorAux;
-		printf("C\n");
+		//printf("C\n");
 	}
 	intersectionFlag = 0;
 	return color;
 }
 
-VECTOR pointToVector(POINT point){
-	VECTOR vector;
-	vector.x = point.x;
-	vector.y = point.y;
-	vector.z = point.z;
-	return vector;
-}
+
 
 void tracer(){
 	int i, j;
@@ -232,22 +226,22 @@ int main(int argc, char** argv){
    glutDisplayFunc(draw_scene);
 
 
-   setBackground(0.5, 0.5, 0.5);
+   setBackground(0.8, 0.8, 0.8);
    setEye(20.0, 50.0, -30.0);
    setWindow(10, 10, 600, 600);
 
    POINT c;
    COLOR cl;
 
-   c.x = 20.0;
-   c.y = 60.0;
-   c.z = 30.0;
+   c.x = 400.0;
+   c.y = 160.0;
+   c.z = 50.0;
 
    cl.r = 0.0;
    cl.g = 1.0;
    cl.b = 0.0;
 
-   createSphere(10.0, c, cl);
+   createSphere(100.0, c, cl);
    tracer();
    glutMainLoop();
 	
