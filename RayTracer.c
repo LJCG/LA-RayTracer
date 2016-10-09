@@ -135,10 +135,9 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 }
 
 COLOR colorAux;
-
+int intersectionFlag = 0;
 POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
-	INTERSECTION* intersection = NULL;
-	INTERSECTION inter;
+	INTERSECTION intersection;
 	OBJECT object;
 	POINT intersectionPoint;
 	double tmin = 9000000;
@@ -147,11 +146,11 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 	for(i = 0; i < sizeObjects; i++){
 		object = objects[i];
 		//calcular interseccion
-		
+
 		if(object.id == 'S'){
 			//calcular interseccion esfera
 			SPHERE sphere = object.sphere;
-			*intersection = findIntersection_sphere(vectorD, eye, sphere.center, sphere.radius);
+			intersection = findIntersection_sphere(vectorD, eye, sphere.center, sphere.radius);
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro
@@ -162,10 +161,11 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 		else if(object.id == 'N'){
 			//calcular interseccion cono
 		}
-		if(intersection != NULL && intersection->flag == 1 && intersection->tmin < tmin){
-			tmin = intersection->tmin;
+		if(intersection.flag == 1 && intersection.tmin < tmin){
+			tmin = intersection.tmin;
 			colorAux = object.color;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
+			intersectionFlag = 1;
 		}
 	}
 	return intersectionPoint;
@@ -174,17 +174,20 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	COLOR color;
 
-	POINT *intersection = NULL;
+	POINT intersection;
 
-	*intersection = firstIntersection(vectorW, vectorD);
-	if(!intersection){
+
+	intersection = firstIntersection(vectorW, vectorD);
+	if(intersectionFlag == 0){
+		printf("BG\n");
 		color = background;
 	}
 
 	else{
 		color = colorAux;
+		printf("C\n");
 	}
-
+	intersectionFlag = 0;
 	return color;
 }
 
@@ -207,7 +210,7 @@ void tracer(){
 		for(j = 0; j < V_SIZE; j++){
 		
 			//mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin)
-			w = mapXY(i, j, xmax, ymax, xmin, ymin); // no se cuales son los valores de xmin, ymin,...
+			w = mapXY(i, j, xmax, ymax, xmin, ymin); 
 			d = normalizeVector(w);
 			color = getColor(pointToVector(eye), d);
 			frameBuffer[i][j] = color;
@@ -216,7 +219,6 @@ void tracer(){
 	
 	//saveFile(frameBuffer);
 }
-
 
 
 int main(int argc, char** argv){
@@ -228,7 +230,9 @@ int main(int argc, char** argv){
    glClear(GL_COLOR_BUFFER_BIT);
    gluOrtho2D(-0.5, H_SIZE +0.5, -0.5, V_SIZE + 0.5);
    glutDisplayFunc(draw_scene);
-   setBackground(0.0, 0.0, 0.0);
+
+
+   setBackground(0.5, 0.5, 0.5);
    setEye(20.0, 50.0, -30.0);
    setWindow(10, 10, 600, 600);
 
@@ -239,13 +243,12 @@ int main(int argc, char** argv){
    c.y = 60.0;
    c.z = 30.0;
 
-   cl.r = 1.0;
-   cl.g = 0.0;
+   cl.r = 0.0;
+   cl.g = 1.0;
    cl.b = 0.0;
 
    createSphere(10.0, c, cl);
    tracer();
-
    glutMainLoop();
 	
 }
