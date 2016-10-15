@@ -10,11 +10,10 @@ long double min(long double val1, long double val2){ // Calcula el minimo entre 
 
 POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin){
 	POINT point;
-	point.z = 0.0;
-	
+
 	point.x = (((i + 0.5) * (xmax - xmin)) / H_SIZE) + xmin;
 	point.y = (((j + 0.5) * (ymax - ymin)) / V_SIZE) + ymin;
-
+	point.z = 0.0;
 	return point;
 }
 
@@ -27,7 +26,7 @@ double pointProduct(VECTOR v1, VECTOR v2){
 }
 
 double getMagnitude(VECTOR vector){
-	double magnitude = sqrt( pow(vector.x,2) + pow(vector.y,2) + pow(vector.z,2) );
+	double magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2) + pow(vector.z, 2));
 	return magnitude;
 }
 

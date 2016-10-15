@@ -9,7 +9,7 @@ double pointProduct(VECTOR v1, VECTOR v2);
 
 double getMagnitude(POINT vector);
 
-VECTOR normalizeVector(POINT vector);
+VECTOR normalizeVector(VECTOR vector);
 
 VECTOR getL(POINT intersection, LIGHT light);
 

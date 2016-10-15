@@ -163,7 +163,6 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	
 	intersection = firstIntersection(vectorW, vectorD);
 	if(intersectionFlag == 0){
-		//printf("BG\n");
 		color = background;
 	}
 
@@ -183,7 +182,6 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 		I = min(1.0, I);
 		*/
 		color = obj.color; // * I;
-		printf("C\n");	
 	}
 	intersectionFlag = 0;
 	return color;
@@ -200,10 +198,11 @@ void tracer(){
 	
 	for(i = 0; i < H_SIZE; i++){
 		for(j = 0; j < V_SIZE; j++){
-		
-			//mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin)
 			w = mapXY(i, j, xmax, ymax, xmin, ymin); 
-			d = normalizeVector(w);
+			d.x = w.x - eye.x;
+			d.y = w.y - eye.y;
+			d.z = w.z - eye.z;
+			d = normalizeVector(d);
 			color = getColor(pointToVector(eye), d);
 			frameBuffer[i][j] = color;
 		}
@@ -225,21 +224,24 @@ int main(int argc, char** argv){
 
 
    setBackground(0.8, 0.8, 0.8);
-   setEye(50.0, 65.0, -50.0);
-   setWindow(0, 0, 400, 400);
+   setEye(200.0, 200.0, -2210.0);
+   setWindow(-200, -200, 600, 600);
 
    POINT c;
    COLOR cl;
 
-   c.x = 50.0;
-   c.y = 65.0;
-   c.z = 80.0;
+   c.x = 200.0;
+   c.y = 200.0;
+   c.z = 200.0;
 
-   cl.r = 0.0;
-   cl.g = 1.0;
-   cl.b = 0.0;
+   cl.r = 0.5;
+   cl.g = 0.0;
+   cl.b = 0.5;
 
-   createSphere(100.0, c, cl);
+		
+   addObject(createSphere(120, c, cl, 0, 0));	
+
+
    tracer();
    glutMainLoop();
 	
