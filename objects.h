@@ -2,8 +2,8 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-#define V_SIZE 400
-#define H_SIZE 400
+#define V_SIZE 600
+#define H_SIZE 600
 #define PI 3.141592
 
 

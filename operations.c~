@@ -26,7 +26,7 @@ double pointProduct(VECTOR v1, VECTOR v2){
 }
 
 double getMagnitude(VECTOR vector){
-	double magnitude = sqrt( pow(vector.x,2) + pow(vector.y,2) + pow(vector.z,2) );
+	double magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2) + pow(vector.z, 2));
 	return magnitude;
 }
 

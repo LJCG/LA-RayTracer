@@ -12,8 +12,8 @@ OBJECT createSphere(double radius, POINT center, COLOR color, long double kd, lo
 	newObject.id = 'S';
 	newObject.sphere = sphere;
 	newObject.color = color;
-	// newObject.ka = ka;
-	// newObject.kd = kd;
+	newObject.ka = ka;
+	newObject.kd = kd;
 
 	return newObject;
 }

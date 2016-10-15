@@ -109,6 +109,11 @@ void addObject(OBJECT newObject){
 	sizeObjects++;
 }
 
+void addLight(LIGHT newLight){
+	lights[numLights] = newLight;
+	numLights++;
+}
+
 POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 	POINT point;
 
@@ -167,21 +172,26 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	}
 
 	else{
-		/*
+		
 		long double I = 0.0; // INTENSIDAD
 		for(k=0; k<numLights; k++){
 			VECTOR L = getL(intersection, lights[k]);
-			* CALCULAR VECTOR N *
+			VECTOR N = getN(obj, intersection); 
 			double pointProd = pointProduct(L, N);
-			if(pointProd > 0.0){
-				long double fatt = getFatt(lights[k]);
-				I += getIntensity(pointProd, obj, fatt, light[k].intensity);
+			if(pointProd > 0.00005){
+				long double fatt = getFatt(lights[k], L);
+				I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
+				//printf("f: %Lf\n", fatt);
+
 			}
+			//printf("PP: %lf\n", pointProd);
 		}
 		I += Ia*obj.ka;
 		I = min(1.0, I);
-		*/
-		color = obj.color; // * I;
+		//printf("I: %Lf\n", I);
+		color.r = obj.color.r*I; 
+		color.g = obj.color.g*I; 
+		color.b = obj.color.b*I; 
 	}
 	intersectionFlag = 0;
 	return color;
@@ -232,15 +242,20 @@ int main(int argc, char** argv){
 
    c.x = 200.0;
    c.y = 200.0;
-   c.z = 200.0;
+   c.z = 400.0;
 
-   cl.r = 0.5;
+   cl.r = 0.8;
    cl.g = 0.0;
-   cl.b = 0.5;
+   cl.b = 0.8;
 
 		
-   addObject(createSphere(120, c, cl, 0, 0));	
+   addObject(createSphere(200, c, cl, 0.8, 0.8));
 
+   c.x = 300.0;
+   c.y = 100.0;
+   c.z = 100.0;
+   addLight(createLight(c, 0.8, 1.0, 0.0, 0.0));	
+   Ia = 0.5;
 
    tracer();
    glutMainLoop();

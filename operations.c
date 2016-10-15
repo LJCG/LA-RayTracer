@@ -49,6 +49,17 @@ VECTOR getL(POINT intersection, LIGHT light){
 	L = normalizeVector(L);
 	return L;
 }
+
+VECTOR getN(OBJECT obj, POINT intersection){
+	VECTOR N;
+	if(obj.id == 'S'){
+		N.x = (intersection.x - obj.sphere.center.x)/obj.sphere.radius;
+		N.y = (intersection.y - obj.sphere.center.y)/obj.sphere.radius; 
+		N.z = (intersection.z - obj.sphere.center.z)/obj.sphere.radius;
+	}
+	
+	return N;
+}
 	
 
 VECTOR pointToVector(POINT point){

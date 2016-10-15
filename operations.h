@@ -7,11 +7,13 @@ POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin);
 
 double pointProduct(VECTOR v1, VECTOR v2);
 
-double getMagnitude(POINT vector);
+double getMagnitude(VECTOR vector);
 
 VECTOR normalizeVector(VECTOR vector);
 
 VECTOR getL(POINT intersection, LIGHT light);
+
+VECTOR getN(OBJECT obj, POINT intersection);
 
 VECTOR pointToVector(POINT point);
 
