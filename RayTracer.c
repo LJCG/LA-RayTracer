@@ -132,6 +132,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 	double tmin = 9000000;
 	int i;
 
+	intersectionFlag = 0;
 	for(i = 0; i < sizeObjects; i++){
 		object = objects[i];
 		//calcular interseccion
@@ -157,38 +158,59 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 			intersectionFlag = 1;
 		}
 	}
-	//printf("X = %lf, Y = %lf, Z = %lf\n",intersectionPoint.x, intersectionPoint.y, intersectionPoint.z);
 	return intersectionPoint;
 }
 
 COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	COLOR color;
-	POINT intersection;
+	POINT intersection; //Interseccion del ojo con un objeto
+	POINT obstacle;     //Obstaculo entre la luz y un objeto
 	int k;
+	long double fatt;   //Factor de atenuacion
 	
 	intersection = firstIntersection(vectorW, vectorD);
-	if(intersectionFlag == 0){
+	if(intersectionFlag == 0){ //No hay interseccion entonces se devuelde el color de fondo
 		color = background;
 	}
 
 	else{
 		
 		long double I = 0.0; // INTENSIDAD
-		for(k=0; k<numLights; k++){
-			VECTOR L = getL(intersection, lights[k]);
-			VECTOR N = getN(obj, intersection); 
-			double pointProd = pointProduct(L, N);
-			if(pointProd > 0.00005){
-				long double fatt = getFatt(lights[k], L);
-				I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
-				//printf("f: %Lf\n", fatt);
+		for(k=0; k<numLights; k++){ //Se recorren todas las luces
 
+			VECTOR L = getL(intersection, lights[k]); //Vector entre la luz y el objeto
+			VECTOR N = getN(obj, intersection);       //Vector normal
+			double pointProd = pointProduct(L, N);    //Producto punto de L y N
+
+			if(pointProd > 0.00005){  //El coseno del angulo es mayor a EPSILON
+
+				obstacle = firstIntersection(pointToVector(intersection), L);
+
+				if(intersectionFlag == 0 ){ 
+					//No hay obstaculos. Se toma en cuenta el aporte de la luz.
+					fatt = getFatt(lights[k], L);
+					I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
+				}
+
+				else{ 
+					VECTOR vObstacle;        //Vector entre objeto y obstaculo.
+					vObstacle.x = obstacle.x - intersection.x;
+					vObstacle.y = obstacle.y - intersection.y;
+					vObstacle.z = obstacle.z - intersection.z;
+
+					double mL = getMagnitude(L);             //Magnitud de L
+					double mObs = getMagnitude(vObstacle);   //Magnitud de objectObstacle
+
+					if(mObs > mL){
+						fatt = getFatt(lights[k], L);
+						I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
+					}
+				}
 			}
-			//printf("PP: %lf\n", pointProd);
 		}
 		I += Ia*obj.ka;
 		I = min(1.0, I);
-		//printf("I: %Lf\n", I);
+
 		color.r = obj.color.r*I; 
 		color.g = obj.color.g*I; 
 		color.b = obj.color.b*I; 
@@ -241,21 +263,33 @@ int main(int argc, char** argv){
    COLOR cl;
 
    c.x = 200.0;
-   c.y = 200.0;
+   c.y = 400.0;
    c.z = 400.0;
 
-   cl.r = 0.8;
-   cl.g = 0.0;
-   cl.b = 0.8;
+   cl.r = 0.5;
+   cl.g = 0.5;
+   cl.b = 0.5;
 
 		
-   addObject(createSphere(200, c, cl, 0.8, 0.8));
+   addObject(createSphere(100, c, cl, 0.8, 0.8));
 
-   c.x = 300.0;
+   c.x = 100.0;
    c.y = 100.0;
+   c.z = 650.0;
+
+   cl.r = 0.2;
+   cl.g = 0.6;
+   cl.b = 0.1;
+
+		
+   addObject(createSphere(250, c, cl, 0.8, 0.8));
+
+   c.x = 150.0;
+   c.y = 600.0;
    c.z = 100.0;
+
    addLight(createLight(c, 0.8, 1.0, 0.0, 0.0));	
-   Ia = 0.5;
+   Ia = 0.4;
 
    tracer();
    glutMainLoop();
