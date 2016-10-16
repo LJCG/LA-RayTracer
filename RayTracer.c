@@ -190,6 +190,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 					//No hay obstaculos. Se toma en cuenta el aporte de la luz.
 					fatt = getFatt(lights[k], L);
 					I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
+
 				}
 
 				else{ 
@@ -198,7 +199,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 					vObstacle.y = obstacle.y - intersection.y;
 					vObstacle.z = obstacle.z - intersection.z;
 
-					double mL = getMagnitude(L);             //Magnitud de L
+					double mL = 1.0;             //Magnitud de L
 					double mObs = getMagnitude(vObstacle);   //Magnitud de objectObstacle
 
 					if(mObs > mL){
@@ -262,34 +263,35 @@ int main(int argc, char** argv){
    POINT c;
    COLOR cl;
 
-   c.x = 200.0;
-   c.y = 400.0;
+   c.x = 130.0;
+   c.y = 20.0;
    c.z = 400.0;
 
-   cl.r = 0.5;
-   cl.g = 0.5;
-   cl.b = 0.5;
-
-		
+   cl.r = 0.8;
+   cl.g = 0.0;
+   cl.b = 0.8;
    addObject(createSphere(100, c, cl, 0.8, 0.8));
 
+
+
    c.x = 100.0;
-   c.y = 100.0;
+   c.y = 280.0;
    c.z = 650.0;
 
-   cl.r = 0.2;
-   cl.g = 0.6;
-   cl.b = 0.1;
+   cl.r = 0.7;
+   cl.g = 0.3;
+   cl.b = 0.1;	
+   addObject(createSphere(200, c, cl, 0.8, 0.8));
 
-		
-   addObject(createSphere(250, c, cl, 0.8, 0.8));
 
-   c.x = 150.0;
-   c.y = 600.0;
-   c.z = 100.0;
 
-   addLight(createLight(c, 0.8, 1.0, 0.0, 0.0));	
-   Ia = 0.4;
+   c.x = 100.0;
+   c.y = 0.0;
+   c.z = 200.0;
+   addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
+   
+
+   Ia = 0.5;
 
    tracer();
    glutMainLoop();
