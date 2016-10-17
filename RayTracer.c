@@ -125,7 +125,7 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 
 OBJECT obj;
 int intersectionFlag = 0;
-POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
+POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
 	INTERSECTION intersection;
 	OBJECT object;
 	POINT intersectionPoint;
@@ -140,7 +140,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 		if(object.id == 'S'){
 			//calcular interseccion esfera
 			SPHERE sphere = object.sphere;
-			intersection = findIntersection_sphere(vectorD, eye, sphere.center, sphere.radius);
+			intersection = findIntersection_sphere(vectorD, point, sphere.center, sphere.radius);
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro
@@ -168,15 +168,16 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	int k;
 	long double fatt;   //Factor de atenuacion
 	
-	intersection = firstIntersection(vectorW, vectorD);
+	intersection = firstIntersection(vectorW, vectorD, eye);
 	if(intersectionFlag == 0){ //No hay interseccion entonces se devuelde el color de fondo
 		color = background;
 	}
 
 	else{
 		
+		color = obj.color;
 		long double I = 0.0; // INTENSIDAD
-		for(k=0; k<numLights; k++){ //Se recorren todas las luces
+		for(k=0; k < numLights; k++){ //Se recorren todas las luces
 
 			VECTOR L = getL(intersection, lights[k]); //Vector entre la luz y el objeto
 			VECTOR N = getN(obj, intersection);       //Vector normal
@@ -184,10 +185,9 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 
 			if(pointProd > EPSILON){  //El coseno del angulo es mayor a EPSILON
 
-				obstacle = firstIntersection(pointToVector(intersection), L);
+				obstacle = firstIntersection(pointToVector(intersection),L, intersection);
 				int bandera = 0;
-				if(intersectionFlag == 0){
-				//|| getDistance(intersection, obstacle) > getDistance(intersection, lights[k].location) 
+				if(intersectionFlag == 0 || getDistance(intersection, obstacle) > getDistance(intersection, lights[k].location)){
 					//No hay obstaculos. Se toma en cuenta el aporte de la luz.
 					fatt = getFatt(lights[k], L);
 					I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
@@ -195,6 +195,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 				}
 				else{
 					bandera = 0;
+
 				}
 				if(bandera == 0){
 					printf("0\n");
@@ -205,9 +206,9 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 		I += Ia*obj.ka;
 		I = min(1.0, I);
 
-		color.r = obj.color.r*I; 
-		color.g = obj.color.g*I; 
-		color.b = obj.color.b*I; 
+		color.r = color.r*I; 
+		color.g = color.g*I; 
+		color.b = color.b*I; 
 	}
 	intersectionFlag = 0;
 	return color;
@@ -262,29 +263,29 @@ int main(int argc, char** argv){
    c.y = 200.0;
    c.z = 650.0;
 
-   cl.r = 0.7;
+   cl.r = 0.65;
    cl.g = 0.3;
    cl.b = 0.1;	
-   addObject(createSphere(200, c, cl, 0.8, 0.8));
+   addObject(createSphere(200, c, cl, 0.8, 0.4));
 
 //PEQUE
    c.x = 200.0;
-   c.y = 230.0;
-   c.z = 440.0;
+   c.y = 200.0;
+   c.z = 300.0;
 
-   cl.r = 0.8;
-   cl.g = 0.0;
-   cl.b = 0.8;
-   addObject(createSphere(100, c, cl, 0.8, 0.8));
+   cl.r = 0.1;
+   cl.g = 1.0;
+   cl.b = 0.1;
+   addObject(createSphere(60, c, cl, 0.8, 0.4));
 
 //LUZ
-   c.x = 200.0;
-   c.y = 200.0;
-   c.z = 200.0;
+   c.x = -200.0;
+   c.y = 300.0;
+   c.z = -1000.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
    
 
-   Ia = 0.5;
+   Ia = 0.6;
 
    tracer();
    glutMainLoop();
