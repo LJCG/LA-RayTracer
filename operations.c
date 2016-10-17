@@ -30,6 +30,15 @@ double getMagnitude(VECTOR vector){
 	return magnitude;
 }
 
+double getDistance(POINT p1, POINT p2){
+	VECTOR distance;
+	distance.x = p2.x - p1.x;
+	distance.y = p2.y - p1.y;
+	distance.z = p2.z - p1.z;
+
+	return getMagnitude(distance);
+}
+
 VECTOR normalizeVector(VECTOR vector){
 	double magnitude = getMagnitude(vector);
 	vector.x = vector.x / magnitude;

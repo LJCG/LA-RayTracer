@@ -151,7 +151,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 		else if(object.id == 'N'){
 			//calcular interseccion cono
 		}
-		if(intersection.flag == 1 && intersection.tmin < tmin){
+		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
 			tmin = intersection.tmin;
 			obj = object;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
@@ -182,31 +182,24 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 			VECTOR N = getN(obj, intersection);       //Vector normal
 			double pointProd = pointProduct(L, N);    //Producto punto de L y N
 
-			if(pointProd > 0.00005){  //El coseno del angulo es mayor a EPSILON
+			if(pointProd > EPSILON){  //El coseno del angulo es mayor a EPSILON
 
 				obstacle = firstIntersection(pointToVector(intersection), L);
-
-				if(intersectionFlag == 0 ){ 
+				int bandera = 0;
+				if(intersectionFlag == 0){
+				//|| getDistance(intersection, obstacle) > getDistance(intersection, lights[k].location) 
 					//No hay obstaculos. Se toma en cuenta el aporte de la luz.
 					fatt = getFatt(lights[k], L);
 					I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
-
+					bandera = 1;
 				}
-
-				else{ 
-					VECTOR vObstacle;        //Vector entre objeto y obstaculo.
-					vObstacle.x = obstacle.x - intersection.x;
-					vObstacle.y = obstacle.y - intersection.y;
-					vObstacle.z = obstacle.z - intersection.z;
-
-					double mL = 1.0;             //Magnitud de L
-					double mObs = getMagnitude(vObstacle);   //Magnitud de objectObstacle
-
-					if(mObs > mL){
-						fatt = getFatt(lights[k], L);
-						I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
-					}
+				else{
+					bandera = 0;
 				}
+				if(bandera == 0){
+					printf("0\n");
+				}
+				
 			}
 		}
 		I += Ia*obj.ka;
@@ -257,25 +250,16 @@ int main(int argc, char** argv){
 
 
    setBackground(0.8, 0.8, 0.8);
-   setEye(200.0, 200.0, -2210.0);
+   setEye(200.0, 200.0, -1500.0);
    setWindow(-200, -200, 600, 600);
 
    POINT c;
    COLOR cl;
 
-   c.x = 130.0;
-   c.y = 20.0;
-   c.z = 400.0;
 
-   cl.r = 0.8;
-   cl.g = 0.0;
-   cl.b = 0.8;
-   addObject(createSphere(100, c, cl, 0.8, 0.8));
-
-
-
-   c.x = 100.0;
-   c.y = 280.0;
+//GRANDE
+   c.x = 200.0;
+   c.y = 200.0;
    c.z = 650.0;
 
    cl.r = 0.7;
@@ -283,10 +267,19 @@ int main(int argc, char** argv){
    cl.b = 0.1;	
    addObject(createSphere(200, c, cl, 0.8, 0.8));
 
+//PEQUE
+   c.x = 200.0;
+   c.y = 230.0;
+   c.z = 440.0;
 
+   cl.r = 0.8;
+   cl.g = 0.0;
+   cl.b = 0.8;
+   addObject(createSphere(100, c, cl, 0.8, 0.8));
 
-   c.x = 100.0;
-   c.y = 0.0;
+//LUZ
+   c.x = 200.0;
+   c.y = 200.0;
    c.z = 200.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
    

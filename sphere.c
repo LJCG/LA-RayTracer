@@ -1,7 +1,9 @@
 #include "objects.h"
+#include "sphere.h"
 #include <math.h>
 #include <stdio.h>
-#define EPSILON 0.00005
+
+
 
 OBJECT createSphere(double radius, POINT center, COLOR color, long double kd, long double ka){
 	SPHERE sphere;
