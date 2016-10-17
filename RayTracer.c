@@ -9,6 +9,13 @@
 #include "sphere.h"
 #include "lights.h"
 
+#define SWAP(x) ( ((x) << 24) | \
+         (((x) << 8) & 0x00ff0000) | \
+         (((x) >> 8) & 0x0000ff00) | \
+         ((x) >> 24) )
+#define FIX(x) (*(unsigned *)&(x) = \
+         SWAP(*(unsigned *)&(x)))
+
 COLOR **frameBuffer;
 POINT eye;
 COLOR background;
@@ -85,6 +92,46 @@ void clear(){
 	   glFlush();
 }
 
+// ---------------------------------- GENERAR ARCHIVO AVS --------------------------------------
+void save(COLOR **frameBuffer){
+   int i, j, a, width, height;
+   double r, g, b;
+   FILE *fptr;
+
+   // Abre el archivo
+   if((fptr = fopen("result.avs","w")) != NULL) {
+
+   		width = H_SIZE;
+		height = V_SIZE;
+		
+	    width = FIX(width);
+		fwrite(&width, sizeof(unsigned int), 1, fptr);
+
+		height = FIX(height);
+		fwrite(&height, sizeof(unsigned int), 1, fptr);
+	
+		for(j=0;j<V_SIZE;j++) {
+     		for(i=0;i<H_SIZE;i++) {
+     			COLOR cl = frameBuffer[i][j];
+				fputc(255, fptr);       //alpha
+				fputc(cl.r*255, fptr);	//R
+				fputc(cl.g*255, fptr);	//G
+				fputc(cl.b*255, fptr);	//B
+
+   			}
+   		}
+
+   		
+   		fclose(fptr);
+   	
+   	}
+   	else{
+   		printf("errrrrror abriendo");
+   	}
+
+}
+
+// ---------------------------------- GENERAR ESCENA --------------------------------------
 void setBackground(double r, double g, double b){
    background.r = r;
    background.g = g;
@@ -114,6 +161,7 @@ void addLight(LIGHT newLight){
 	numLights++;
 }
 
+// ---------------------------------- OBTENER INTERSECCIONES --------------------------------------
 POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 	POINT point;
 
@@ -161,6 +209,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD){
 	return intersectionPoint;
 }
 
+// ---------------------------------- OBTENER COLOR --------------------------------------
 COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	COLOR color;
 	POINT intersection; //Interseccion del ojo con un objeto
@@ -213,8 +262,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	return color;
 }
 
-
-
+// ---------------------------------- GENERAR DIBUJO --------------------------------------
 void tracer(){
 	int i, j;
 	POINT w; // (xw, yw, zw)
@@ -234,7 +282,7 @@ void tracer(){
 		}
 	}
 	
-	//saveFile(frameBuffer);
+	save(frameBuffer);
 }
 
 
@@ -287,6 +335,7 @@ int main(int argc, char** argv){
    Ia = 0.5;
 
    tracer();
+   
    glutMainLoop();
 	
 }
