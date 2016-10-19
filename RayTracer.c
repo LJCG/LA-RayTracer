@@ -8,6 +8,7 @@
 #include "operations.h"
 #include "sphere.h"
 #include "lights.h"
+#include "polygon.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -194,7 +195,8 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
 			//calcular interseccion cilindro
 		}
 		else if(object.id == 'P'){
-			//calcular interseccion poligono
+			POLYGON polygon = object.polygon;
+			intersection = findIntersection_polygon(vectorD, point, polygon.points);
 		}
 		else if(object.id == 'N'){
 			//calcular interseccion cono
@@ -235,21 +237,11 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 			if(pointProd > EPSILON){  //El coseno del angulo es mayor a EPSILON
 
 				obstacle = firstIntersection(pointToVector(intersection),L, intersection);
-				int bandera = 0;
 				if(intersectionFlag == 0 || getDistance(intersection, obstacle) > getDistance(intersection, lights[k].location)){
 					//No hay obstaculos. Se toma en cuenta el aporte de la luz.
 					fatt = getFatt(lights[k], L);
 					I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
-					bandera = 1;
-				}
-				else{
-					bandera = 0;
-
-				}
-				if(bandera == 0){
-					printf("0\n");
-				}
-				
+				}				
 			}
 		}
 		I += Ia*obj.ka;

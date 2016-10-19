@@ -7,6 +7,8 @@ POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin);
 
 double pointProduct(VECTOR v1, VECTOR v2);
 
+VECTOR cruxProduct(VECTOR v, VECTOR w);
+
 double getMagnitude(VECTOR vector);
 
 double getDistance(POINT p1, POINT p2);

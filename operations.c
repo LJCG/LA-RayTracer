@@ -25,6 +25,15 @@ double pointProduct(VECTOR v1, VECTOR v2){
 	return x + y + z;
 }
 
+VECTOR cruxProduct(VECTOR v, VECTOR w){
+	VECTOR result;
+	result.x = (v.y * w.z) - (v.z * w.y);
+	result.y = (v.z * w.x) - (v.x * w.z);
+	result.z = (v.x * w.y) - (v.y * w.x);
+
+	return result;
+}
+
 double getMagnitude(VECTOR vector){
 	double magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2) + pow(vector.z, 2));
 	return magnitude;
