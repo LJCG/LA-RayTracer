@@ -127,7 +127,7 @@ void save(COLOR **frameBuffer){
    	
    	}
    	else{
-   		printf("errrrrror abriendo");
+   		printf("Saving failed!");
    	}
 
 }
@@ -163,15 +163,6 @@ void addLight(LIGHT newLight){
 }
 
 // ---------------------------------- OBTENER INTERSECCIONES --------------------------------------
-POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
-	POINT point;
-
-	point.x = vectorW.x + t*vectorD.x;
-	point.y = vectorW.y + t*vectorD.y;
-	point.z = vectorW.z + t*vectorD.z;
-	return point;
-}
-
 OBJECT obj;
 int intersectionFlag = 0;
 POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
@@ -195,8 +186,9 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
 			//calcular interseccion cilindro
 		}
 		else if(object.id == 'P'){
+			printf("poly\n");
 			POLYGON polygon = object.polygon;
-			intersection = findIntersection_polygon(vectorD, point, polygon.points);
+			intersection = findIntersection_polygon(vectorD, point, polygon);
 		}
 		else if(object.id == 'N'){
 			//calcular interseccion cono
@@ -225,7 +217,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	}
 
 	else{
-		
+		printf("holi\n");
 		color = obj.color;
 		long double I = 0.0; // INTENSIDAD
 		for(k=0; k < numLights; k++){ //Se recorren todas las luces
@@ -291,32 +283,59 @@ int main(int argc, char** argv){
 
 
    setBackground(0.8, 0.8, 0.8);
-   setEye(200.0, 200.0, -1500.0);
-   setWindow(-200, -200, 600, 600);
+   setEye(200.0, 200.0, -1000.0);
+   setWindow(0, 0, 1008, 567);
 
    POINT c;
    COLOR cl;
 
 
+
+
+POINT p1, p2, p3;
+p1.x = 100.0;
+p1.y = 100.0;
+p1.z = 50.0;
+
+p2.x = 320.0;
+p2.y = 300.0;
+p2.z = 50.0;
+
+p3.x = 420.0;
+p3.y = 150.0;
+p3.z = 50.0;
+
 //GRANDE
-   c.x = 200.0;
-   c.y = 200.0;
+   c.x = 504.0;
+   c.y = 300.0;
    c.z = 650.0;
 
    cl.r = 0.65;
    cl.g = 0.3;
    cl.b = 0.1;	
-   addObject(createSphere(200, c, cl, 0.8, 0.4));
+   //addObject(createSphere(400, c, cl, 0.6, 0.4));
 
 //PEQUE
    c.x = 200.0;
-   c.y = 200.0;
-   c.z = 300.0;
+   c.y = 450.0;
+   c.z = 100.0;
 
    cl.r = 0.1;
    cl.g = 1.0;
    cl.b = 0.1;
-   addObject(createSphere(60, c, cl, 0.8, 0.4));
+  // addObject(createSphere(60, c, cl, 0.6, 0.4));
+
+// POLY
+   cl.r = 1.0;
+   cl.g = 1.0;
+   cl.b = 0.1;
+
+   POINT points[3];
+   points[0] = p1;
+   points[1] = p2;
+   points[2] = p3;
+
+   addObject(createPolygon(points, 3, cl, 0.7, 0.5));
 
 //LUZ
    c.x = -200.0;
@@ -325,7 +344,7 @@ int main(int argc, char** argv){
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
    
 
-   Ia = 0.6;
+   Ia = 0.8;
 
    tracer();
    

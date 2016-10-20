@@ -1,11 +1,29 @@
 #include "objects.h"
 #include <math.h>
 
+// Construye la normal a partir de la ecuación del polígono
+VECTOR eq2vector(PEQUATION eq){
+	VECTOR normal;
+	normal.x = eq.a;
+	normal.y = eq.b;
+	normal.z = eq.c;
+
+	return normal;
+}
+
 long double min(long double val1, long double val2){ // Calcula el minimo entre dos valores
 	if(val1 < val2){
 		return val1;
 	}
 	return val2;
+}
+
+char max(double a, double b, double c){ // Calcula el máximo entre tres valores
+     char coord = 'a';
+     double m = a;
+     (m < b) && (m = b) && (coord = 'b'); 
+     (m < c) && (m = c) && (coord = 'c');
+     return coord;
 }
 
 POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin){
@@ -48,6 +66,15 @@ double getDistance(POINT p1, POINT p2){
 	return getMagnitude(distance);
 }
 
+VECTOR getVector(POINT p1, POINT p2){
+	VECTOR vector;
+	vector.x = p2.x - p1.x;
+	vector.y = p2.y - p1.y;
+	vector.z = p2.z - p1.z;
+
+	return vector;
+}
+
 VECTOR normalizeVector(VECTOR vector){
 	double magnitude = getMagnitude(vector);
 	vector.x = vector.x / magnitude;
@@ -75,6 +102,9 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		N.y = (intersection.y - obj.sphere.center.y)/obj.sphere.radius; 
 		N.z = (intersection.z - obj.sphere.center.z)/obj.sphere.radius;
 	}
+	else if(obj.id == 'P'){
+		N = eq2vector(obj.polygon.equation);
+	}
 	
 	return N;
 }
@@ -86,6 +116,15 @@ VECTOR pointToVector(POINT point){
 	vector.y = point.y;
 	vector.z = point.z;
 	return vector;
+}
+
+POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
+	POINT point;
+
+	point.x = vectorW.x + t*vectorD.x;
+	point.y = vectorW.y + t*vectorD.y;
+	point.z = vectorW.z + t*vectorD.z;
+	return point;
 }
 
 

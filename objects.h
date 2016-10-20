@@ -2,9 +2,10 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-#define V_SIZE 600
-#define H_SIZE 600
+#define V_SIZE 567
+#define H_SIZE 1008 
 #define PI 3.141592
+#define EPSILON 0.00005
 
 
 typedef struct {
@@ -19,6 +20,11 @@ typedef struct{
   int x1;
   int y1;
 } LINEA; 
+
+typedef struct{
+	double u;
+	double v;
+} POINT2D;
 
 typedef struct{
 	double x;
@@ -46,8 +52,18 @@ typedef struct{
 } CYLINDER;
 
 typedef struct{
+	double a;
+	double b;
+	double c;
+	double d;
+} PEQUATION;
+
+typedef struct{
 	POINT* points;
 	int sizePoints;
+	POINT2D* points2D;
+	PEQUATION equation;
+	char tag;
 } POLYGON;
 
 typedef struct{
@@ -58,6 +74,7 @@ typedef struct{
 	SPHERE sphere;
 	CONE cone;
 	CYLINDER cylinder;
+	POLYGON polygon;
 } OBJECT;
 
 typedef struct{

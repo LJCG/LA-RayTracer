@@ -3,6 +3,8 @@
 
 long double min(long double val1, long double val2);
 
+char max(double a, double b, double c);
+
 POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin);
 
 double pointProduct(VECTOR v1, VECTOR v2);
@@ -13,6 +15,8 @@ double getMagnitude(VECTOR vector);
 
 double getDistance(POINT p1, POINT p2);
 
+VECTOR getVector(POINT p1, POINT p2);
+
 VECTOR normalizeVector(VECTOR vector);
 
 VECTOR getL(POINT intersection, LIGHT light);
@@ -20,5 +24,9 @@ VECTOR getL(POINT intersection, LIGHT light);
 VECTOR getN(OBJECT obj, POINT intersection);
 
 VECTOR pointToVector(POINT point);
+
+POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t);
+
+VECTOR eq2vector(PEQUATION eq);
 
 #endif
