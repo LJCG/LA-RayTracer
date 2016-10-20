@@ -314,7 +314,7 @@ int main(int argc, char** argv){
    cl.r = 0.65;
    cl.g = 0.3;
    cl.b = 0.1;	
-   addObject(createSphere(200, c, cl, 0.8, 0.4));
+   addObject(createSphere(200, c, cl, 0.8, 0.5));
 
 //PEQUE
    c.x = 200.0;
