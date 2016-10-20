@@ -19,4 +19,8 @@ VECTOR getN(OBJECT obj, POINT intersection);
 
 VECTOR pointToVector(POINT point);
 
+VECTOR numberByVector(VECTOR vector, double number);
+
+VECTOR substractVectors(VECTOR v1, VECTOR v2);
+
 #endif

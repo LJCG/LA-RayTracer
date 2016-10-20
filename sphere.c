@@ -5,7 +5,8 @@
 
 
 
-OBJECT createSphere(double radius, POINT center, COLOR color, long double kd, long double ka){
+OBJECT createSphere(double radius, POINT center, COLOR color, long double kd, long double ka,
+					long double kn, long double ks){
 	SPHERE sphere;
 	sphere.radius = radius;
 	sphere.center = center;
@@ -16,6 +17,8 @@ OBJECT createSphere(double radius, POINT center, COLOR color, long double kd, lo
 	newObject.color = color;
 	newObject.ka = ka;
 	newObject.kd = kd;
+	newObject.ks = ks;
+	newObject.kn = kn;
 
 	return newObject;
 }

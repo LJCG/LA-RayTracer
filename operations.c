@@ -79,4 +79,19 @@ VECTOR pointToVector(POINT point){
 	return vector;
 }
 
+VECTOR numberByVector(VECTOR vector, double number){
+	vector.x = vector.x * number;
+	vector.y = vector.y * number;
+	vector.z = vector.z * number;
+	return vector;
+}
+
+VECTOR substractVectors(VECTOR v1, VECTOR v2){
+	v1.x = v1.x - v2.x;
+	v1.y = v1.y - v2.y;
+	v1.z = v1.z - v2.z;
+	return v1;
+}
+
+
 

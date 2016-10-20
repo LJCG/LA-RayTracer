@@ -54,6 +54,8 @@ typedef struct{
 	char id;
 	long double kd; // coef reflexión difusa
 	long double ka; // coef amb
+	long double ks; // coef reflexion especular
+	long double kn; // factor especular
 	COLOR color;
 	SPHERE sphere;
 	CONE cone;

@@ -226,28 +226,34 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 		
 		color = obj.color;
 		long double I = 0.0; // INTENSIDAD
+		long double E = 0.0; // REFLEXION ESPECULAR
+		VECTOR V = numberByVector(vectorD, -1); // Vector que va desde P hasta el ojo
+
 		for(k=0; k < numLights; k++){ //Se recorren todas las luces
 
 			VECTOR L = getL(intersection, lights[k]); //Vector entre la luz y el objeto
 			VECTOR N = getN(obj, intersection);       //Vector normal
+			VECTOR R; // Vector de rebote de la luz
+			
 			double pointProd = pointProduct(L, N);    //Producto punto de L y N
 
 			if(pointProd > EPSILON){  //El coseno del angulo es mayor a EPSILON
 
 				obstacle = firstIntersection(pointToVector(intersection),L, intersection);
-				int bandera = 0;
+
 				if(intersectionFlag == 0 || getDistance(intersection, obstacle) > getDistance(intersection, lights[k].location)){
 					//No hay obstaculos. Se toma en cuenta el aporte de la luz.
 					fatt = getFatt(lights[k], L);
 					I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
-					bandera = 1;
-				}
-				else{
-					bandera = 0;
+					R = numberByVector(N, 2);
+					R = numberByVector(R, pointProd);
+					R = substractVectors(R, L);
 
-				}
-				if(bandera == 0){
-					printf("0\n");
+					double pointProdVR = pointProduct(V, R);
+					if(pointProdVR > EPSILON){
+						
+						E += pow(pointProdVR, obj.kn) * fatt * obj.ks * lights[k].intensity;
+					}
 				}
 				
 			}
@@ -258,6 +264,12 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 		color.r = color.r*I; 
 		color.g = color.g*I; 
 		color.b = color.b*I; 
+
+		//ESPECULAR
+		color.r = color.r + E * (1.0 - color.r);
+		color.g = color.g + E * (1.0 - color.g);
+		color.b = color.b + E * (1.0 - color.b);
+
 	}
 	intersectionFlag = 0;
 	return color;
@@ -299,7 +311,7 @@ int main(int argc, char** argv){
 
 
    setBackground(0.8, 0.8, 0.8);
-   setEye(200.0, 200.0, -1500.0);
+   setEye(400.0, 300.0, -1500.0);
    setWindow(-200, -200, 600, 600);
 
    POINT c;
@@ -313,8 +325,8 @@ int main(int argc, char** argv){
 
    cl.r = 0.65;
    cl.g = 0.3;
-   cl.b = 0.1;	
-   addObject(createSphere(200, c, cl, 0.8, 0.5));
+   cl.b = 0.3;	
+   addObject(createSphere(200, c, cl, 0.7, 0.6, 7.0, 0.8));
 
 //PEQUE
    c.x = 200.0;
@@ -324,16 +336,16 @@ int main(int argc, char** argv){
    cl.r = 0.1;
    cl.g = 1.0;
    cl.b = 0.1;
-   addObject(createSphere(60, c, cl, 0.8, 0.4));
+   addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
 
 //LUZ
-   c.x = -200.0;
-   c.y = 300.0;
+   c.x = 200.0;
+   c.y = 400.0;
    c.z = -1000.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
    
 
-   Ia = 0.6;
+   Ia = 0.5;
 
    tracer();
    
