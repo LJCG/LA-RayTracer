@@ -1,5 +1,6 @@
 #include "objects.h"
 #include <math.h>
+#include <stdio.h>
 
 // Construye la normal a partir de la ecuación del polígono
 VECTOR eq2vector(PEQUATION eq){
@@ -18,12 +19,18 @@ long double min(long double val1, long double val2){ // Calcula el minimo entre 
 	return val2;
 }
 
+
 char max(double a, double b, double c){ // Calcula el máximo entre tres valores
-     char coord = 'a';
-     double m = a;
-     (m < b) && (m = b) && (coord = 'b'); 
-     (m < c) && (m = c) && (coord = 'c');
-     return coord;
+     
+     if(a >= b && a >= c){
+     	return 'a';
+     }
+
+     else if(b >= a && b >= c){
+     	return 'b';
+     }
+
+     return 'c';
 }
 
 POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin){

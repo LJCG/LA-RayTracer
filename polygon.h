@@ -7,6 +7,8 @@ double getD(VECTOR normal, POINT punto);
 
 INTERSECTION findIntersection_polygon(VECTOR direction, POINT eye, POLYGON p);
 
+void flattenPolygon(POLYGON p);
+
 POINT2D flattenPoint(POINT intersectionPoint, char tag);
 
 POINT2D* translatePoints(POINT2D* points, int sizePoints, POINT2D intersectionPoint);

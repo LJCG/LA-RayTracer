@@ -186,7 +186,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
 			//calcular interseccion cilindro
 		}
 		else if(object.id == 'P'){
-			printf("poly\n");
+			//calcular interseccion poligono
 			POLYGON polygon = object.polygon;
 			intersection = findIntersection_polygon(vectorD, point, polygon);
 		}
@@ -194,6 +194,7 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
 			//calcular interseccion cono
 		}
 		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
+			
 			tmin = intersection.tmin;
 			obj = object;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
@@ -217,7 +218,6 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	}
 
 	else{
-		printf("holi\n");
 		color = obj.color;
 		long double I = 0.0; // INTENSIDAD
 		for(k=0; k < numLights; k++){ //Se recorren todas las luces
@@ -271,6 +271,7 @@ void tracer(){
 }
 
 
+
 int main(int argc, char** argv){
    init_buffer();
    glutInit(&argc, argv);
@@ -283,27 +284,38 @@ int main(int argc, char** argv){
 
 
    setBackground(0.8, 0.8, 0.8);
-   setEye(200.0, 200.0, -1000.0);
+   setEye(250.0, 250.0, -800.0);
    setWindow(0, 0, 1008, 567);
 
    POINT c;
    COLOR cl;
 
 
+	POINT p1, p2, p3;
+	p1.x = 350.0;
+	p1.y = 500.0;
+	p1.z = 500.0;
+
+	p2.x = 220.0;
+	p2.y = 380.0;
+	p2.z = 650.0;
+
+	p3.x = 480.0;
+	p3.y = 380.0;
+	p3.z = 350.0;
 
 
-POINT p1, p2, p3;
-p1.x = 100.0;
-p1.y = 100.0;
-p1.z = 50.0;
+// POLY
+   cl.r = 1.0;
+   cl.g = 1.0;
+   cl.b = 0.1;
 
-p2.x = 320.0;
-p2.y = 300.0;
-p2.z = 50.0;
+   POINT points[3];
+   points[0] = p1;
+   points[1] = p2;
+   points[2] = p3;
 
-p3.x = 420.0;
-p3.y = 150.0;
-p3.z = 50.0;
+  addObject(createPolygon(points, 3, cl, 0.7, 0.5));
 
 //GRANDE
    c.x = 504.0;
@@ -325,17 +337,7 @@ p3.z = 50.0;
    cl.b = 0.1;
   // addObject(createSphere(60, c, cl, 0.6, 0.4));
 
-// POLY
-   cl.r = 1.0;
-   cl.g = 1.0;
-   cl.b = 0.1;
 
-   POINT points[3];
-   points[0] = p1;
-   points[1] = p2;
-   points[2] = p3;
-
-   addObject(createPolygon(points, 3, cl, 0.7, 0.5));
 
 //LUZ
    c.x = -200.0;
@@ -347,7 +349,7 @@ p3.z = 50.0;
    Ia = 0.8;
 
    tracer();
-   
+
    glutMainLoop();
 	
 }
