@@ -1,11 +1,36 @@
 #include "objects.h"
 #include <math.h>
+#include <stdio.h>
+
+// Construye la normal a partir de la ecuación del polígono
+VECTOR eq2vector(PEQUATION eq){
+	VECTOR normal;
+	normal.x = eq.a;
+	normal.y = eq.b;
+	normal.z = eq.c;
+
+	return normal;
+}
 
 long double min(long double val1, long double val2){ // Calcula el minimo entre dos valores
 	if(val1 < val2){
 		return val1;
 	}
 	return val2;
+}
+
+
+char max(double a, double b, double c){ // Calcula el máximo entre tres valores
+     
+     if(a >= b && a >= c){
+     	return 'a';
+     }
+
+     else if(b >= a && b >= c){
+     	return 'b';
+     }
+
+     return 'c';
 }
 
 POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin){
@@ -25,6 +50,15 @@ double pointProduct(VECTOR v1, VECTOR v2){
 	return x + y + z;
 }
 
+VECTOR cruxProduct(VECTOR v, VECTOR w){
+	VECTOR result;
+	result.x = (v.y * w.z) - (v.z * w.y);
+	result.y = (v.z * w.x) - (v.x * w.z);
+	result.z = (v.x * w.y) - (v.y * w.x);
+
+	return result;
+}
+
 double getMagnitude(VECTOR vector){
 	double magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2) + pow(vector.z, 2));
 	return magnitude;
@@ -37,6 +71,15 @@ double getDistance(POINT p1, POINT p2){
 	distance.z = p2.z - p1.z;
 
 	return getMagnitude(distance);
+}
+
+VECTOR getVector(POINT p1, POINT p2){
+	VECTOR vector;
+	vector.x = p2.x - p1.x;
+	vector.y = p2.y - p1.y;
+	vector.z = p2.z - p1.z;
+
+	return vector;
 }
 
 VECTOR normalizeVector(VECTOR vector){
@@ -66,6 +109,9 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		N.y = (intersection.y - obj.sphere.center.y)/obj.sphere.radius; 
 		N.z = (intersection.z - obj.sphere.center.z)/obj.sphere.radius;
 	}
+	else if(obj.id == 'P'){
+		N = eq2vector(obj.polygon.equation);
+	}
 	
 	return N;
 }
@@ -93,5 +139,13 @@ VECTOR substractVectors(VECTOR v1, VECTOR v2){
 	return v1;
 }
 
+POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
+	POINT point;
+
+	point.x = vectorW.x + t*vectorD.x;
+	point.y = vectorW.y + t*vectorD.y;
+	point.z = vectorW.z + t*vectorD.z;
+	return point;
+}
 
 

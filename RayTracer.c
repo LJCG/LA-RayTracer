@@ -8,6 +8,7 @@
 #include "operations.h"
 #include "sphere.h"
 #include "lights.h"
+#include "polygon.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -126,7 +127,7 @@ void save(COLOR **frameBuffer){
    	
    	}
    	else{
-   		printf("errrrrror abriendo");
+   		printf("Saving failed!");
    	}
 
 }
@@ -162,15 +163,6 @@ void addLight(LIGHT newLight){
 }
 
 // ---------------------------------- OBTENER INTERSECCIONES --------------------------------------
-POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
-	POINT point;
-
-	point.x = vectorW.x + t*vectorD.x;
-	point.y = vectorW.y + t*vectorD.y;
-	point.z = vectorW.z + t*vectorD.z;
-	return point;
-}
-
 OBJECT obj;
 int intersectionFlag = 0;
 POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
@@ -195,11 +187,14 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
 		}
 		else if(object.id == 'P'){
 			//calcular interseccion poligono
+			POLYGON polygon = object.polygon;
+			intersection = findIntersection_polygon(vectorD, point, polygon);
 		}
 		else if(object.id == 'N'){
 			//calcular interseccion cono
 		}
 		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
+			
 			tmin = intersection.tmin;
 			obj = object;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
@@ -223,7 +218,6 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	}
 
 	else{
-		
 		color = obj.color;
 		long double I = 0.0; // INTENSIDAD
 		long double E = 0.0; // REFLEXION ESPECULAR
@@ -255,7 +249,6 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 						E += pow(pointProdVR, obj.kn) * fatt * obj.ks * lights[k].intensity;
 					}
 				}
-				
 			}
 		}
 		I += Ia*obj.ka;
@@ -292,11 +285,18 @@ void tracer(){
 			d = normalizeVector(d);
 			color = getColor(pointToVector(eye), d);
 			frameBuffer[i][j] = color;
+			/*if(j == 0){
+				break;
+			}*/
 		}
+		/*if(i == 0){
+			break;
+		}*/
 	}
 	
 	save(frameBuffer);
 }
+
 
 
 int main(int argc, char** argv){
@@ -311,16 +311,42 @@ int main(int argc, char** argv){
 
 
    setBackground(0.8, 0.8, 0.8);
-   setEye(400.0, 300.0, -1500.0);
-   setWindow(-200, -200, 600, 600);
+   setEye(250.0, 250.0, -800.0);
+   setWindow(0, 0, 1008, 567);
 
    POINT c;
    COLOR cl;
 
 
+	POINT p1, p2, p3;
+	p1.x = 350.0;
+	p1.y = 500.0;
+	p1.z = 500.0;
+
+	p2.x = 220.0;
+	p2.y = 380.0;
+	p2.z = 650.0;
+
+	p3.x = 480.0;
+	p3.y = 380.0;
+	p3.z = 350.0;
+
+
+// POLY
+   cl.r = 1.0;
+   cl.g = 1.0;
+   cl.b = 0.1;
+
+   POINT points[3];
+   points[0] = p1;
+   points[1] = p2;
+   points[2] = p3;
+
+  addObject(createPolygon(points, 3, cl, 0.7, 0.5));
+
 //GRANDE
-   c.x = 200.0;
-   c.y = 200.0;
+   c.x = 504.0;
+   c.y = 300.0;
    c.z = 650.0;
 
    cl.r = 0.65;
@@ -328,15 +354,18 @@ int main(int argc, char** argv){
    cl.b = 0.3;	
    addObject(createSphere(200, c, cl, 0.7, 0.6, 7.0, 0.8));
 
+
 //PEQUE
    c.x = 200.0;
-   c.y = 200.0;
-   c.z = 300.0;
+   c.y = 450.0;
+   c.z = 100.0;
 
    cl.r = 0.1;
    cl.g = 1.0;
    cl.b = 0.1;
+
    addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
+
 
 //LUZ
    c.x = 200.0;
@@ -344,11 +373,10 @@ int main(int argc, char** argv){
    c.z = -1000.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
    
-
    Ia = 0.5;
 
    tracer();
-   
+
    glutMainLoop();
 	
 }
