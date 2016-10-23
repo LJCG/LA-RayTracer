@@ -112,31 +112,40 @@ int countEdges(POINT2D *points2D,  int sizePoints){
       		p2 = points2D[i+1];
       	}
 
-      	//ACEPTACION TRIVIAL
-	    if((p1.v > 0 && p2.v < 0) || (p1.v < 0 && p2.v > 0)){
-		    if(p1.u > 0 && p2.u > 0){
-		      	numEdges++;
-		      	printf("edges+1\n");
-		    }
-		    
-		    //else if((p1.u > 0 && p2.u < 0) || (p2.u > 0 && p1.u < 0)){
-		    //else if(p1.u > 0 || p2.u > 0)
-		    else if((p1.u > 0 && p2.u < 0) || (p2.u > 0 && p1.u < 0)){
-		      	double intersection = p1.u - p1.v*(p2.u - p1.u) / (p2.v - p1.v);
-		      	printf("inter = %lf\n", intersection);
-		      	if(intersection > 0){
-		      		numEdges++;
-		      		("edges++\n");
-		      	}
-		    }
-	    }    
+      	int u_positive = p1.u >= 0 && p2.u >= 0;
+      	// int u_negative = p1.u < 0 && p2.u < 0;
+
+      	// int v_positive = p1.v >= 0 && p2.v >= 0;
+      	// int v_negative = p1.v < 0 && p2.v < 0;
+
+      	int u_different = (p1.u >= 0 && p2.u < 0) || (p1.u < 0 && p2.u >= 0);
+      	int v_different = (p1.v >= 0 && p2.v < 0) || (p1.v < 0 && p2.v >= 0);
+
+      	if(u_positive && v_different){
+      		numEdges++;
+      	}
+      	else if(u_different && v_different){
+      		long double m = (p2.v - p1.v) / (p2.u - p1.u);
+      		long double b = p2.v - m * p2.u;
+
+      		long double x = -b/m;
+
+      		if(x >= 0){
+      			numEdges++;
+      		}
+      	} 
     }
 
     return (numEdges % 2);
 }
 
 bool verifyPoint(POINT2D *points2D, int sizePoints, POINT2D intersectionPoint){
+	int i;
 	POINT2D * newPoints2D = (POINT2D*)malloc(sizePoints*sizeof(POINT2D));
+	for(i = 0; i < sizePoints; i++){
+		newPoints2D[i].u = points2D[i].u;
+		newPoints2D[i].v = points2D[i].v;
+	}
 	translatePoints(newPoints2D, sizePoints, intersectionPoint);
 
 	if(countEdges(newPoints2D, sizePoints) == 1){ // Si la cantidad es impar
@@ -155,14 +164,17 @@ INTERSECTION findIntersection_polygon(VECTOR direction, POINT eye, POLYGON p){
 		// Calcula t
 		double t = -(norm.x*eye.x + norm.y*eye.y + norm.z*eye.z + p.equation.d)/(norm.x*direction.x + norm.y*direction.y + norm.z*direction.z);		
 		POINT intersectionPoint = getIntersectionPoint(pointToVector(eye), direction, t);
-		
-		// Segunda fase: Revisa si el punto está en el interior del polígono
 
+		// Segunda fase: Revisa si el punto está en el interior del polígono
 		if(verifyPoint(p.points2D, p.sizePoints, flattenPoint(intersectionPoint, p.tag))){
 			intersection.tmin = t;
 			intersection.tmax = 0;
 			intersection.flag = 1;
-			printf("holi\n");
+		}
+		else{
+			intersection.tmin = 0;
+			intersection.tmax = 0;
+			intersection.flag = 0;
 		}
 	}
 	else{

@@ -264,7 +264,13 @@ void tracer(){
 			d = normalizeVector(d);
 			color = getColor(pointToVector(eye), d);
 			frameBuffer[i][j] = color;
+			/*if(j == 0){
+				break;
+			}*/
 		}
+		/*if(i == 0){
+			break;
+		}*/
 	}
 	
 	save(frameBuffer);
