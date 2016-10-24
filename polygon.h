@@ -1,7 +1,7 @@
 #ifndef POLYGON_H_   
 #define POLYGON_H_
 
-OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka);
+OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka, long double ks, long double kn);
 
 double getD(VECTOR normal, POINT punto);
 
@@ -14,5 +14,7 @@ POINT2D flattenPoint(POINT intersectionPoint, char tag);
 POINT2D* translatePoints(POINT2D* points, int sizePoints, POINT2D intersectionPoint);
 
 bool verifyPoint(POINT2D *points2D, int sizePoints, POINT2D intersectionPoint);
+
+PEQUATION reverse(POLYGON p);
 
 #endif

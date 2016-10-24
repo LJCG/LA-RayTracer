@@ -51,7 +51,7 @@ void flattenPolygon(POLYGON p){
 }
 
 // Crea un polígono y lo agrega a un objeto
-OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka){
+OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka, long double ks, long double kn){
 	POLYGON p;
 	p.points = vertices;
 	p.sizePoints = numVertices;
@@ -66,6 +66,8 @@ OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double 
 	newObject.color = color;
 	newObject.ka = ka;
 	newObject.kd = kd;
+	newObject.ks = ks;
+	newObject.kn = kn;
 
 	return newObject;
 }
@@ -113,11 +115,6 @@ int countEdges(POINT2D *points2D,  int sizePoints){
       	}
 
       	int u_positive = p1.u >= 0 && p2.u >= 0;
-      	// int u_negative = p1.u < 0 && p2.u < 0;
-
-      	// int v_positive = p1.v >= 0 && p2.v >= 0;
-      	// int v_negative = p1.v < 0 && p2.v < 0;
-
       	int u_different = (p1.u >= 0 && p2.u < 0) || (p1.u < 0 && p2.u >= 0);
       	int v_different = (p1.v >= 0 && p2.v < 0) || (p1.v < 0 && p2.v >= 0);
 
@@ -154,13 +151,23 @@ bool verifyPoint(POINT2D *points2D, int sizePoints, POINT2D intersectionPoint){
 	return false;
 }
 
+PEQUATION reverse(POLYGON p){
+	PEQUATION newEq;
+	newEq.a = p.equation.a * -1;
+	newEq.b = p.equation.b * -1;
+	newEq.c = p.equation.c * -1;
+	newEq.d = p.equation.d * -1;
+
+	return newEq;
+}
+
 INTERSECTION findIntersection_polygon(VECTOR direction, POINT eye, POLYGON p){
 	VECTOR norm = eq2vector(p.equation); // Construye la normal a partir de la ecuación del polígono
 	INTERSECTION intersection;
 
-
 	// Primera fase: Revisa si hay intersección con el plano
-	if(pointProduct(norm, direction) > EPSILON){ // Hay interseccion		
+	if(pointProduct(norm, direction) > EPSILON){ // Hay interseccion	
+
 		// Calcula t
 		double t = -(norm.x*eye.x + norm.y*eye.y + norm.z*eye.z + p.equation.d)/(norm.x*direction.x + norm.y*direction.y + norm.z*direction.z);		
 		POINT intersectionPoint = getIntersectionPoint(pointToVector(eye), direction, t);
@@ -170,6 +177,7 @@ INTERSECTION findIntersection_polygon(VECTOR direction, POINT eye, POLYGON p){
 			intersection.tmin = t;
 			intersection.tmax = 0;
 			intersection.flag = 1;
+			
 		}
 		else{
 			intersection.tmin = 0;

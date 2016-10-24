@@ -229,34 +229,30 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 			VECTOR N = getN(obj, intersection);       //Vector normal
 			VECTOR R; // Vector de rebote de la luz
 			
+			if(obj.id == 'P' && pointProduct(N, vectorD) > 0){
+				N = numberByVector(N, -1.0);
+			}
+			
 			double pointProd = pointProduct(L, N);    //Producto punto de L y N
 
 			if(pointProd > EPSILON){  //El coseno del angulo es mayor a EPSILON
 
 				obstacle = firstIntersection(pointToVector(intersection),L, intersection);
-<<<<<<< HEAD
 
-=======
->>>>>>> Polygons
 				if(intersectionFlag == 0 || getDistance(intersection, obstacle) > getDistance(intersection, lights[k].location)){
 					//No hay obstaculos. Se toma en cuenta el aporte de la luz.
 					fatt = getFatt(lights[k], L);
 					I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
-<<<<<<< HEAD
 					R = numberByVector(N, 2);
 					R = numberByVector(R, pointProd);
 					R = substractVectors(R, L);
 
 					double pointProdVR = pointProduct(V, R);
 					if(pointProdVR > EPSILON){
-						
+					
 						E += pow(pointProdVR, obj.kn) * fatt * obj.ks * lights[k].intensity;
 					}
 				}
-				
-=======
-				}				
->>>>>>> Polygons
 			}
 		}
 		I += Ia*obj.ka;
@@ -319,43 +315,38 @@ int main(int argc, char** argv){
 
 
    setBackground(0.8, 0.8, 0.8);
-<<<<<<< HEAD
-   setEye(400.0, 300.0, -1500.0);
-   setWindow(-200, -200, 600, 600);
-=======
    setEye(250.0, 250.0, -800.0);
    setWindow(0, 0, 1008, 567);
->>>>>>> Polygons
 
    POINT c;
    COLOR cl;
 
 
 	POINT p1, p2, p3;
-	p1.x = 350.0;
+	p1.x = 150.0;
 	p1.y = 500.0;
-	p1.z = 500.0;
+	p1.z = 200.0;
 
-	p2.x = 220.0;
+	p2.x = 20.0;
 	p2.y = 380.0;
-	p2.z = 650.0;
+	p2.z = 350.0;
 
-	p3.x = 480.0;
+	p3.x = 280.0;
 	p3.y = 380.0;
-	p3.z = 350.0;
+	p3.z = 50.0;
 
 
 // POLY
    cl.r = 1.0;
-   cl.g = 1.0;
-   cl.b = 0.1;
+   cl.g = 0.0;
+   cl.b = 0.0;
 
    POINT points[3];
    points[0] = p1;
    points[1] = p2;
    points[2] = p3;
 
-  addObject(createPolygon(points, 3, cl, 0.7, 0.5));
+  addObject(createPolygon(points, 3, cl, 0.7, 0.5, 0.8, 7.8));
 
 //GRANDE
    c.x = 504.0;
@@ -364,29 +355,21 @@ int main(int argc, char** argv){
 
    cl.r = 0.65;
    cl.g = 0.3;
-<<<<<<< HEAD
    cl.b = 0.3;	
    addObject(createSphere(200, c, cl, 0.7, 0.6, 7.0, 0.8));
-=======
-   cl.b = 0.1;	
-   //addObject(createSphere(400, c, cl, 0.6, 0.4));
->>>>>>> Polygons
+
 
 //PEQUE
-   c.x = 200.0;
+   c.x = 400.0;
    c.y = 450.0;
-   c.z = 100.0;
+   c.z = 400.0;
 
    cl.r = 0.1;
    cl.g = 1.0;
    cl.b = 0.1;
-<<<<<<< HEAD
+
    addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
-=======
-  // addObject(createSphere(60, c, cl, 0.6, 0.4));
 
-
->>>>>>> Polygons
 
 //LUZ
    c.x = 200.0;
@@ -394,12 +377,7 @@ int main(int argc, char** argv){
    c.z = -1000.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
    
-
-<<<<<<< HEAD
    Ia = 0.5;
-=======
-   Ia = 0.8;
->>>>>>> Polygons
 
    tracer();
 

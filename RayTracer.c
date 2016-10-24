@@ -110,7 +110,8 @@ void save(COLOR **frameBuffer){
 
 		height = FIX(height);
 		fwrite(&height, sizeof(unsigned int), 1, fptr);
-	
+
+		
 		for(j=0;j<V_SIZE;j++) {
      		for(i=0;i<H_SIZE;i++) {
      			COLOR cl = frameBuffer[i][j];
@@ -122,7 +123,6 @@ void save(COLOR **frameBuffer){
    			}
    		}
 
-   		
    		fclose(fptr);
    	
    	}
@@ -165,7 +165,7 @@ void addLight(LIGHT newLight){
 // ---------------------------------- OBTENER INTERSECCIONES --------------------------------------
 OBJECT obj;
 int intersectionFlag = 0;
-POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
+POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 	INTERSECTION intersection;
 	OBJECT object;
 	POINT intersectionPoint;
@@ -188,6 +188,9 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point){
 		else if(object.id == 'P'){
 			//calcular interseccion poligono
 			POLYGON polygon = object.polygon;
+			if(pFlag == 1){
+				polygon.equation = reverse(polygon);
+			}
 			intersection = findIntersection_polygon(vectorD, point, polygon);
 		}
 		else if(object.id == 'N'){
@@ -212,7 +215,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	int k;
 	long double fatt;   //Factor de atenuacion
 	
-	intersection = firstIntersection(vectorW, vectorD, eye);
+	intersection = firstIntersection(vectorW, vectorD, eye, 0);
 	if(intersectionFlag == 0){ //No hay interseccion entonces se devuelde el color de fondo
 		color = background;
 	}
@@ -229,14 +232,19 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 			VECTOR N = getN(obj, intersection);       //Vector normal
 			VECTOR R; // Vector de rebote de la luz
 			
+			if(obj.id == 'P' && pointProduct(N, vectorD) > 0){
+				N = numberByVector(N, -1.0);
+			}
+			
 			double pointProd = pointProduct(L, N);    //Producto punto de L y N
 
 			if(pointProd > EPSILON){  //El coseno del angulo es mayor a EPSILON
 
-				obstacle = firstIntersection(pointToVector(intersection),L, intersection);
+				obstacle = firstIntersection(pointToVector(intersection),L, intersection, 1);
 
 				if(intersectionFlag == 0 || getDistance(intersection, obstacle) > getDistance(intersection, lights[k].location)){
 					//No hay obstaculos. Se toma en cuenta el aporte de la luz.
+
 					fatt = getFatt(lights[k], L);
 					I += getIntensity(pointProd, obj, fatt, lights[k].intensity);
 					R = numberByVector(N, 2);
@@ -245,14 +253,16 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 
 					double pointProdVR = pointProduct(V, R);
 					if(pointProdVR > EPSILON){
-						
+					
 						E += pow(pointProdVR, obj.kn) * fatt * obj.ks * lights[k].intensity;
 					}
 				}
 			}
 		}
+
 		I += Ia*obj.ka;
 		I = min(1.0, I);
+
 
 		color.r = color.r*I; 
 		color.g = color.g*I; 
@@ -285,13 +295,7 @@ void tracer(){
 			d = normalizeVector(d);
 			color = getColor(pointToVector(eye), d);
 			frameBuffer[i][j] = color;
-			/*if(j == 0){
-				break;
-			}*/
 		}
-		/*if(i == 0){
-			break;
-		}*/
 	}
 	
 	save(frameBuffer);
@@ -310,7 +314,7 @@ int main(int argc, char** argv){
    glutDisplayFunc(draw_scene);
 
 
-   setBackground(0.8, 0.8, 0.8);
+   setBackground(0.0, 0.0, 0.0);
    setEye(250.0, 250.0, -800.0);
    setWindow(0, 0, 1008, 567);
 
@@ -318,36 +322,54 @@ int main(int argc, char** argv){
    COLOR cl;
 
 
-	POINT p1, p2, p3;
-	p1.x = 350.0;
-	p1.y = 500.0;
-	p1.z = 500.0;
+	POINT p1, p2, p3, p4;
+	p1.x = 100.0;
+	p1.y = 100.0;
+	p1.z = -200.0;
 
-	p2.x = 220.0;
-	p2.y = 380.0;
-	p2.z = 650.0;
+	p2.x = 200.0;
+	p2.y = 200.0;
+	p2.z = 200.0;
 
-	p3.x = 480.0;
-	p3.y = 380.0;
-	p3.z = 350.0;
+	p3.x = 800.0;
+	p3.y = 200.0;
+	p3.z = 200.0;
+
+	p4.x = 700.0;
+	p4.y = 100.0;
+	p4.z = -200.0;
 
 
 // POLY
-   cl.r = 1.0;
-   cl.g = 1.0;
-   cl.b = 0.1;
+   cl.r = 0.0;
+   cl.g = 0.7;
+   cl.b = 0.7;
 
-   POINT points[3];
+   POINT points[4];
    points[0] = p1;
    points[1] = p2;
    points[2] = p3;
+   points[3] = p4;
 
-  addObject(createPolygon(points, 3, cl, 0.7, 0.5));
+   OBJECT p = createPolygon(points, 4, cl, 0.7, 0.5, 0.8, 20.0);
+   p.polygon.equation = reverse(p.polygon);
+
+   addObject(p);
+
+//--------------------------
+   c.x = 600.0;
+   c.y = 300.0;
+   c.z = -200.0;
+
+   cl.r = 0.65;
+   cl.g = 0.0;
+   cl.b = 0.55;	
+   addObject(createSphere(30, c, cl, 0.7, 0.6, 7.0, 0.8));
 
 //GRANDE
-   c.x = 504.0;
-   c.y = 300.0;
-   c.z = 650.0;
+   c.x = 480.0;
+   c.y = 350.0;
+   c.z = 100.0;
 
    cl.r = 0.65;
    cl.g = 0.3;
@@ -356,24 +378,29 @@ int main(int argc, char** argv){
 
 
 //PEQUE
-   c.x = 200.0;
-   c.y = 450.0;
-   c.z = 100.0;
+   c.x = 400.0;
+   c.y = 200.0;
+   c.z = -200.0;
 
    cl.r = 0.1;
-   cl.g = 1.0;
+   cl.g = 0.3;
    cl.b = 0.1;
 
    addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
 
 
 //LUZ
-   c.x = 200.0;
-   c.y = 400.0;
-   c.z = -1000.0;
+   c.x = 600.0;
+   c.y = 600.0;
+   c.z = -500.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
    
-   Ia = 0.5;
+   c.x = 200.0;
+   c.y = 350.0;
+   c.z = -200.0;
+   addLight(createLight(c, 0.5, 1.0, 0.0, 0.0));
+
+   Ia = 0.6;
 
    tracer();
 
