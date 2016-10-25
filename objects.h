@@ -45,6 +45,7 @@ typedef struct{
 
 typedef struct{
 	double radius;
+	POINT anchor; // ancla del cilindro
 } CONE;
 
 typedef struct{
