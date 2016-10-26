@@ -112,6 +112,27 @@ VECTOR getN(OBJECT obj, POINT intersection){
 	else if(obj.id == 'P'){
 		N = eq2vector(obj.polygon.equation);
 	}
+	else if(obj.id == 'C'){
+		POINT o = obj.cylinder.anchor;
+		VECTOR q = obj.cylinder.axis;
+		double x = intersection.x;
+		double y = intersection.y;
+		double z = intersection.z;
+
+		N.x = 2*(pow(q.x, 2)-1)*(q.x*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.x-x)+
+			  2*q.x*q.y*(q.y*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.y-y)+
+			  2*q.x*q.z*(q.z*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.z-z);
+
+		N.y = 2*(pow(q.y, 2)-1)*(q.y*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.y-y)+
+			  2*q.x*q.y*(q.x*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.x-x)+
+			  2*q.y*q.z*(q.z*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.z-z);
+
+		N.z = 2*(pow(q.z, 2)-1)*(q.z*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.z-z)+
+			  2*q.x*q.z*(q.x*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.x-x)+
+			  2*q.y*q.z*(q.y*(q.x*(x-o.x)+q.y*(y-o.y)+q.z*(z-o.z))+o.y-y);
+
+		N = normalizeVector(N);
+	}
 	
 	return N;
 }

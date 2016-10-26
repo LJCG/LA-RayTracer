@@ -45,11 +45,15 @@ typedef struct{
 
 typedef struct{
 	double radius;
-	POINT anchor; // ancla del cilindro
+	
 } CONE;
 
 typedef struct{
 	double radius;
+	POINT anchor; // ancla del cilindro
+	VECTOR axis; // Q, eje del cilindro
+	double d1;	// Tapa 1
+	double d2;	// Tapa 2
 } CYLINDER;
 
 typedef struct{

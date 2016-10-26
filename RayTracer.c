@@ -9,6 +9,7 @@
 #include "sphere.h"
 #include "lights.h"
 #include "polygon.h"
+#include "cylinder.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -184,6 +185,8 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro
+			CYLINDER cylinder = object.cylinder;
+			intersection = findIntersection_cylinder(vectorD, point, cylinder.anchor, cylinder.radius, cylinder.axis, cylinder.d1, cylinder.d2);
 		}
 		else if(object.id == 'P'){
 			//calcular interseccion poligono
@@ -354,17 +357,18 @@ int main(int argc, char** argv){
    OBJECT p = createPolygon(points, 4, cl, 0.7, 0.5, 0.8, 20.0);
    p.polygon.equation = reverse(p.polygon);
 
-   addObject(p);
+ //  addObject(p);
 
 //--------------------------
-   c.x = 600.0;
-   c.y = 300.0;
-   c.z = -200.0;
 
-   cl.r = 0.65;
+   c.x = 300.0;
+   c.y = 150.0;
+   c.z = -160.0;
+
+   cl.r = 0.5;
    cl.g = 0.0;
    cl.b = 0.55;	
-   addObject(createSphere(30, c, cl, 0.7, 0.6, 7.0, 0.8));
+  // addObject(createSphere(40, c, cl, 0.7, 0.6, 7.0, 0.5));
 
 //GRANDE
    c.x = 480.0;
@@ -374,20 +378,33 @@ int main(int argc, char** argv){
    cl.r = 0.65;
    cl.g = 0.3;
    cl.b = 0.3;	
-   addObject(createSphere(200, c, cl, 0.7, 0.6, 7.0, 0.8));
+ //  addObject(createSphere(200, c, cl, 0.7, 0.6, 7.0, 0.8));
 
 
 //PEQUE
-   c.x = 400.0;
-   c.y = 200.0;
+   c.x = 500.0;
+   c.y = 300.0;
    c.z = -200.0;
 
    cl.r = 0.1;
    cl.g = 0.3;
    cl.b = 0.1;
 
-   addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
+ //  addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
 
+// CILINDRO
+   POINT anchor; // ancla
+   anchor.x = 200;
+   anchor.y = 100;
+   anchor.z = 100;
+
+   VECTOR axis; 
+   axis.x = 90;
+   axis.y = 200;
+   axis.z = 67;
+
+
+   addObject(createCylinder(2.0, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 0.2, 0.8));
 
 //LUZ
    c.x = 600.0;
@@ -395,10 +412,10 @@ int main(int argc, char** argv){
    c.z = -500.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
    
-   c.x = 200.0;
-   c.y = 350.0;
-   c.z = -200.0;
-   addLight(createLight(c, 0.5, 1.0, 0.0, 0.0));
+//   c.x = 200.0;
+ //  c.y = 200.0;
+  // c.z = -200.0;
+  // addLight(createLight(c, 0.5, 1.0, 0.0, 0.0));
 
    Ia = 0.6;
 
