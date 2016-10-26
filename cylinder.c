@@ -9,7 +9,7 @@ OBJECT createCylinder(double radius, POINT anchor, VECTOR axis, double d1, doubl
 	CYLINDER cylinder;
 	cylinder.radius = radius;
 	cylinder.anchor = anchor; 			   // ANCLA 
-	cylinder.axis = normalizeVector(axis); // EJE
+	cylinder.axis = axis; // EJE
 	cylinder.d1 = d1;		 			   // TAPA 1
 	cylinder.d2 = d2;	     			   // TAPA 2
 
@@ -48,20 +48,7 @@ INTERSECTION findIntersection_cylinder(VECTOR d, POINT e, POINT o, double radius
     		   pow(((o.y-e.y)*(1 - pow(q.y, 2))+ q.y*(e.x*q.x - o.x*q.x + e.z*q.z - o.z*q.z)), 2) +
     		   pow(((o.z-e.z)*(1 - pow(q.z, 2))+ q.z*(e.x*q.x - o.x*q.x + e.y*q.y - o.y*q.y)), 2) - pow(radius, 2);
 	
-    /*
-    double a = pow((d.x*pow(q.x, 2) + d.y*q.y*q.x + d.z*q.z*q.x - d.x), 2)+ 
-    		   pow((d.x*q.x*q.y + d.y*pow(q.y, 2) + d.z*q.z*q.y - d.y), 2)+
-			   pow((d.x*q.x*q.z + d.y*q.y*q.z + d.z*pow(q.z, 2) - d.z), 2);
-
-    double b = (d.x*pow(q.x, 2) + d.y*q.y*q.x + d.z*q.z*q.x - d.x)*(o.x + e.x*pow(q.x, 2) - o.x*pow(q.x, 2) + e.y*q.y*q.z - o.y*q.y*q.x + e.z*q.z*q.x - o.z*q.z*q.x - e.x) +
- 				(d.x*q.x*q.y + d.y*pow(q.y, 2) + d.z*q.z*q.y - d.y)*(o.y + e.x*q.x*q.y - o.x*q.x*q.y + e.y*pow(q.y, 2) - o.y*pow(q.y, 2) + e.z*q.z*q.y - o.z*q.z*q.y - e.y) +
- 				(d.x*q.x*q.z + d.y*q.y*q.z + d.z*pow(q.z, 2) - d.z)*(o.z + e.x*q.x*q.z - o.x*q.x*q.z + e.y*q.y*q.z - o.y*q.y*q.z + e.z*pow(q.z, 2) - o.z*pow(q.z, 2) - e.z);
-    
-    double c = pow((o.x + e.x*pow(q.x, 2) - o.x*pow(q.x, 2) + e.y*q.y*q.x - o.y*q.y*q.x + e.z*q.z*q.x - o.z*q.z*q.x - e.x), 2) + 
- 		   	   pow((o.y + e.x*q.x*q.y - o.x*q.x*q.y + e.y*pow(q.y, 2) - o.y*pow(q.y, 2) + e.z*q.z*q.y - o.z*q.z*q.y - e.y), 2) +
- 			   pow((o.z + e.x*q.x*q.z - o.x*q.x*q.z + e.y*q.y*q.z - o.y*q.y*q.z + e.z*pow(q.z, 2) - o.z*pow(q.z, 2) - e.z), 2) - pow(radius, 2);
-
-	*/
+	printf("r: %lf\n", radius);
     double discriminante = pow(b, 2) - 4*a*c;
 	
 	if(discriminante < EPSILON){ // No hay interseccion con el cilindro INFINITO
@@ -96,7 +83,7 @@ INTERSECTION findIntersection_cylinder(VECTOR d, POINT e, POINT o, double radius
 			intersection.tmax = 0;
 			intersection.flag = 1;
 		}
-
+		
 		if(!verifyFinitePoint(getIntersectionPoint(pointToVector(e), d, intersection.tmin), d1, d2, o, q)){ // No hay intersección con el FINITO
 			intersection.tmin = 0;
 			intersection.tmax = 0;

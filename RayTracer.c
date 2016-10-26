@@ -318,7 +318,7 @@ int main(int argc, char** argv){
 
 
    setBackground(0.0, 0.0, 0.0);
-   setEye(250.0, 250.0, -800.0);
+   setEye(350.0, 350.0, -1500.0);
    setWindow(0, 0, 1008, 567);
 
    POINT c;
@@ -394,17 +394,17 @@ int main(int argc, char** argv){
 
 // CILINDRO
    POINT anchor; // ancla
-   anchor.x = 200;
-   anchor.y = 100;
-   anchor.z = 100;
+   anchor.x = 600;
+   anchor.y = 300;
+   anchor.z = 400;
 
    VECTOR axis; 
-   axis.x = 90;
-   axis.y = 200;
-   axis.z = 67;
+   axis.x = 0.3166;
+   axis.y = 0.9488;
+   axis.z = 0;
 
 
-   addObject(createCylinder(2.0, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 0.2, 0.8));
+   addObject(createCylinder(40, anchor, axis, -100.0, 200.0, cl, 0.7, 0.6, 7, 0.8));
 
 //LUZ
    c.x = 600.0;
