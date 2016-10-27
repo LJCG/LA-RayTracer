@@ -113,8 +113,8 @@ void save(COLOR **frameBuffer){
 		fwrite(&height, sizeof(unsigned int), 1, fptr);
 
 		
-		for(j=0;j<V_SIZE;j++) {
-     		for(i=0;i<H_SIZE;i++) {
+		for(j = V_SIZE -1; j >= 0; j--) {
+     		for(i = 0; i < H_SIZE; i++) {
      			COLOR cl = frameBuffer[i][j];
 				fputc(255, fptr);       //alpha
 				fputc(cl.r*255, fptr);	//R
@@ -124,13 +124,13 @@ void save(COLOR **frameBuffer){
    			}
    		}
 
+
    		fclose(fptr);
    	
    	}
    	else{
    		printf("Saving failed!");
    	}
-
 }
 
 // ---------------------------------- GENERAR ESCENA --------------------------------------
