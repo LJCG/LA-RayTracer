@@ -256,8 +256,11 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 
 					double pointProdVR = pointProduct(V, R);
 					if(pointProdVR > EPSILON){
-					
-						E += pow(pointProdVR, obj.kn) * fatt * obj.ks * lights[k].intensity;
+						double factor = pow(pointProdVR, obj.kn);
+						if(factor < EPSILON && obj.id == 'P'){
+							factor = 0.02;
+						}
+						E += factor * fatt * obj.ks * lights[k].intensity;
 					}
 				}
 			}
@@ -318,7 +321,7 @@ int main(int argc, char** argv){
 
 
    setBackground(0.0, 0.0, 0.0);
-   setEye(350.0, 350.0, -1500.0);
+   setEye(200.0, 200.0, -1500.0);
    setWindow(0, 0, 1008, 567);
 
    POINT c;
@@ -354,10 +357,10 @@ int main(int argc, char** argv){
    points[2] = p3;
    points[3] = p4;
 
-   OBJECT p = createPolygon(points, 4, cl, 0.7, 0.5, 0.8, 20.0);
+   OBJECT p = createPolygon(points, 4, cl, 0.7, 0.5, 0.8, 50.0);
    p.polygon.equation = reverse(p.polygon);
 
- //  addObject(p);
+   addObject(p);
 
 //--------------------------
 
@@ -382,29 +385,29 @@ int main(int argc, char** argv){
 
 
 //PEQUE
-   c.x = 500.0;
+   c.x = 100.0;
    c.y = 300.0;
-   c.z = -200.0;
+   c.z = -0.0;
 
    cl.r = 0.1;
    cl.g = 0.3;
    cl.b = 0.1;
 
- //  addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
+   addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
 
 // CILINDRO
    POINT anchor; // ancla
-   anchor.x = 600;
+   anchor.x = 300;
    anchor.y = 300;
-   anchor.z = 400;
+   anchor.z = 0;
 
    VECTOR axis; 
-   axis.x = 0.3166;
-   axis.y = 0.9488;
-   axis.z = 0;
+   axis.x = 600.0;
+   axis.y = 200.0;
+   axis.z = -200.0;
 
 
-   addObject(createCylinder(40, anchor, axis, -100.0, 200.0, cl, 0.7, 0.6, 7, 0.8));
+   addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 2, 0.8));
 
 //LUZ
    c.x = 600.0;
