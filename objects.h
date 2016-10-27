@@ -45,6 +45,12 @@ typedef struct{
 
 typedef struct{
 	double radius;
+  POINT anchor;
+  VECTOR axis;
+  double d1;
+  double d2;
+  double k1;
+  double k2;
 } CONE;
 
 typedef struct{

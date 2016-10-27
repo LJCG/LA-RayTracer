@@ -72,7 +72,7 @@ INTERSECTION findIntersection_cylinder(VECTOR d, POINT e, POINT o, double radius
     		   pow(((o.y-e.y)*(1 - pow(q.y, 2))+ q.y*(e.x*q.x - o.x*q.x + e.z*q.z - o.z*q.z)), 2) +
     		   pow(((o.z-e.z)*(1 - pow(q.z, 2))+ q.z*(e.x*q.x - o.x*q.x + e.y*q.y - o.y*q.y)), 2) - pow(radius, 2);
 */
-	printf("r: %lf\n", radius);
+	//printf("r: %lf\n", radius);
     double discriminante = pow(b, 2) - 4*a*c;
 
 	if(discriminante < EPSILON){ // No hay interseccion con el cilindro INFINITO
