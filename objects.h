@@ -3,7 +3,7 @@
 #include <GL/glut.h>
 
 #define V_SIZE 567
-#define H_SIZE 1008 
+#define H_SIZE 1008
 #define PI 3.141592
 #define EPSILON 0.00005
 
@@ -19,7 +19,7 @@ typedef struct{
   int y0;
   int x1;
   int y1;
-} LINEA; 
+} LINEA;
 
 typedef struct{
 	double u;
@@ -45,7 +45,6 @@ typedef struct{
 
 typedef struct{
 	double radius;
-	
 } CONE;
 
 typedef struct{
@@ -86,7 +85,7 @@ typedef struct{
 
 typedef struct{
 	POINT location;
-	long double intensity; 
+	long double intensity;
 	COLOR color;
 	long double c1;
 	long double c2;
@@ -104,4 +103,3 @@ typedef struct{
 	double tmax;
 	int flag;
 } INTERSECTION;
-
