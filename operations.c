@@ -21,7 +21,7 @@ long double min(long double val1, long double val2){ // Calcula el minimo entre 
 
 
 char max(double a, double b, double c){ // Calcula el máximo entre tres valores
-     
+
      if(a >= b && a >= c){
      	return 'a';
      }
@@ -46,7 +46,7 @@ double pointProduct(VECTOR v1, VECTOR v2){
 	double x = v1.x * v2.x;
 	double y = v1.y * v2.y;
 	double z = v1.z * v2.z;
-	
+
 	return x + y + z;
 }
 
@@ -94,9 +94,9 @@ VECTOR normalizeVector(VECTOR vector){
 VECTOR getL(POINT intersection, LIGHT light){
 	VECTOR L;
 	L.x = light.location.x - intersection.x;
-	L.y = light.location.y - intersection.y; 
+	L.y = light.location.y - intersection.y;
 	L.z = light.location.z - intersection.z;
-	
+
 	// Normaliza el vector
 	L = normalizeVector(L);
 	return L;
@@ -106,7 +106,7 @@ VECTOR getN(OBJECT obj, POINT intersection){
 	VECTOR N;
 	if(obj.id == 'S'){
 		N.x = (intersection.x - obj.sphere.center.x)/obj.sphere.radius;
-		N.y = (intersection.y - obj.sphere.center.y)/obj.sphere.radius; 
+		N.y = (intersection.y - obj.sphere.center.y)/obj.sphere.radius;
 		N.z = (intersection.z - obj.sphere.center.z)/obj.sphere.radius;
 	}
 	else if(obj.id == 'P'){
@@ -133,10 +133,43 @@ VECTOR getN(OBJECT obj, POINT intersection){
 
 		N = normalizeVector(N);
 	}
-	
+	else if(obj.id == 'N'){
+		POINT o = obj.cone.anchor;
+		VECTOR q = obj.cone.axis;
+		double x = intersection.x;
+		double y = intersection.y;
+		double z = intersection.z;
+		double xl,yl,zl,l,H;
+
+		xl = x-o.x;
+		yl = y-o.y;
+		zl = z-o.z;
+
+		l = sqrt(pow(xl,2)+pow(yl,2)+pow(zl,2));
+
+		xl = xl/l;
+		yl = yl/l;
+		zl = zl/l;
+
+		H = l/(q.x*xl + q.y + q.z*zl);
+
+		N.x = x - (o.x + H*q.x);
+		N.y = y - (o.y + H *q.y);
+		N.z = z - (o.z + H*q.z);
+
+		l = sqrt(pow(N.x,2) + pow(N.y,2) + pow(N.z,2));
+
+		N.x = N.x/l;
+		N.y = N.y/l;
+		N.z = N.z/l;
+
+		N = normalizeVector(N);
+
+}
+
 	return N;
 }
-	
+
 
 VECTOR pointToVector(POINT point){
 	VECTOR vector;
@@ -168,5 +201,3 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 	point.z = vectorW.z + t*vectorD.z;
 	return point;
 }
-
-

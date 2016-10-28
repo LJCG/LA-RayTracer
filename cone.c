@@ -1,13 +1,9 @@
 #include "objects.h"
 #include "operations.h"
-#include "cylinder.h"
+#include "cone.h"
 #include <math.h>
 #include <stdio.h>
 
-
-
-long double getNormalCone(void){
-}
 
 
 OBJECT createCone(double radius, POINT anchor, VECTOR axis, double d1,
@@ -17,7 +13,7 @@ OBJECT createCone(double radius, POINT anchor, VECTOR axis, double d1,
   CONE cone;
   cone.radius = radius;
   cone.anchor = anchor; // ANCLA
-  cone.axis = axis; // EJE
+  cone.axis = normalizeVector(axis); // EJE
   cone.d1 = d1; // TAPA 1
   cone.d2 = d2;	// TAPA 2
   cone.k1 = k1;
@@ -38,12 +34,14 @@ OBJECT createCone(double radius, POINT anchor, VECTOR axis, double d1,
 
 
 
-INTERSECTION findIntersection_cone(VECTOR d, POINT e, POINT o, double radius, VECTOR q, double d1,double d2,double k1, double k2){
+INTERSECTION findIntersection_cone(VECTOR d, POINT e, POINT o, double radius,
+                          VECTOR q, double d1,double d2,double k1, double k2){
   //d direction; e ojo; o ancla; q eje; d1 tapa1,d2 tapa2,k1,k2;
 
   INTERSECTION intersection;
 
   long double var1,var2,var3,var4,var5,var6,var7,var8;
+
 
   var1 = (pow(q.x,2)*d.x)+(q.x*d.y*q.y)+(q.x*d.z*q.z)-d.x;
   var2 = (pow(q.y,2)*d.y)+(d.x*q.x*q.y)+(q.y*d.z*q.z)-d.y;
@@ -63,21 +61,24 @@ INTERSECTION findIntersection_cone(VECTOR d, POINT e, POINT o, double radius, VE
   -(var8*2*var7*var4*q.x)-(var8*2*var7*var5*q.y)-(var8*2*var7*var6*q.z);
 
   double c = pow(((pow(q.x,2)-1)*var4),2)+pow((q.x*((q.y*var5)+(q.z*var6))),2)
-  +pow(((pow(q.y,2)-1)*var5),2)+pow((q.y*((q.x*var4)+(q.z*var6))),2)
-  +pow(((pow(q.z,2)-1)*var6),2)+pow((q.z*((q.x*var4)+(q.y*var5))),2)
-  +(2*var4*q.x*(pow(q.x,2)-1)*((q.y*var5)+(q.z*var6)))
-  +(2*var5*q.y*(pow(q.y,2)-1)*((q.x*var4)+(q.z*var6)))
-  +(2*var6*q.z*(pow(q.z,2)-1)*((q.x*var4)+(q.y*var5)))
-  -(var8*pow((q.x*var4),2))
-  -(var8*pow((q.y*var5),2))
-  -(var8*pow((q.z*var6),2))
-  -(var8*2*var4*var5*q.x*q.y)
-  -(var8*2*var4*var6*q.x*q.z)
-  -(var8*2*var5*var6*q.y*q.z);
+            +pow(((pow(q.y,2)-1)*var5),2)+pow((q.y*((q.x*var4)+(q.z*var6))),2)
+            +pow(((pow(q.z,2)-1)*var6),2)+pow((q.z*((q.x*var4)+(q.y*var5))),2)
+            +(2*var4*q.x*(pow(q.x,2)-1)*((q.y*var5)+(q.z*var6)))
+            +(2*var5*q.y*(pow(q.y,2)-1)*((q.x*var4)+(q.z*var6)))
+            +(2*var6*q.z*(pow(q.z,2)-1)*((q.x*var4)+(q.y*var5)))
+            -(var8*pow((q.x*var4),2))
+            -(var8*pow((q.y*var5),2))
+            -(var8*pow((q.z*var6),2))
+            -(var8*2*var4*var5*q.x*q.y)
+            -(var8*2*var4*var6*q.x*q.z)
+            -(var8*2*var5*var6*q.y*q.z);
 
-  double discriminante = pow(b, 2) - 4*a*c;
 
-  if(discriminante < EPSILON){ // No hay interseccion con el cilindro INFINITO
+
+  double discriminante = pow(b, 2) - (4*a*c);
+
+
+  if(discriminante < EPSILON){ // No hay interseccion con el CONO INFINITO
   intersection.tmin = 0;
   intersection.tmax = 0;
   intersection.flag = 0;
@@ -111,10 +112,19 @@ INTERSECTION findIntersection_cone(VECTOR d, POINT e, POINT o, double radius, VE
   }
 
   if(!verifyFinitePoint(getIntersectionPoint(pointToVector(e), d, intersection.tmin), d1, d2, o, q)){ // No hay intersección con el FINITO
-    intersection.tmin = 0;
-    intersection.tmax = 0;
-    intersection.flag = 0;
+
+    if(verifyFinitePoint(getIntersectionPoint(pointToVector(e), d, intersection.tmax), d1, d2, o, q)){
+      intersection.tmin = intersection.tmax;
+      intersection.tmax = 0;
+      intersection.flag = 1;
+    }
+    else{
+      intersection.tmin = 0;
+      intersection.tmax = 0;
+      intersection.flag = 0;
+    }
   }
+
   }
   return intersection;
   }

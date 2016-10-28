@@ -10,6 +10,7 @@
 #include "lights.h"
 #include "polygon.h"
 #include "cylinder.h"
+#include "cone.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -48,7 +49,7 @@ void init_buffer(){
        }
 }
 
-void draw_scene(){	
+void draw_scene(){
    static int last_x = 0;
    int i, j;
    COLOR color;
@@ -71,7 +72,7 @@ void draw_scene(){
           last_x = i;
          }
       }
-      
+
    glFlush();
 }
 
@@ -83,14 +84,14 @@ void clear(){
 			frameBuffer[x][y].r = 0.0;
 			frameBuffer[x][y].g = 0.0;
 			frameBuffer[x][y].b = 0.0;
-		
+
 			glColor3f (frameBuffer[x][y].r,frameBuffer[x][y].g,frameBuffer[x][y].b);
 			glBegin(GL_POINTS);
 			glVertex2i(x, y);
 			glEnd();
 		}
 	}
-	
+
 	   glFlush();
 }
 
@@ -105,16 +106,16 @@ void save(COLOR **frameBuffer){
 
    		width = H_SIZE;
 		height = V_SIZE;
-		
+
 	    width = FIX(width);
 		fwrite(&width, sizeof(unsigned int), 1, fptr);
 
 		height = FIX(height);
 		fwrite(&height, sizeof(unsigned int), 1, fptr);
 
-		
-		for(j=0;j<V_SIZE;j++) {
-     		for(i=0;i<H_SIZE;i++) {
+
+		for(j = V_SIZE -1; j >= 0; j--) {
+     		for(i = 0; i < H_SIZE; i++) {
      			COLOR cl = frameBuffer[i][j];
 				fputc(255, fptr);       //alpha
 				fputc(cl.r*255, fptr);	//R
@@ -124,13 +125,13 @@ void save(COLOR **frameBuffer){
    			}
    		}
 
+
    		fclose(fptr);
-   	
+
    	}
    	else{
    		printf("Saving failed!");
    	}
-
 }
 
 // ---------------------------------- GENERAR ESCENA --------------------------------------
@@ -198,9 +199,11 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 		}
 		else if(object.id == 'N'){
 			//calcular interseccion cono
+      CONE cone = object.cone;
+			intersection = findIntersection_cone(vectorD, point, cone.anchor, cone.radius, cone.axis, cone.d1, cone.d2,cone.k1,cone.k2);
 		}
 		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
-			
+
 			tmin = intersection.tmin;
 			obj = object;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
@@ -217,7 +220,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 	POINT obstacle;     //Obstaculo entre la luz y un objeto
 	int k;
 	long double fatt;   //Factor de atenuacion
-	
+
 	intersection = firstIntersection(vectorW, vectorD, eye, 0);
 	if(intersectionFlag == 0){ //No hay interseccion entonces se devuelde el color de fondo
 		color = background;
@@ -234,11 +237,11 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 			VECTOR L = getL(intersection, lights[k]); //Vector entre la luz y el objeto
 			VECTOR N = getN(obj, intersection);       //Vector normal
 			VECTOR R; // Vector de rebote de la luz
-			
+
 			if(obj.id == 'P' && pointProduct(N, vectorD) > 0){
 				N = numberByVector(N, -1.0);
 			}
-			
+
 			double pointProd = pointProduct(L, N);    //Producto punto de L y N
 
 			if(pointProd > EPSILON){  //El coseno del angulo es mayor a EPSILON
@@ -256,8 +259,11 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 
 					double pointProdVR = pointProduct(V, R);
 					if(pointProdVR > EPSILON){
-					
-						E += pow(pointProdVR, obj.kn) * fatt * obj.ks * lights[k].intensity;
+						double factor = pow(pointProdVR, obj.kn);
+						if(factor < EPSILON && obj.id == 'P'){
+							factor = 0.02;
+						}
+						E += factor * fatt * obj.ks * lights[k].intensity;
 					}
 				}
 			}
@@ -267,9 +273,9 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 		I = min(1.0, I);
 
 
-		color.r = color.r*I; 
-		color.g = color.g*I; 
-		color.b = color.b*I; 
+		color.r = color.r*I;
+		color.g = color.g*I;
+		color.b = color.b*I;
 
 		//ESPECULAR
 		color.r = color.r + E * (1.0 - color.r);
@@ -287,11 +293,11 @@ void tracer(){
 	POINT w; // (xw, yw, zw)
 	VECTOR d; // (xd, yd, zd)
 	COLOR color;
-	
-	
+
+
 	for(i = 0; i < H_SIZE; i++){
 		for(j = 0; j < V_SIZE; j++){
-			w = mapXY(i, j, xmax, ymax, xmin, ymin); 
+			w = mapXY(i, j, xmax, ymax, xmin, ymin);
 			d.x = w.x - eye.x;
 			d.y = w.y - eye.y;
 			d.z = w.z - eye.z;
@@ -300,7 +306,7 @@ void tracer(){
 			frameBuffer[i][j] = color;
 		}
 	}
-	
+
 	save(frameBuffer);
 }
 
@@ -318,7 +324,7 @@ int main(int argc, char** argv){
 
 
    setBackground(0.0, 0.0, 0.0);
-   setEye(350.0, 350.0, -1500.0);
+   setEye(200.0, 200.0, -1500.0);
    setWindow(0, 0, 1008, 567);
 
    POINT c;
@@ -354,10 +360,10 @@ int main(int argc, char** argv){
    points[2] = p3;
    points[3] = p4;
 
-   OBJECT p = createPolygon(points, 4, cl, 0.7, 0.5, 0.8, 20.0);
+   OBJECT p = createPolygon(points, 4, cl, 0.7, 0.5, 0.8, 50.0);
    p.polygon.equation = reverse(p.polygon);
 
- //  addObject(p);
+   addObject(p);
 
 //--------------------------
 
@@ -367,7 +373,7 @@ int main(int argc, char** argv){
 
    cl.r = 0.5;
    cl.g = 0.0;
-   cl.b = 0.55;	
+   cl.b = 0.55;
   // addObject(createSphere(40, c, cl, 0.7, 0.6, 7.0, 0.5));
 
 //GRANDE
@@ -377,41 +383,56 @@ int main(int argc, char** argv){
 
    cl.r = 0.65;
    cl.g = 0.3;
-   cl.b = 0.3;	
+   cl.b = 0.3;
  //  addObject(createSphere(200, c, cl, 0.7, 0.6, 7.0, 0.8));
 
 
 //PEQUE
-   c.x = 500.0;
+   c.x = 100.0;
    c.y = 300.0;
-   c.z = -200.0;
+   c.z = -0.0;
 
-   cl.r = 0.1;
+   cl.r = 0.9;
    cl.g = 0.3;
    cl.b = 0.1;
 
- //  addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
+   //addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
 
-// CILINDRO
+// CONO
    POINT anchor; // ancla
-   anchor.x = 600;
-   anchor.y = 300;
-   anchor.z = 400;
+   anchor.x = 300;
+   anchor.y = 280;
+   anchor.z = 250;
 
-   VECTOR axis; 
-   axis.x = 0.3166;
-   axis.y = 0.9488;
-   axis.z = 0;
+   VECTOR axis;
+   axis.x = 150.0;
+   axis.y = 70.0;
+   axis.z = 20.0;
 
 
-   addObject(createCylinder(40, anchor, axis, -100.0, 200.0, cl, 0.7, 0.6, 7, 0.8));
+   //addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 1.9, 0.8));
+
+
+//k1 1.2; k2 0.9
+    addObject(createCone(75, anchor, axis, 10.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
+
+
+    anchor.x = 800;
+    anchor.y = 280;
+    anchor.z = 250;
+
+    axis.x = 150.0;
+    axis.y = 480.0;
+    axis.z = 20.0;
+
+    addObject(createCone(75, anchor, axis, 10.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
 
 //LUZ
    c.x = 600.0;
    c.y = 600.0;
    c.z = -500.0;
-   addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));	
-   
+   addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));
+
 //   c.x = 200.0;
  //  c.y = 200.0;
   // c.z = -200.0;
@@ -422,7 +443,5 @@ int main(int argc, char** argv){
    tracer();
 
    glutMainLoop();
-	
+
 }
-
-

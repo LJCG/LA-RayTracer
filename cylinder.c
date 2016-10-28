@@ -9,7 +9,7 @@ OBJECT createCylinder(double radius, POINT anchor, VECTOR axis, double d1, doubl
 	CYLINDER cylinder;
 	cylinder.radius = radius;
 	cylinder.anchor = anchor; 			   // ANCLA
-	cylinder.axis = axis; // EJE
+	cylinder.axis = normalizeVector(axis); // EJE
 	cylinder.d1 = d1;		 			   // TAPA 1
 	cylinder.d2 = d2;	     			   // TAPA 2
 
@@ -73,6 +73,7 @@ INTERSECTION findIntersection_cylinder(VECTOR d, POINT e, POINT o, double radius
     		   pow(((o.z-e.z)*(1 - pow(q.z, 2))+ q.z*(e.x*q.x - o.x*q.x + e.y*q.y - o.y*q.y)), 2) - pow(radius, 2);
 */
 	//printf("r: %lf\n", radius);
+
     double discriminante = pow(b, 2) - 4*a*c;
 
 	if(discriminante < EPSILON){ // No hay interseccion con el cilindro INFINITO
@@ -109,10 +110,19 @@ INTERSECTION findIntersection_cylinder(VECTOR d, POINT e, POINT o, double radius
 		}
 
 		if(!verifyFinitePoint(getIntersectionPoint(pointToVector(e), d, intersection.tmin), d1, d2, o, q)){ // No hay intersección con el FINITO
-			intersection.tmin = 0;
-			intersection.tmax = 0;
-			intersection.flag = 0;
+
+			if(verifyFinitePoint(getIntersectionPoint(pointToVector(e), d, intersection.tmax), d1, d2, o, q)){
+				intersection.tmin = intersection.tmax;
+				intersection.tmax = 0;
+				intersection.flag = 1;
+			}
+			else{
+				intersection.tmin = 0;
+				intersection.tmax = 0;
+				intersection.flag = 0;
+			}
 		}
+
 	}
 	return intersection;
 }
