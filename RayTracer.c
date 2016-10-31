@@ -11,6 +11,7 @@
 #include "polygon.h"
 #include "cylinder.h"
 #include "cone.h"
+#include "data.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -321,7 +322,6 @@ int main(int argc, char** argv){
    glClear(GL_COLOR_BUFFER_BIT);
    gluOrtho2D(-0.5, H_SIZE +0.5, -0.5, V_SIZE + 0.5);
    glutDisplayFunc(draw_scene);
-
 
    setBackground(0.0, 0.4, 0.8);
    setEye(750.0, 800.0, -1500.0);
@@ -1178,8 +1178,10 @@ int main(int argc, char** argv){
  //  addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 2, 0.8));
 
    // ----------------------------------------- LUCES ------------------------------------------------------
-   c.x = 600.0;
-   c.y = 1000.0;
+
+    //LUZ
+   c.x = 100.0;
+   c.y = 600.0;
    c.z = -500.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));   
 

@@ -70,8 +70,13 @@ INTERSECTION findIntersection_cylinder(VECTOR d, POINT e, POINT o, double radius
 	}
 	else{
 		if(discriminante > EPSILON){ // Hay dos intersecciones
+<<<<<<< HEAD
 			double t1 = (-b + sqrt(discriminante))/2*a;
 			double t2 = (-b - sqrt(discriminante))/2*a;
+=======
+			double t1 = (-b + sqrt(discriminante))/(2.0*a);
+			double t2 = (-b - sqrt(discriminante))/(2.0*a);
+>>>>>>> 761932ab89af3b6106e7b19ce13f7cb2d1eed5c7
 
 			if(t1 < t2){
 				intersection.tmin = t1;
@@ -84,13 +89,21 @@ INTERSECTION findIntersection_cylinder(VECTOR d, POINT e, POINT o, double radius
 			intersection.flag = 1;
 		}
 		else{ // Hay una interseccion
+<<<<<<< HEAD
 			double temp = (-b + sqrt(discriminante))/2*a;
+=======
+			double temp = (-b + sqrt(discriminante))/(2.0*a);
+>>>>>>> 761932ab89af3b6106e7b19ce13f7cb2d1eed5c7
 
 			if(temp != EPSILON){
 				intersection.tmin = temp;
 			}
 			else{
+<<<<<<< HEAD
 				intersection.tmin = (-b - sqrt(discriminante))/2*a;
+=======
+				intersection.tmin = (-b - sqrt(discriminante))/(2.0*a);
+>>>>>>> 761932ab89af3b6106e7b19ce13f7cb2d1eed5c7
 			}
 			intersection.tmax = 0;
 			intersection.flag = 1;
