@@ -323,36 +323,35 @@ int main(int argc, char** argv){
    glutDisplayFunc(draw_scene);
 
 
-   setBackground(0.0, 0.0, 0.0);
-   setEye(200.0, 200.0, -1500.0);
-   setWindow(0, 0, 1008, 567);
+   setBackground(0.0, 0.4, 0.8);
+   setEye(750.0, 800.0, -1500.0);
+   setWindow(0, 0, 1500, 1000);
 
-   POINT c;
-   COLOR cl;
+      POINT c;
+      COLOR cl;
+
+   // POLIGONO ARENA  
+    POINT p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18;
+   p1.x = -3000.0;
+   p1.y = 270.0;
+   p1.z = -3000.0;
+
+   p2.x = -8000.0;
+   p2.y = 270.0;
+   p2.z = 8000.0;
+
+   p3.x = 8000.0;
+   p3.y = 270.0;
+   p3.z = 8000.0;
+
+   p4.x = 8000.0;
+   p4.y = 270.0;
+   p4.z = -3000.0;
 
 
-	POINT p1, p2, p3, p4;
-	p1.x = 100.0;
-	p1.y = 100.0;
-	p1.z = -200.0;
-
-	p2.x = 200.0;
-	p2.y = 200.0;
-	p2.z = 200.0;
-
-	p3.x = 800.0;
-	p3.y = 200.0;
-	p3.z = 200.0;
-
-	p4.x = 700.0;
-	p4.y = 100.0;
-	p4.z = -200.0;
-
-
-// POLY
-   cl.r = 0.0;
-   cl.g = 0.7;
-   cl.b = 0.7;
+   cl.r = 0.792157;
+   cl.g = 0.701961;
+   cl.b = 0.533333;
 
    POINT points[4];
    points[0] = p1;
@@ -364,116 +363,826 @@ int main(int argc, char** argv){
    p.polygon.equation = reverse(p.polygon);
 
    addObject(p);
+   // ------------------------------------------------- PEZ 1 -----------------------------------------------------
+  p1.x = 1600.0;
+  p1.y = 900.0;
+  p1.z = 3000.0;
 
-//--------------------------
+  p2.x = 1650.0;
+  p2.y = 800.0;
+  p2.z = 3000.0;
 
-   c.x = 300.0;
-   c.y = 400.0;
-   c.z = -160.0;
+  p3.x = 1600.0;
+  p3.y = 720.0;
+  p3.z = 3000.0;
 
-   cl.r = 0.5;
-   cl.g = 0.0;
-   cl.b = 0.55;
-  // addObject(createSphere(40, c, cl, 0.7, 0.6, 7.0, 0.5));
+  p4.x = 1700.0;
+  p4.y = 800.0;
+  p4.z = 3000.0;
 
+  p5.x = 1850.0;
+  p5.y = 740.0;
+  p5.z = 3000.0;
 
+  p6.x = 1950.0;
+  p6.y = 790.0;
+  p6.z = 3000.0;
 
-   c.x = 600.0;
-   c.y = 400.0;
-   c.z = -160.0;
+  p7.x = 1900.0;
+  p7.y = 800.0;
+  p7.z = 3000.0;
 
-   cl.r = 0.5;
-   cl.g = 0.0;
-   cl.b = 0.55;
-   //addObject(createSphere(40, c, cl, 0.7, 0.6, 7.0, 0.5));
+  p8.x = 1950.0;
+  p8.y = 830.0;
+  p8.z = 3000.0;
 
-/*
-   POINT anchor; // ancla
-   anchor.x = 300;
-   anchor.y = 400;
-   anchor.z = -160;
+  p9.x = 1850.0;
+  p9.y = 900.0;
+  p9.z = 3000.0;
 
-   VECTOR axis;
-   int ang = 60;
-   axis.x = 100.0 * cos(ang)-100*sin(ang);
-   axis.y = 100.0 * sin(ang)+100*cos(ang);
-   axis.z = 10;
-I
-   cl.r = 0.5;
-   cl.g = 0.0;
-   cl.b = 0.55;
-  // addObject(createCylinder(40, anchor, axis, 10.0, 140.0, cl, 0.9, 0.5, 5, 1));
-*/
+  p10.x = 1700.0;
+  p10.y = 850.0;
+  p10.z = 3000.0;
 
+  // COLOR
+   cl.r = 0.0;
+   cl.g = 1.0;
+   cl.b = 0.0;
 
+   POINT points2[10];
+   points2[0] = p1;
+   points2[1] = p2;
+   points2[2] = p3;
+   points2[3] = p4;
+   points2[4] = p5;
+   points2[5] = p6;
+   points2[6] = p7;
+   points2[7] = p8;
+   points2[8] = p9;
+   points2[9] = p10;
 
-   //addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 1.9, 0.8));
+   OBJECT po = createPolygon(points2, 10, cl, 0.7, 0.5, 0.8, 50.0);
+   po.polygon.equation = reverse(po.polygon);
 
+   addObject(po);
 
-//k1 1.2; k2 0.9
-/*
+// ------------------------------------------------- PEZ 2 -----------------------------------------------------
+  p1.x = 1800.0;
+  p1.y = 1300.0;
+  p1.z = 5000.0;
 
+  p2.x = 1850.0;
+  p2.y = 1200.0;
+  p2.z = 5000.0;
 
-//GRANDE
-   c.x = 480.0;
-   c.y = 350.0;
-   c.z = 100.0;
+  p3.x = 1800.0;
+  p3.y = 1120.0;
+  p3.z = 5000.0;
+
+  p4.x = 1900.0;
+  p4.y = 1200.0;
+  p4.z = 5000.0;
+
+  p5.x = 2050.0;
+  p5.y = 1140.0;
+  p5.z = 5000.0;
+
+  p6.x = 2150.0;
+  p6.y = 1190.0;
+  p6.z = 5000.0;
+
+  p7.x = 2100.0;
+  p7.y = 1200.0;
+  p7.z = 5000.0;
+
+  p8.x = 2150.0;
+  p8.y = 1230.0;
+  p8.z = 5000.0;
+
+  p9.x = 2050.0;
+  p9.y = 1300.0;
+  p9.z = 5000.0;
+
+  p10.x = 1900.0;
+  p10.y = 1250.0;
+  p10.z = 5000.0;
+
+  // COLOR
+   cl.r = 0.0;
+   cl.g = 1.0;
+   cl.b = 0.0;
+
+   points2[10];
+   points2[0] = p1;
+   points2[1] = p2;
+   points2[2] = p3;
+   points2[3] = p4;
+   points2[4] = p5;
+   points2[5] = p6;
+   points2[6] = p7;
+   points2[7] = p8;
+   points2[8] = p9;
+   points2[9] = p10;
+
+   po = createPolygon(points2, 10, cl, 0.7, 0.5, 0.8, 50.0);
+   po.polygon.equation = reverse(po.polygon);
+
+   addObject(po);
+
+// ------------------------------------------------- PEZ 3 -----------------------------------------------------
+  p1.x = 2200.0;
+  p1.y = 1400.0;
+  p1.z = 5000.0;
+
+  p2.x = 2250.0;
+  p2.y = 1300.0;
+  p2.z = 5000.0;
+
+  p3.x = 2200.0;
+  p3.y = 1220.0;
+  p3.z = 5000.0;
+
+  p4.x = 2300.0;
+  p4.y = 1300.0;
+  p4.z = 5000.0;
+
+  p5.x = 2450.0;
+  p5.y = 1240.0;
+  p5.z = 5000.0;
+
+  p6.x = 2550.0;
+  p6.y = 1290.0;
+  p6.z = 5000.0;
+
+  p7.x = 2500.0;
+  p7.y = 1300.0;
+  p7.z = 5000.0;
+
+  p8.x = 2550.0;
+  p8.y = 1330.0;
+  p8.z = 5000.0;
+
+  p9.x = 2450.0;
+  p9.y = 1400.0;
+  p9.z = 5000.0;
+
+  p10.x = 2300.0;
+  p10.y = 1350.0;
+  p10.z = 5000.0;
+
+  // COLOR
+   cl.r = 0.0;
+   cl.g = 1.0;
+   cl.b = 0.0;
+
+   points2[10];
+   points2[0] = p1;
+   points2[1] = p2;
+   points2[2] = p3;
+   points2[3] = p4;
+   points2[4] = p5;
+   points2[5] = p6;
+   points2[6] = p7;
+   points2[7] = p8;
+   points2[8] = p9;
+   points2[9] = p10;
+
+   po = createPolygon(points2, 10, cl, 0.7, 0.5, 0.8, 50.0);
+   po.polygon.equation = reverse(po.polygon);
+
+   addObject(po);
+// ------------------------------------------------- CANGREJO 1 -----------------------------------------------------
+
+// COLOR
+   cl.r = 1.0;
+   cl.g = 0.2706;
+   cl.b = 0.0;
+
+  p1.x = -740.0;
+  p1.y = 520.0;
+  p1.z = 8500.0;
+
+  p2.x = -740.0;
+  p2.y = 450.0;
+  p2.z = 8500.0;
+
+  p3.x = -850.0;
+  p3.y = 400.0;
+  p3.z = 8500.0;
+
+  p4.x = -740.0;
+  p4.y = 250.0;
+  p4.z = 8500.0;
+
+  p5.x = -710.0;
+  p5.y = 380.0;
+  p5.z = 8500.0;
+
+  p6.x = -620.0;
+  p6.y = 300.0;
+  p6.z = 8500.0;
+
+  p7.x = -420.0;
+  p7.y = 300.0;
+  p7.z = 8500.0;
+
+  p8.x = -350.0;
+  p8.y = 380.0;
+  p8.z = 8500.0;
+
+  p9.x = -300.0;
+  p9.y = 250.0;
+  p9.z = 8500.0;
+
+  p10.x = -200.0;
+  p10.y = 400.0;
+  p10.z = 8500.0;
+
+  p11.x = -300.0;
+  p11.y = 450.0;
+  p11.z = 8500.0;
+
+  p12.x = -200.0;
+  p12.y = 520.0;
+  p12.z = 8500.0;
+
+  p13.x = -350.0;
+  p13.y = 700.0;
+  p13.z = 8500.0;
+
+  p14.x = -320.0;
+  p14.y = 520.0;
+  p14.z = 8500.0;
+
+  p15.x = -710.0;
+  p15.y = 520.0;
+  p15.z = 8500.0;
+
+  p16.x = -680.0;
+  p16.y = 700.0;
+  p16.z = 8500.0;
+
+  p17.x = -850.0;
+  p17.y = 520.0;
+  p17.z = 8500.0;
+
+  p18.x = -740.0;
+  p18.y = 450.0;
+  p18.z = 8500.0;
+
+   points2[18];
+   points2[0] = p1;
+   points2[1] = p2;
+   points2[2] = p3;
+   points2[3] = p4;
+   points2[4] = p5;
+   points2[5] = p6;
+   points2[6] = p7;
+   points2[7] = p8;
+   points2[8] = p9;
+   points2[9] = p10;
+   points2[10] = p11;
+   points2[11] = p12;
+   points2[12] = p13;
+   points2[13] = p14;
+   points2[14] = p15;
+   points2[15] = p16;
+   points2[16] = p17;
+   points2[17] = p18;
+
+   po = createPolygon(points2, 18, cl, 0.7, 0.5, 0.8, 50.0);
+   po.polygon.equation = reverse(po.polygon);
+
+   addObject(po);
+
+// ---------------------------------------------------- PULPOS ---------------------------------------------------------------
+   COLOR blanco;
+   blanco.r = 0.8;
+   blanco.g = 0.8;
+   blanco.b = 0.8;
+
+   c.x = 740.0;
+   c.y = 850.0;
+   c.z = 800.0;
 
    cl.r = 0.65;
    cl.g = 0.3;
-   cl.b = 0.3;
- //  addObject(createSphere(200, c, cl, 0.7, 0.6, 7.0, 0.8));
+   cl.b = 0.3; 
+   addObject(createSphere(230, c, cl, 0.7, 0.6, 7.0, 0.8));
+
+   //IZQ
+   c.x = 670.0;
+   c.y = 660.0;
+   c.z = 710.0;
+
+   addObject(createSphere(90, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ1
+   c.x = 668.0;
+   c.y = 550.0;
+   c.z = 735.0;
+
+   addObject(createSphere(100, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ2
+   c.x = 598.0;
+   c.y = 475.0;
+   c.z = 735.0;
+
+   addObject(createSphere(95, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ3
+   c.x = 495.0;
+   c.y = 400.0;
+   c.z = 735.0;
+
+   addObject(createSphere(85, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ4
+   c.x = 405.0;
+   c.y = 340.0;
+   c.z = 735.0;
+
+   addObject(createSphere(75, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ5
+   c.x = 315.0;
+   c.y = 375.0;
+   c.z = 730.0;
+
+   addObject(createSphere(65, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ6
+   c.x = 275.0;
+   c.y = 435.0;
+   c.z = 730.0;
+
+   addObject(createSphere(55, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ7
+   c.x = 250.0;
+   c.y = 475.0;
+   c.z = 730.0;
+
+   addObject(createSphere(45, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED
+   c.x = 740.0;
+   c.y = 650.0;
+   c.z = 720.0;
+
+   addObject(createSphere(105, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED1
+   c.x = 738.0;
+   c.y = 560.0;
+   c.z = 715.0;
+
+   addObject(createSphere(110, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED2
+   c.x = 738.0;
+   c.y = 470.0;
+   c.z = 675.0;
+
+   addObject(createSphere(95, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED3
+   c.x = 738.0;
+   c.y = 390.0;
+   c.z = 625.0;
+
+   addObject(createSphere(85, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED4
+   c.x = 738.0;
+   c.y = 345.0;
+   c.z = 545.0;
+
+   addObject(createSphere(75, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED5
+   c.x = 725.0;
+   c.y = 360.0;
+   c.z = 500.0;
+
+   addObject(createSphere(65, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED6
+   c.x = 715.0;
+   c.y = 390.0;
+   c.z = 465.0;
+
+   addObject(createSphere(55, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED7
+   c.x = 707.0;
+   c.y = 423.0;
+   c.z = 438.0;
+
+   addObject(createSphere(45, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER
+   c.x = 810.0;
+   c.y = 660.0;
+   c.z = 710.0;
+
+   addObject(createSphere(90, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER1
+   c.x = 812.0;
+   c.y = 550.0;
+   c.z = 735.0;
+
+   addObject(createSphere(100, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER2
+   c.x = 882.0;
+   c.y = 475.0;
+   c.z = 735.0;
+
+   addObject(createSphere(95, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER3
+   c.x = 975.0;
+   c.y = 395.0;
+   c.z = 730.0;
+
+   addObject(createSphere(85, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER4
+   c.x = 1055.0;
+   c.y = 348.0;
+   c.z = 705.0;
+
+   addObject(createSphere(75, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER5
+   c.x = 1100.0;
+   c.y = 380.0;
+   c.z = 640.0;
+
+   addObject(createSphere(65, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER6
+   c.x = 1140.0;
+   c.y = 395.0;
+   c.z = 585.0;
+
+   addObject(createSphere(55, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER7
+   c.x = 1170.0;
+   c.y = 390.0;
+   c.z = 535.0;
+
+   addObject(createSphere(45, c, cl, 0.7, 0.6, 5.0, 0.8));
 
 
-//PEQUE
-   c.x = 100.0;
-   c.y = 300.0;
-   c.z = -0.0;
+   //BACK
+   c.x = 738.0;
+   c.y = 560.0;
+   c.z = 780.0; 
+   addObject(createSphere(105, c, cl, 0.7, 0.6, 5.0, 0.8));
 
-   cl.r = 0.9;
-   cl.g = 0.3;
-   cl.b = 0.1;
+   //BACK1R
+   c.x = 660.0;
+   c.y = 485.0;
+   c.z = 880.0; 
+   addObject(createSphere(80, c, cl, 0.7, 0.6, 5.0, 0.8));
 
-   //addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
-*/
-// CONO
+   //BACK2R
+   c.x = 610.0;
+   c.y = 425.0;
+   c.z = 935.0; 
+   addObject(createSphere(75, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK3R
+   c.x = 560.0;
+   c.y = 365.0;
+   c.z = 1025.0; 
+   addObject(createSphere(65, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK4R
+   c.x = 500.0;
+   c.y = 325.0;
+   c.z = 1075.0; 
+   addObject(createSphere(55, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK5R
+   c.x = 470.0;
+   c.y = 360.0;
+   c.z = 1120.0; 
+   addObject(createSphere(50, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK6R
+   c.x = 440.0;
+   c.y = 420.0;
+   c.z = 1130.0; 
+   addObject(createSphere(45, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK7R
+   c.x = 420.0;
+   c.y = 460.0;
+   c.z = 1130.0; 
+   addObject(createSphere(40, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+
+   //BACK1L
+   c.x = 800.0;
+   c.y = 485.0;
+   c.z = 880.0; 
+   addObject(createSphere(80, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK2L
+   c.x = 850.0;
+   c.y = 425.0;
+   c.z = 935.0; 
+   addObject(createSphere(75, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK3L
+   c.x = 900.0;
+   c.y = 365.0;
+   c.z = 1025.0; 
+   addObject(createSphere(65, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK4L
+   c.x = 960.0;
+   c.y = 325.0;
+   c.z = 1075.0; 
+   addObject(createSphere(55, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK5L
+   c.x = 990.0;
+   c.y = 360.0;
+   c.z = 1120.0; 
+   addObject(createSphere(50, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK6L
+   c.x = 1020.0;
+   c.y = 420.0;
+   c.z = 1130.0; 
+   addObject(createSphere(45, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //BACK6L
+   c.x = 1060.0;
+   c.y = 460.0;
+   c.z = 1130.0; 
+   addObject(createSphere(40, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //ojo izq
+   c.x = 655.0;
+   c.y = 655.0;
+   c.z = 670.0;
+
+   addObject(createSphere(55, c, blanco, 0.7, 0.6, 5.0, 0.8));
+  
+   //ojo der
+   c.x = 820.0;
+   c.y = 655.0;
+   c.z = 670.0;
+
+   addObject(createSphere(55, c, blanco, 0.7, 0.6, 5.0, 0.8));
+
+   //pupila izq
+
+   COLOR negro;
+   negro.r = 0.0;
+   negro.g = 0.0;
+   negro.b = 0.0;
+
+   c.x = 655.0;
+   c.y = 655.0;
+   c.z = 630.0;
+
+   addObject(createSphere(22, c, negro, 0.7, 0.6, 8.0, 0.8));
+
+   //pupila der
+   c.x = 820.0;
+   c.y = 655.0;
+   c.z = 630.0;
+
+   addObject(createSphere(22, c, negro, 0.7, 0.6, 8.0, 0.8));
+
+
+   // -------------------------------------- PULPO HIJO ------------------------------------------------
+
+   //GRANDE
+   c.x = 1400.0;
+   c.y = 540.0;
+   c.z = 510.0;
+
+   addObject(createSphere(120, c, cl, 0.7, 0.6, 7.0, 0.8));
+
+   //MED
+   c.x = 1390.0;
+   c.y = 420.0;
+   c.z = 470.0;
+
+   addObject(createSphere(65, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED1
+   c.x = 1389.0;
+   c.y = 362.0;
+   c.z = 450.0;
+
+   addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   
+   //MED2
+   c.x = 1383.0;
+   c.y = 315.0;
+   c.z = 415.0;
+
+   addObject(createSphere(50, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED3
+   c.x = 1377.0;
+   c.y = 310.0;
+   c.z = 370.0;
+
+   addObject(createSphere(40, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED4
+   c.x = 1370.0;
+   c.y = 325.0;
+   c.z = 320.0;
+
+   addObject(createSphere(30, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //MED5
+   c.x = 1370.0;
+   c.y = 355.0;
+   c.z = 300.0;
+
+   addObject(createSphere(20, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ
+   c.x = 1350.0;
+   c.y = 435.0;
+   c.z = 460.0;
+
+   addObject(createSphere(50, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ1
+   c.x = 1355.0;
+   c.y = 370.0;
+   c.z = 480.0;
+
+   addObject(createSphere(50, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ2
+   c.x = 1310.0;
+   c.y = 335.0;
+   c.z = 490.0;
+
+   addObject(createSphere(45, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ3
+   c.x = 1265.0;
+   c.y = 312.0;
+   c.z = 490.0;
+
+   addObject(createSphere(40, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ4
+   c.x = 1230.0;
+   c.y = 340.0;
+   c.z = 470.0;
+
+   addObject(createSphere(30, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //IZQ5
+   c.x = 1215.0;
+   c.y = 370.0;
+   c.z = 455.0;
+
+   addObject(createSphere(20, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER
+   c.x = 1430.0;
+   c.y = 435.0;
+   c.z = 445.0;
+
+   addObject(createSphere(50, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER1
+   c.x = 1442.0;
+   c.y = 370.0;
+   c.z = 470.0;
+
+   addObject(createSphere(50, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+
+   //DER2
+   c.x = 1487.0;
+   c.y = 340.0;
+   c.z = 470.0;
+
+   addObject(createSphere(45, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+
+   //DER3
+   c.x = 1530.0;
+   c.y = 310.0;
+   c.z = 450.0;
+
+   addObject(createSphere(40, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER4
+   c.x = 1550.0;
+   c.y = 340.0;
+   c.z = 410.0;
+
+   addObject(createSphere(30, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //DER5
+   c.x = 1560.0;
+   c.y = 370.0;
+   c.z = 380.0;
+
+   addObject(createSphere(20, c, cl, 0.7, 0.6, 5.0, 0.8));
+
+   //ojo izq
+   c.x = 1339.0;
+   c.y = 435.0;
+   c.z = 437.0;
+
+   addObject(createSphere(32, c, blanco, 0.7, 0.6, 5.0, 0.8));
+
+   //ojo der
+   c.x = 1430.0;
+   c.y = 435.0;
+   c.z = 419.5;
+
+   addObject(createSphere(32, c, blanco, 0.7, 0.6, 5.0, 0.8));
+
+   //pupila izq
+   c.x = 1334.0;
+   c.y = 442.0;
+   c.z = 418.0;
+
+   addObject(createSphere(22, c, negro, 0.7, 0.6, 8.0, 0.8));
+
+   //pupila der
+   c.x = 1427.0;
+   c.y = 441.0;
+   c.z = 400.0;
+
+   addObject(createSphere(22, c, negro, 0.7, 0.6, 8.0, 0.8));
+// ------------------------------------------- DUNAS -------------------------------------------------------------
+   cl.r = 0.792157;
+   cl.g = 0.701961;
+   cl.b = 0.533333;
+
+   c.x = -500.0;
+   c.y = 100.0;
+   c.z = 2000.0;
+
+   addObject(createSphere(250, c, cl, 0.6, 0.6, 20.0, 0.8));
+
+   c.x = 2400.0;
+   c.y = 60.0;
+   c.z = 5000.0;
+
+   addObject(createSphere(250, c, cl, 0.6, 0.6, 20.0, 0.8));
+
+   c.x = 1000.0;
+   c.y = 50.0;
+   c.z = 200.0;
+
+   addObject(createSphere(250, c, cl, 0.6, 0.6, 20.0, 0.8));
+
+   
+   cl.r = 0.06666;
+   cl.g = 0.6980;
+   cl.b = 0.3607;
+
+   c.x = 1000.0;
+   c.y = 297.0;
+   c.z = 200.0;
+
+   addObject(createSphere(10, c, cl, 0.6, 0.6, 20.0, 0.8));
+// -------------------------------------- CILINDRO ---------------------------------------------------------
    POINT anchor; // ancla
-   anchor.x = 400;
-   anchor.y = 400;
+   anchor.x = 300;
+   anchor.y = 300;
    anchor.z = 0;
 
-   VECTOR axis;
-   axis.x = 200;
-   axis.y = 50.0;
-   axis.z = 0;
+   VECTOR axis; 
+   axis.x = 600.0;
+   axis.y = 200.0;
+   axis.z = -200.0;
 
 
-   addObject(createCone(75, anchor, rotate_cone(axis,-105), 5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
+ //  addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 2, 0.8));
 
-
-    axis.x = 200;
-    axis.y = 50.0;
-    axis.z = 0;
-
-   addObject(createCone(75, anchor, rotate_cone(axis,165), 5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
-
-
-   axis.x = 200;
-   axis.y = 50.0;
-   axis.z = 0;
-
-  addObject(createCone(75, anchor, rotate_cone(axis,-10), -5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
-
-    //LUZ
+   // ----------------------------------------- LUCES ------------------------------------------------------
    c.x = 600.0;
-   c.y = 600.0;
+   c.y = 1000.0;
    c.z = -500.0;
-   addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));
+   addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));   
 
-//   c.x = 200.0;
- //  c.y = 200.0;
-  // c.z = -200.0;
-  // addLight(createLight(c, 0.5, 1.0, 0.0, 0.0));
 
    Ia = 0.6;
 

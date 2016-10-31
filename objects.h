@@ -2,7 +2,7 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-#define V_SIZE 567
+#define V_SIZE 700
 #define H_SIZE 1008
 #define PI 3.141592
 #define EPSILON 0.00005
