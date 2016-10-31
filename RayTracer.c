@@ -11,6 +11,7 @@
 #include "polygon.h"
 #include "cylinder.h"
 #include "cone.h"
+#include "data.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -326,154 +327,20 @@ int main(int argc, char** argv){
    setBackground(0.0, 0.0, 0.0);
    setEye(200.0, 200.0, -1500.0);
    setWindow(0, 0, 1008, 567);
-
    POINT c;
    COLOR cl;
 
 
-	POINT p1, p2, p3, p4;
-	p1.x = 100.0;
-	p1.y = 100.0;
-	p1.z = -200.0;
+   //cargar escena
+   loadInfo();
 
-	p2.x = 200.0;
-	p2.y = 200.0;
-	p2.z = 200.0;
-
-	p3.x = 800.0;
-	p3.y = 200.0;
-	p3.z = 200.0;
-
-	p4.x = 700.0;
-	p4.y = 100.0;
-	p4.z = -200.0;
-
-
-// POLY
-   cl.r = 0.0;
-   cl.g = 0.7;
-   cl.b = 0.7;
-
-   POINT points[4];
-   points[0] = p1;
-   points[1] = p2;
-   points[2] = p3;
-   points[3] = p4;
-
-   OBJECT p = createPolygon(points, 4, cl, 0.7, 0.5, 0.8, 50.0);
-   p.polygon.equation = reverse(p.polygon);
-
-   addObject(p);
-
-//--------------------------
-
-   c.x = 300.0;
-   c.y = 400.0;
-   c.z = -160.0;
-
-   cl.r = 0.5;
-   cl.g = 0.0;
-   cl.b = 0.55;
-  // addObject(createSphere(40, c, cl, 0.7, 0.6, 7.0, 0.5));
-
-
-
-   c.x = 600.0;
-   c.y = 400.0;
-   c.z = -160.0;
-
-   cl.r = 0.5;
-   cl.g = 0.0;
-   cl.b = 0.55;
-   //addObject(createSphere(40, c, cl, 0.7, 0.6, 7.0, 0.5));
-
-/*
-   POINT anchor; // ancla
-   anchor.x = 300;
-   anchor.y = 400;
-   anchor.z = -160;
-
-   VECTOR axis;
-   int ang = 60;
-   axis.x = 100.0 * cos(ang)-100*sin(ang);
-   axis.y = 100.0 * sin(ang)+100*cos(ang);
-   axis.z = 10;
-I
-   cl.r = 0.5;
-   cl.g = 0.0;
-   cl.b = 0.55;
-  // addObject(createCylinder(40, anchor, axis, 10.0, 140.0, cl, 0.9, 0.5, 5, 1));
-*/
-
-
-
-   //addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 1.9, 0.8));
-
-
-//k1 1.2; k2 0.9
-/*
-
-
-//GRANDE
-   c.x = 480.0;
-   c.y = 350.0;
-   c.z = 100.0;
-
-   cl.r = 0.65;
-   cl.g = 0.3;
-   cl.b = 0.3;
- //  addObject(createSphere(200, c, cl, 0.7, 0.6, 7.0, 0.8));
-
-
-//PEQUE
-   c.x = 100.0;
-   c.y = 300.0;
-   c.z = -0.0;
-
-   cl.r = 0.9;
-   cl.g = 0.3;
-   cl.b = 0.1;
-
-   //addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
-*/
-// CONO
-   POINT anchor; // ancla
-   anchor.x = 400;
-   anchor.y = 400;
-   anchor.z = 0;
-
-   VECTOR axis;
-   axis.x = 200;
-   axis.y = 50.0;
-   axis.z = 0;
-
-
-   addObject(createCone(75, anchor, rotate_cone(axis,-105), 5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
-
-
-    axis.x = 200;
-    axis.y = 50.0;
-    axis.z = 0;
-
-   addObject(createCone(75, anchor, rotate_cone(axis,165), 5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
-
-
-   axis.x = 200;
-   axis.y = 50.0;
-   axis.z = 0;
-
-  addObject(createCone(75, anchor, rotate_cone(axis,-10), -5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
 
     //LUZ
-   c.x = 600.0;
+   c.x = 100.0;
    c.y = 600.0;
    c.z = -500.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));
 
-//   c.x = 200.0;
- //  c.y = 200.0;
-  // c.z = -200.0;
-  // addLight(createLight(c, 0.5, 1.0, 0.0, 0.0));
 
    Ia = 0.6;
 

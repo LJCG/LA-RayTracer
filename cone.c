@@ -75,18 +75,18 @@ INTERSECTION findIntersection_cone(VECTOR d, POINT e, POINT o, double radius,
 
 
 
-  double discriminante = pow(b, 2) - (4*a*c);
+  double discriminante = pow(b, 2)-(4*a*c);
 
 
-  if(discriminante < EPSILON){ // No hay interseccion con el CONO INFINITO
+  if(discriminante < 0){ // No hay interseccion con el CONO INFINITO
   intersection.tmin = 0;
   intersection.tmax = 0;
   intersection.flag = 0;
   }
   else{
   if(discriminante > EPSILON){ // Hay dos intersecciones
-    double t1 = (-b + sqrt(discriminante))/2;
-    double t2 = (-b - sqrt(discriminante))/2;
+    double t1 = ((-b) + sqrt(discriminante))/(2.0*a);
+    double t2 = ((-b) - sqrt(discriminante))/(2.0*a);
 
     if(t1 < t2){
       intersection.tmin = t1;
@@ -99,13 +99,13 @@ INTERSECTION findIntersection_cone(VECTOR d, POINT e, POINT o, double radius,
     intersection.flag = 1;
   }
   else{ // Hay una interseccion
-    double temp = (-b + sqrt(discriminante))/2;
+    double temp = (-b + sqrt(discriminante))/(2.0*a);
 
     if(temp != EPSILON){
       intersection.tmin = temp;
     }
     else{
-      intersection.tmin = (-b - sqrt(discriminante))/2;;
+      intersection.tmin = (-b - sqrt(discriminante))/(2.0*a);
     }
     intersection.tmax = 0;
     intersection.flag = 1;
