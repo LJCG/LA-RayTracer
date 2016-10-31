@@ -174,7 +174,7 @@ VECTOR getN(OBJECT obj, POINT intersection){
 
 */
 
-//AQUI SE DESPICHA LA HOSTIA 
+//AQUI SE DESPICHA LA HOSTIA
 
 		l = sqrt(pow(xl,2)+pow(yl,2)+pow(zl,2));
 
@@ -237,11 +237,10 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 
 VECTOR rotate_cone(VECTOR axis, int grados){
 //Pasa de radianes a grados primero
- int g = grados;
+
  VECTOR axis_aux;
- double val = PI / 180.0;
- double grados_cos = cos( g*val );
- double grados_sen = sin( g*val );
+ double grados_cos = cos( grados*(PI / 180.0) );
+ double grados_sen = sin( grados*(PI / 180.0) );
  axis_aux.x = (grados_cos * axis.x) - (grados_sen * axis.y);
  axis_aux.y = (grados_sen * axis.x) + (grados_cos * axis.y);
  axis_aux.z = 0;
