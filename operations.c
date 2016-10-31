@@ -139,11 +139,42 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		double x = intersection.x;
 		double y = intersection.y;
 		double z = intersection.z;
-		double xl,yl,zl,l,H;
+		double xl,yl,zl,l,H,lq;
+	//	double k1 = 0.5;
+	//	double k2 = 0.8;
+
 
 		xl = x-o.x;
 		yl = y-o.y;
 		zl = z-o.z;
+
+
+
+
+/*
+
+		N.x = 2*((o.x + (xl * q.x + yl * q.y + zl * q.z)*q.x)-x)*(pow(q.x,2)-1)+
+					2*((o.y + (xl * q.x + yl * q.y + zl * q.z)*q.x)-y)*q.x*q.y +
+					2*((o.z + (xl * q.x + yl * q.y + zl * q.z)*q.x)-z)*q.x*q.z
+		-((pow(2*k2,2)*pow(q.z,2)*q.x*(q.y*yl + q.z*zl+q.x*xl))/pow(k1,2));
+
+
+		N.y = 2*((o.x + (xl * q.x + yl * q.y + zl * q.z)*q.x)-x)*q.x*q.y+
+					2*((o.y + (xl * q.x + yl * q.y + zl * q.z)*q.y)-y)*(pow(q.y,2)-1) +
+					2*((o.z + (xl * q.x + yl * q.y + zl * q.z)*q.z)-z)*q.y*q.z
+		-((pow(2*k2,2)*q.y*pow(q.z,2)*(q.y*yl + q.z*zl+q.x*xl)/pow(k1,2)));
+
+
+		N.z = 2*((o.x + (xl * q.x + yl * q.y + zl * q.z)*q.x)-x)*q.z*q.x+
+					2*((o.y + (xl * q.x + yl * q.y + zl * q.z)*q.y)-y)*q.y*q.z +
+					2*(pow((o.z + (xl * q.x + yl * q.y + zl * q.z)*q.z)-z,((pow(q.z,2)-1))))
+		-((pow(2*k2,2)*pow(q.z,3)*(q.y*yl+q.x*xl+q.z*zl)))/pow(k1,2);
+
+//N = normalizeVector(N);
+
+*/
+
+//AQUI SE DESPICHA LA HOSTIA 
 
 		l = sqrt(pow(xl,2)+pow(yl,2)+pow(zl,2));
 
@@ -151,11 +182,13 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		yl = yl/l;
 		zl = zl/l;
 
-		H = l/(q.x*xl + q.y + q.z*zl);
+		lq = (q.x*xl + q.y*yl + q.z*zl);
 
-		N.x = x - (o.x + H*q.x);
-		N.y = y - (o.y + H *q.y);
-		N.z = z - (o.z + H*q.z);
+		H = l/lq;
+
+		N.x = x-(o.x + H*q.x);
+		N.y = y-(o.y + H*q.y);
+		N.z = z-(o.z + H*q.z);
 
 		l = sqrt(pow(N.x,2) + pow(N.y,2) + pow(N.z,2));
 
@@ -200,4 +233,18 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 	point.y = vectorW.y + t*vectorD.y;
 	point.z = vectorW.z + t*vectorD.z;
 	return point;
+}
+
+VECTOR rotate_cone(VECTOR axis, int grados){
+//Pasa de radianes a grados primero
+ int g = grados;
+ VECTOR axis_aux;
+ double val = PI / 180.0;
+ double grados_cos = cos( g*val );
+ double grados_sen = sin( g*val );
+ axis_aux.x = (grados_cos * axis.x) - (grados_sen * axis.y);
+ axis_aux.y = (grados_sen * axis.x) + (grados_cos * axis.y);
+ axis_aux.z = 0;
+ return axis_aux;
+
 }

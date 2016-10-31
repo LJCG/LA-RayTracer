@@ -368,13 +368,51 @@ int main(int argc, char** argv){
 //--------------------------
 
    c.x = 300.0;
-   c.y = 150.0;
+   c.y = 400.0;
    c.z = -160.0;
 
    cl.r = 0.5;
    cl.g = 0.0;
    cl.b = 0.55;
   // addObject(createSphere(40, c, cl, 0.7, 0.6, 7.0, 0.5));
+
+
+
+   c.x = 600.0;
+   c.y = 400.0;
+   c.z = -160.0;
+
+   cl.r = 0.5;
+   cl.g = 0.0;
+   cl.b = 0.55;
+   //addObject(createSphere(40, c, cl, 0.7, 0.6, 7.0, 0.5));
+
+/*
+   POINT anchor; // ancla
+   anchor.x = 300;
+   anchor.y = 400;
+   anchor.z = -160;
+
+   VECTOR axis;
+   int ang = 60;
+   axis.x = 100.0 * cos(ang)-100*sin(ang);
+   axis.y = 100.0 * sin(ang)+100*cos(ang);
+   axis.z = 10;
+I
+   cl.r = 0.5;
+   cl.g = 0.0;
+   cl.b = 0.55;
+  // addObject(createCylinder(40, anchor, axis, 10.0, 140.0, cl, 0.9, 0.5, 5, 1));
+*/
+
+
+
+   //addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 1.9, 0.8));
+
+
+//k1 1.2; k2 0.9
+/*
+
 
 //GRANDE
    c.x = 480.0;
@@ -397,37 +435,36 @@ int main(int argc, char** argv){
    cl.b = 0.1;
 
    //addObject(createSphere(60, c, cl, 0.7, 0.6, 5.0, 0.8));
-
+*/
 // CONO
    POINT anchor; // ancla
-   anchor.x = 300;
-   anchor.y = 280;
-   anchor.z = 250;
+   anchor.x = 400;
+   anchor.y = 400;
+   anchor.z = 0;
 
    VECTOR axis;
-   axis.x = 150.0;
-   axis.y = 70.0;
-   axis.z = 20.0;
+   axis.x = 200;
+   axis.y = 50.0;
+   axis.z = 0;
 
 
-   //addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 1.9, 0.8));
+   addObject(createCone(75, anchor, rotate_cone(axis,-105), 5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
 
 
-//k1 1.2; k2 0.9
-    addObject(createCone(75, anchor, axis, 10.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
+    axis.x = 200;
+    axis.y = 50.0;
+    axis.z = 0;
+
+   addObject(createCone(75, anchor, rotate_cone(axis,165), 5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
 
 
-    anchor.x = 800;
-    anchor.y = 280;
-    anchor.z = 250;
+   axis.x = 200;
+   axis.y = 50.0;
+   axis.z = 0;
 
-    axis.x = 150.0;
-    axis.y = 480.0;
-    axis.z = 20.0;
+  addObject(createCone(75, anchor, rotate_cone(axis,-10), -5.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
 
-    addObject(createCone(75, anchor, axis, 10.0, 140.0, cl, 1.4 ,0.8,0.9, 0.5, 5, 1));
-
-//LUZ
+    //LUZ
    c.x = 600.0;
    c.y = 600.0;
    c.z = -500.0;

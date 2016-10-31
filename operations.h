@@ -1,4 +1,4 @@
-#ifndef OPERATIONS_H_   
+#ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 
 long double min(long double val1, long double val2);
@@ -32,5 +32,7 @@ VECTOR substractVectors(VECTOR v1, VECTOR v2);
 POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t);
 
 VECTOR eq2vector(PEQUATION eq);
+
+VECTOR rotate_cone(VECTOR axis, int grados);
 
 #endif
