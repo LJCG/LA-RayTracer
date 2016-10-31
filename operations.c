@@ -139,23 +139,13 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		double y = intersection.y;
 		double z = intersection.z;
 		double xl,yl,zl,l,H,lq;
-<<<<<<< HEAD
-		//	double k1 = 0.5;
-		//	double k2 = 0.8;
-=======
-
->>>>>>> 761932ab89af3b6106e7b19ce13f7cb2d1eed5c7
-
 
 		xl = x-o.x;
 		yl = y-o.y;
 		zl = z-o.z;
 
-<<<<<<< HEAD
 		//AQUI SE DESPICHA LA HOSTIA
 
-=======
->>>>>>> 761932ab89af3b6106e7b19ce13f7cb2d1eed5c7
 		l = sqrt(pow(xl,2)+pow(yl,2)+pow(zl,2));
 
 		xl = xl/l;
@@ -217,16 +207,6 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t){
 }
 
 VECTOR rotate_cone(VECTOR axis, int grados){
-<<<<<<< HEAD
-	//Pasa de radianes a grados primero
- 	VECTOR axis_aux;
- 	double grados_cos = cos( grados*(PI / 180.0) );
- 	double grados_sen = sin( grados*(PI / 180.0) );
- 	axis_aux.x = (grados_cos * axis.x) - (grados_sen * axis.y);
- 	axis_aux.y = (grados_sen * axis.x) + (grados_cos * axis.y);
- 	axis_aux.z = 0;
- 	return axis_aux;
-=======
 //Pasa de radianes a grados primero
 
  VECTOR axis_aux;
@@ -237,6 +217,4 @@ VECTOR rotate_cone(VECTOR axis, int grados){
  axis_aux.z = 0;
 
  return axis_aux;
-
->>>>>>> 761932ab89af3b6106e7b19ce13f7cb2d1eed5c7
 }
