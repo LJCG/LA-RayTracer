@@ -28,7 +28,12 @@ void loadInfo(){
   double cx,cy,cz; //centro esfera
   double x,y,z;
   double xe,ye,ze;//ojo
-  long double kd,ks,kn,ka,kr,kt;
+  long double kd;
+  long double ks;
+  long double kn;
+  long double ka;
+  long double kr;
+  long double kt;
   long double radius;
   long double k1,k2,d1,d2; //para cono y cilindro
   double pxmin,pymin,pxmax,pymax;//resolution

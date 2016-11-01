@@ -668,13 +668,40 @@ int main(int argc, char** argv){
    axis.z = -200.0;
 
 
- //  addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 2, 0.8));
+  // addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 2, 0.8));
+
+// -------------------------------------- HELADOS ---------------------------------------------------------
+
+// COLOR
+   cl.r = 0.9607;
+   cl.g = 0.8705;
+   cl.b = 0.7019;
+  
+   anchor.x = 1140.0;
+   anchor.y = 325.0;
+   anchor.z = 535.0;
+
+   axis.x = 600.0;
+   axis.y = 20000.0;
+   axis.z = -200.0;
+
+   addObject(createCone(30, anchor, rotate_cone(axis,0), 0.0, 150.0, cl, 1.4 ,0.4,0.9, 0.5, 5, 1));
+
+   anchor.x = 1550;
+   anchor.y = 330;
+   anchor.z = 380;
+
+   axis.x = 600.0;
+   axis.y = 20000.0;
+   axis.z = -200.0;
+
+   addObject(createCone(30, anchor, rotate_cone(axis,0), 0.0, 80.0, cl, 1.4, 0.3,0.9, 0.5, 5, 1));
 
    // ----------------------------------------- LUCES ------------------------------------------------------
 
     //LUZ
-   c.x = 100.0;
-   c.y = 600.0;
+   c.x = 500.0;
+   c.y = 700.0;
    c.z = -500.0;
    addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));   
 
