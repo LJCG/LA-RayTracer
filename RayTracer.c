@@ -332,37 +332,7 @@ int main(int argc, char** argv){
 
    // POLIGONO ARENA  
     POINT p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18;
-   p1.x = -3000.0;
-   p1.y = 270.0;
-   p1.z = -3000.0;
 
-   p2.x = -8000.0;
-   p2.y = 270.0;
-   p2.z = 8000.0;
-
-   p3.x = 8000.0;
-   p3.y = 270.0;
-   p3.z = 8000.0;
-
-   p4.x = 8000.0;
-   p4.y = 270.0;
-   p4.z = -3000.0;
-
-
-   cl.r = 0.792157;
-   cl.g = 0.701961;
-   cl.b = 0.533333;
-
-   POINT points[4];
-   points[0] = p1;
-   points[1] = p2;
-   points[2] = p3;
-   points[3] = p4;
-
-   OBJECT p = createPolygon(points, 4, cl, 0.7, 0.5, 0.8, 50.0);
-   p.polygon.equation = reverse(p.polygon);
-
-   addObject(p);
    // ------------------------------------------------- PEZ 1 -----------------------------------------------------
   p1.x = 1600.0;
   p1.y = 900.0;
@@ -406,8 +376,8 @@ int main(int argc, char** argv){
 
   // COLOR
    cl.r = 0.0;
-   cl.g = 1.0;
-   cl.b = 0.0;
+   cl.g = 0.4;
+   cl.b = 0.2;
 
    POINT points2[10];
    points2[0] = p1;
@@ -469,8 +439,8 @@ int main(int argc, char** argv){
 
   // COLOR
    cl.r = 0.0;
-   cl.g = 1.0;
-   cl.b = 0.0;
+   cl.g = 0.4;
+   cl.b = 0.2;
 
    points2[10];
    points2[0] = p1;
@@ -532,8 +502,8 @@ int main(int argc, char** argv){
 
   // COLOR
    cl.r = 0.0;
-   cl.g = 1.0;
-   cl.b = 0.0;
+   cl.g = 0.4;
+   cl.b = 0.2;
 
    points2[10];
    points2[0] = p1;
@@ -559,75 +529,75 @@ int main(int argc, char** argv){
    cl.b = 0.0;
 
   p1.x = -740.0;
-  p1.y = 520.0;
+  p1.y = 510.0;
   p1.z = 8500.0;
 
   p2.x = -740.0;
-  p2.y = 450.0;
+  p2.y = 440.0;
   p2.z = 8500.0;
 
   p3.x = -850.0;
-  p3.y = 400.0;
+  p3.y = 390.0;
   p3.z = 8500.0;
 
   p4.x = -740.0;
-  p4.y = 250.0;
+  p4.y = 240.0;
   p4.z = 8500.0;
 
   p5.x = -710.0;
-  p5.y = 380.0;
+  p5.y = 370.0;
   p5.z = 8500.0;
 
   p6.x = -620.0;
-  p6.y = 300.0;
+  p6.y = 290.0;
   p6.z = 8500.0;
 
   p7.x = -420.0;
-  p7.y = 300.0;
+  p7.y = 290.0;
   p7.z = 8500.0;
 
   p8.x = -350.0;
-  p8.y = 380.0;
+  p8.y = 370.0;
   p8.z = 8500.0;
 
   p9.x = -300.0;
-  p9.y = 250.0;
+  p9.y = 240.0;
   p9.z = 8500.0;
 
   p10.x = -200.0;
-  p10.y = 400.0;
+  p10.y = 390.0;
   p10.z = 8500.0;
 
   p11.x = -300.0;
-  p11.y = 450.0;
+  p11.y = 440.0;
   p11.z = 8500.0;
 
   p12.x = -200.0;
-  p12.y = 520.0;
+  p12.y = 510.0;
   p12.z = 8500.0;
 
   p13.x = -350.0;
-  p13.y = 700.0;
+  p13.y = 690.0;
   p13.z = 8500.0;
 
   p14.x = -320.0;
-  p14.y = 520.0;
+  p14.y = 510.0;
   p14.z = 8500.0;
 
   p15.x = -710.0;
-  p15.y = 520.0;
+  p15.y = 510.0;
   p15.z = 8500.0;
 
   p16.x = -680.0;
-  p16.y = 700.0;
+  p16.y = 690.0;
   p16.z = 8500.0;
 
   p17.x = -850.0;
-  p17.y = 520.0;
+  p17.y = 510.0;
   p17.z = 8500.0;
 
   p18.x = -740.0;
-  p18.y = 450.0;
+  p18.y = 440.0;
   p18.z = 8500.0;
 
    points2[18];
@@ -655,57 +625,259 @@ int main(int argc, char** argv){
 
    addObject(po);
 
-   loadInfo();
-// -------------------------------------- CILINDRO ---------------------------------------------------------
-   POINT anchor; // ancla
-   anchor.x = 300;
-   anchor.y = 300;
-   anchor.z = 0;
+POINT anchor; // ancla
+   anchor.x = -200;
+   anchor.y = 850;
+   anchor.z = 800;
 
    VECTOR axis; 
-   axis.x = 600.0;
-   axis.y = 200.0;
+   axis.x = 1000.0;
+   axis.y = 0.0;
    axis.z = -200.0;
 
+   cl.r = 0.9019; 
+   cl.g = 0.8745;
+   cl.b = 0.0;
 
-  // addObject(createCylinder(50, anchor, axis, 10.0, 140.0, cl, 0.7, 0.6, 2, 0.8));
+   addObject(createCylinder(50, anchor, axis, 20.0, 300.0, cl, 0.7, 0.6, 8, 0.3));
 
-// -------------------------------------- HELADOS ---------------------------------------------------------
+   c.x = 85;
+   c.y = 850;
+   c.z = 770;
 
-// COLOR
-   cl.r = 0.9607;
-   cl.g = 0.8705;
-   cl.b = 0.7019;
-  
-   anchor.x = 1140.0;
-   anchor.y = 325.0;
-   anchor.z = 535.0;
+   cl.r = 1.0; 
+   cl.g = 0.8;
+   cl.b = 0.0;
 
-   axis.x = 600.0;
-   axis.y = 20000.0;
+   addObject(createSphere(50, c, cl, 0.7, 0.6, 8, 0.3));
+
+
+   c.x = 30;
+   c.y = 850;
+   c.z = 726;
+
+   cl.r = 0.9647; 
+   cl.g = 0.1058;
+   cl.b = 0.1058;
+
+   addObject(createSphere(30, c, cl, 0.7, 0.6, 8, 0.3));
+
+   c.x = -50;
+   c.y = 850;
+   c.z = 745;
+
+   addObject(createSphere(30, c, cl, 0.7, 0.6, 8, 0.3));
+
+   c.x = -123;
+   c.y = 850;
+   c.z = 761;
+
+   addObject(createSphere(30, c, cl, 0.7, 0.6, 8, 0.3));
+
+//ventanas
+   c.x = 24;
+   c.y = 850;
+   c.z = 714;
+
+   cl.r = 0.4901; 
+   cl.g = 0.8666;
+   cl.b = 1.0;
+
+   addObject(createSphere(20, c, cl, 0.7, 0.6, 8, 0.8));
+
+   c.x = -55;
+   c.y = 850;
+   c.z = 734;
+
+   addObject(createSphere(20, c, cl, 0.7, 0.6, 8, 0.8));
+
+   c.x = -126;
+   c.y = 850;
+   c.z = 750.5;
+
+   addObject(createSphere(20, c, cl, 0.7, 0.6, 8, 0.8));
+
+//parte arriba
+
+   anchor.x = 20;
+   anchor.y = 860;
+   anchor.z = 735;
+
+   axis.x = 0.0;
+   axis.y = 10000.0;
    axis.z = -200.0;
 
-   addObject(createCone(30, anchor, rotate_cone(axis,0), 0.0, 150.0, cl, 1.4 ,0.4,0.9, 0.5, 5, 1));
+   cl.r = 0.9019; 
+   cl.g = 0.8745;
+   cl.b = 0.0;
 
-   anchor.x = 1550;
+   addObject(createCylinder(15, anchor, axis, 20.0, 80.0, cl, 0.7, 0.6, 8, 0.3));
+
+
+   c.x = 20;
+   c.y = 947;
+   c.z = 735;
+
+
+
+
+   addObject(createSphere(15, c, cl, 0.7, 0.6, 8, 0.8));
+   cl.r = 0.9019; 
+   cl.g = 0.8745;
+   cl.b = 0.0;
+
+   anchor.x = 20;
+   anchor.y = 947;
+   anchor.z = 712;
+
+   axis.x = 10000.0;
+   axis.y = 0.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(15, anchor, axis, 20.0, 60.0, cl, 0.7, 0.6, 8, 0.3));
+
+
+   c.x = 72;
+   c.y = 947;
+   c.z = 715;
+
+   cl.r = 0.4901; 
+   cl.g = 0.8666;
+   cl.b = 1.0;
+
+   addObject(createSphere(15, c, cl, 0.7, 0.6, 8, 0.8));
+
+   //parte atras
+
+   anchor.x = -160;
+   anchor.y = 850;
+   anchor.z = 800;
+
+   axis.x = -10000.0;
+   axis.y = 0.0;
+   axis.z = 900.0;
+
+  cl.r = 1.0; 
+   cl.g = 0.8;
+   cl.b = 0.0;
+
+
+   addObject(createCone(20, anchor, axis, 0, 50, cl, 10.4, 12.3, 0.7, 0.6, 8, 0.3));
+   loadInfo();
+// ----------------------------------------- PLANTITA 1 ------------------------------------------------------
+   cl.r = 0.3333; 
+   cl.g = 0.4196;
+   cl.b = 0.1843;
+
+   anchor.x = 1000;
+   anchor.y = 400;
+   anchor.z = -200;
+
+   axis.x = 0.0;
+   axis.y = -10000.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(5, anchor, rotate_cone(axis,0.0), 0.0, 140.0, cl, 0.7, 0.6, 8, 0.3)); 
+
+   anchor.x = 1000;
+   anchor.y = 350;
+   anchor.z = -200;
+
+   axis.x = 0.0;
+   axis.y = 10000.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(5, anchor, rotate_cone(axis,45), 0.0, 50.0, cl, 0.7, 0.6, 8, 0.3)); 
+
+   anchor.x = 1000;
    anchor.y = 330;
-   anchor.z = 380;
+   anchor.z = -200;
 
-   axis.x = 600.0;
-   axis.y = 20000.0;
+   axis.x = 0.0;
+   axis.y = 10000.0;
    axis.z = -200.0;
 
-   addObject(createCone(30, anchor, rotate_cone(axis,0), 0.0, 80.0, cl, 1.4, 0.3,0.9, 0.5, 5, 1));
+   addObject(createCylinder(5, anchor, rotate_cone(axis,-45), 0.0, 70.0, cl, 0.7, 0.6, 8, 0.3)); 
 
-   // ----------------------------------------- LUCES ------------------------------------------------------
+// ----------------------------------------- PLANTITA 2 ------------------------------------------------------
+   cl.r = 0.0; 
+   cl.g = 0.5020;
+   cl.b = 1.0;
 
-    //LUZ
-   c.x = 500.0;
+   anchor.x = 1000;
+   anchor.y = 400;
+   anchor.z = -100;
+
+   axis.x = 0.0;
+   axis.y = -10000.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(5, anchor, rotate_cone(axis,0.0), 0.0, 140.0, cl, 0.7, 0.6, 8, 0.3)); 
+
+   anchor.x = 1000;
+   anchor.y = 350;
+   anchor.z = -100;
+
+   axis.x = 0.0;
+   axis.y = 10000.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(5, anchor, rotate_cone(axis,45), 0.0, 50.0, cl, 0.7, 0.6, 8, 0.3)); 
+
+   anchor.x = 1000;
+   anchor.y = 330;
+   anchor.z = -100;
+
+   axis.x = 0.0;
+   axis.y = 10000.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(5, anchor, rotate_cone(axis,-45), 0.0, 70.0, cl, 0.7, 0.6, 8, 0.3)); 
+
+// ----------------------------------------- PLANTITA 3 ------------------------------------------------------
+   cl.r = 0.0; 
+   cl.g = 0.5020;
+   cl.b = 1.0;
+
+   anchor.x = 1010;
+   anchor.y = 400;
+   anchor.z = -250;
+
+   axis.x = 0.0;
+   axis.y = -10000.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(5, anchor, rotate_cone(axis,0.0), 0.0, 140.0, cl, 0.7, 0.6, 8, 0.3)); 
+
+   anchor.x = 1010;
+   anchor.y = 350;
+   anchor.z = -250;
+
+   axis.x = 0.0;
+   axis.y = 10000.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(5, anchor, rotate_cone(axis,45), 0.0, 50.0, cl, 0.7, 0.6, 8, 0.3)); 
+
+   anchor.x = 1010;
+   anchor.y = 330;
+   anchor.z = -250;
+
+   axis.x = 0.0;
+   axis.y = 10000.0;
+   axis.z = -200.0;
+
+   addObject(createCylinder(5, anchor, rotate_cone(axis,-45), 0.0, 70.0, cl, 0.7, 0.6, 8, 0.3)); 
+// ----------------------------------------- LUCES ------------------------------------------------------
+   c.x = 0.0;
    c.y = 700.0;
-   c.z = -500.0;
-   addLight(createLight(c, 1.0, 1.0, 0.0, 0.0));   
+   c.z = 0.0;
+   addLight(createLight(c, 0.4, 0.3, 0.0, 0.0));   
 
-
+   c.x = 1100.0;
+   c.y = 800.0;
+   c.z = -1000.0;
+   addLight(createLight(c, 0.3, 1.0, 0.0, 0.0));
    Ia = 0.6;
 
    tracer();
