@@ -28,21 +28,25 @@ void loadInfo(){
   double cx,cy,cz; //centro esfera
   double x,y,z;
   double xe,ye,ze;//ojo
-  long double kd,ks,kn,ka,kr,kt;
+  //para todos los objetos
+  long double kd;
+  long double ks;
+  long double kn;
+  long double ka;
   long double radius;
-  long double k1,k2,d1,d2; //para cono y cilindro
+  //solo para el cono
+  long double k1;
+  long double k2;
+  //para cono y cilindro
+  long double d1;
+  long double d2;
   double pxmin,pymin,pxmax,pymax;//resolution
-  double xa,ya,za;
+  double xa,ya,za; //axis de cono y cilindro
   int numVertices; //para poligonos
+  double xp,yp,zp; //para guardar x,y,z de poligonos
   //centro y color de esfera
   POINT c;
   COLOR cl;
-
-  //Para poligonos
-  POINT p1,p2,p3,p4;
-  POINT points[4];
-  double pt1,pt2,pt3,pt4;
-  //para cilindro y cono
 
   POINT anchor;
   VECTOR axis;
@@ -199,8 +203,7 @@ $Background
           cl.g = g;
           cl.b = b;
 
-          addObject(createCone(radius, anchor, rotate_cone(axis,degrees),d1,
-                                d2,cl, k1, k2, kd, kn, ka, ks));
+          addObject(createCone(radius, anchor, rotate_cone(axis,degrees),d1, d2,cl, k1, k2, kd, ka, kn, ks));
 
       }
       else if(strcmp(id,"$Polygon\n") == 0){
@@ -208,36 +211,34 @@ $Background
         fgets(line,MAX_CHARS,file);
         sscanf(line,"\tnum_vertices = %d",&numVertices);
 
-        fgets(line,MAX_CHARS,file);
-        sscanf(line,"\tp1 = %lf,%lf,%lf",&x,&y,&z);
-        p1.x = x;
-        p1.y = y;
-        p1.z = z;
+        int pts_line=0;
+        /*Memoria dinamica para guardar puntos [x,y,z]
+        de tipo POINT a partir de numero de vertices*/
+        POINT* points = (POINT*) calloc(numVertices,sizeof(POINT));
+        fgets(line,100,file);
+        temp = strtok(line, ",");
+        //iteracion para guardar arreglos[x,y,z] en memoria dinamica
+        for(int i=0;i<numVertices;i++)
+        {
+          sscanf (temp, "\t[%lf#%lf#%lf]", &xp,&yp,&zp);
+          POINT point;
+          point.x = xp;
+          point.y = yp;
+          point.z = zp;
+          points[i] = point;
 
-        fgets(line,MAX_CHARS,file);
-        sscanf(line,"\tp2 = %lf,%lf,%lf",&x,&y,&z);
-        p2.x = x;
-        p2.y = y;
-        p2.z = z;
+          if(pts_line==1){
+            //maximo de caracteres grande por decimales
+          	fgets(line, 100, file);
+          	pts_line = 0;
+          	temp = strtok(line, ",");
+          }
+            else{
+            pts_line++;
+            temp = strtok(NULL, ",");
+          }
 
-        fgets(line,MAX_CHARS,file);
-        sscanf(line,"\tp3 = %lf,%lf,%lf",&x,&y,&z);
-        p3.x = x;
-        p3.y = y;
-        p3.z = z;
-
-        fgets(line,MAX_CHARS,file);
-        sscanf(line,"\tp4 = %lf,%lf,%lf",&x,&y,&z);
-        p4.x = x;
-        p4.y = y;
-        p4.z = z;
-
-        POINT points[4];
-        points[0] = p1;
-        points[1] = p2;
-        points[2] = p3;
-        points[3] = p4;
-
+}
 
         cl.r = r;
         cl.g = g;
@@ -247,6 +248,8 @@ $Background
         p.polygon.equation = reverse(p.polygon);
 
         addObject(p);
+        //libera memoria dinamica
+        free(points);
       }
 
 
