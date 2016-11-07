@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 OBJECT createCylinder(double radius, POINT anchor, VECTOR axis, double d1, double d2, COLOR color, long double kd, long double ka,
-					  long double kn, long double ks){
+					  long double kn, long double ks, long double o1, long double o2){
 	CYLINDER cylinder;
 	cylinder.radius = radius;
 	cylinder.anchor = anchor; 			   // ANCLA
@@ -22,6 +22,8 @@ OBJECT createCylinder(double radius, POINT anchor, VECTOR axis, double d1, doubl
 	newObject.kd = kd;
 	newObject.ks = ks;
 	newObject.kn = kn;
+	newObject.o1 = o1;
+	newObject.o2 = o2;
 
 	return newObject;
 }

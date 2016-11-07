@@ -1,7 +1,7 @@
 #ifndef POLYGON_H_   
 #define POLYGON_H_
 
-OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka, long double ks, long double kn);
+OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka, long double ks, long double kn, long double o1, long double o2);
 
 double getD(VECTOR normal, POINT punto);
 

@@ -8,7 +8,7 @@
 
 OBJECT createCone(double radius, POINT anchor, VECTOR axis, double d1,
                   double d2, COLOR color, double k1, double k2, long double kd,
-                  long double ka, long double kn, long double ks){
+                  long double ka, long double kn, long double ks, long double o1, long double o2){
 
   CONE cone;
   cone.radius = radius;
@@ -28,6 +28,8 @@ OBJECT createCone(double radius, POINT anchor, VECTOR axis, double d1,
   newObject.kd = kd;
   newObject.ks = ks;
   newObject.kn = kn;
+  newObject.o1 = o1;
+  newObject.o2 = o2;
 
   return newObject;
 }

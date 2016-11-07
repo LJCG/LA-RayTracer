@@ -3,7 +3,7 @@
 
 
 OBJECT createSphere(double radius, POINT center, COLOR color, long double kd, long double ka, 
-					long double kn, long double ks);
+					long double kn, long double ks,long double o1, long double o2);
 INTERSECTION findIntersection_sphere(VECTOR direction, POINT eye, POINT center, double radius);
 
 

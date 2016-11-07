@@ -51,7 +51,8 @@ void flattenPolygon(POLYGON p){
 }
 
 // Crea un polígono y lo agrega a un objeto
-OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka, long double ks, long double kn){
+OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka, 
+				     long double ks, long double kn, long double o1, long double o2){
 	POLYGON p;
 	p.points = vertices;
 	p.sizePoints = numVertices;
@@ -68,6 +69,8 @@ OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double 
 	newObject.kd = kd;
 	newObject.ks = ks;
 	newObject.kn = kn;
+	newObject.o1 = o1;
+	newObject.o2 = o2;
 
 	return newObject;
 }

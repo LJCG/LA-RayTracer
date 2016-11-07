@@ -82,6 +82,8 @@ typedef struct{
 	long double ka; // coef amb
 	long double ks; // coef reflexion especular
 	long double kn; // factor especular
+	long double o1; // grado color del objeto
+	long double o2; // grado color del reflejo
 	COLOR color;
 	SPHERE sphere;
 	CONE cone;
