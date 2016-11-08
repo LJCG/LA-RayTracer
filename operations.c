@@ -1,6 +1,7 @@
 #include "objects.h"
 #include <math.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 // Construye la normal a partir de la ecuación del polígono
 VECTOR eq2vector(PEQUATION eq){
@@ -32,11 +33,11 @@ char max(double a, double b, double c){ // Calcula el máximo entre tres valores
      return 'c';
 }
 
-POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin){
+POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin, float iValue, float jValue){
 	POINT point;
 
-	point.x = (((i + 0.5) * (xmax - xmin)) / H_SIZE) + xmin;
-	point.y = (((j + 0.5) * (ymax - ymin)) / V_SIZE) + ymin;
+	point.x = (((i + iValue) * (xmax - xmin)) / H_SIZE) + xmin;
+	point.y = (((j + jValue) * (ymax - ymin)) / V_SIZE) + ymin;
 	point.z = 0.0;
 	return point;
 }
@@ -217,4 +218,12 @@ VECTOR rotate_cone(VECTOR axis, int grados){
  axis_aux.z = 0;
 
  return axis_aux;
+}
+
+int sameColor(COLOR c1, COLOR c2){
+	if((c1.r == c2.r) && (c1.g == c2.g) && (c1.b == c2.b)){
+		return 1;
+	}
+
+	return 0;
 }

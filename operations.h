@@ -1,11 +1,13 @@
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 
+#include <stdbool.h>
+
 long double min(long double val1, long double val2);
 
 char max(double a, double b, double c);
 
-POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin);
+POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin, float iValue, float jValue);
 
 double pointProduct(VECTOR v1, VECTOR v2);
 
@@ -34,5 +36,7 @@ POINT getIntersectionPoint(VECTOR vectorW, VECTOR vectorD, double t);
 VECTOR eq2vector(PEQUATION eq);
 
 VECTOR rotate_cone(VECTOR axis, int grados);
+
+int sameColor(COLOR c1, COLOR c2);
 
 #endif

@@ -215,15 +215,15 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 }
 
 // ---------------------------------- OBTENER COLOR --------------------------------------
-COLOR getColor(VECTOR vectorW, VECTOR vectorD){
+COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 	COLOR color;
 	POINT intersection; //Interseccion del ojo con un objeto
 	POINT obstacle;     //Obstaculo entre la luz y un objeto
 	int k;
 	long double fatt;   //Factor de atenuacion
 
-	intersection = firstIntersection(vectorW, vectorD, eye, 0);
-	if(intersectionFlag == 0){ //No hay interseccion entonces se devuelde el color de fondo
+	intersection = firstIntersection(vectorW, vectorD, pEye, 0);
+	if(intersectionFlag == 0){ //No hay interseccion entonces se devuelve el color de fondo
 		color = background;
 	}
 
@@ -232,12 +232,14 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 		long double I = 0.0; // INTENSIDAD
 		long double E = 0.0; // REFLEXION ESPECULAR
 		VECTOR V = numberByVector(vectorD, -1); // Vector que va desde P hasta el ojo
-
+		
+		VECTOR R; // Vector de rebote de la luz
+		bool Rflag = false;
 		for(k=0; k < numLights; k++){ //Se recorren todas las luces
 
 			VECTOR L = getL(intersection, lights[k]); //Vector entre la luz y el objeto
 			VECTOR N = getN(obj, intersection);       //Vector normal
-			VECTOR R; // Vector de rebote de la luz
+			
 
 			if(obj.id == 'P' && pointProduct(N, vectorD) > 0){
 				N = numberByVector(N, -1.0);
@@ -257,6 +259,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 					R = numberByVector(N, 2);
 					R = numberByVector(R, pointProd);
 					R = substractVectors(R, L);
+					Rflag = true;
 
 					double pointProdVR = pointProduct(V, R);
 					if(pointProdVR > EPSILON){
@@ -283,6 +286,18 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD){
 		color.g = color.g + E * (1.0 - color.g);
 		color.b = color.b + E * (1.0 - color.b);
 
+		if((obj.o1 + obj.o2) == 1.0 && Rflag){
+			OBJECT reflexObject = obj;
+			COLOR reflexColor = getColor(pointToVector(intersection), R, intersection);
+			
+			if(sameColor(reflexColor, background) == 0){
+				color.r = color.r*reflexObject.o1 + reflexColor.r*reflexObject.o2;
+				color.g = color.g*reflexObject.o1 + reflexColor.g*reflexObject.o2;
+				color.b = color.b*reflexObject.o1 + reflexColor.b*reflexObject.o2;
+				printf("hola2\n");
+			}
+		}
+
 	}
 	intersectionFlag = 0;
 	return color;
@@ -293,18 +308,50 @@ void tracer(){
 	int i, j;
 	POINT w; // (xw, yw, zw)
 	VECTOR d; // (xd, yd, zd)
-	COLOR color;
+	COLOR color0, color1, color2, color3, color4;
 
 
 	for(i = 0; i < H_SIZE; i++){
 		for(j = 0; j < V_SIZE; j++){
-			w = mapXY(i, j, xmax, ymax, xmin, ymin);
+			w = mapXY(i, j, xmax, ymax, xmin, ymin, 0.5, 0.5);
 			d.x = w.x - eye.x;
 			d.y = w.y - eye.y;
 			d.z = w.z - eye.z;
 			d = normalizeVector(d);
-			color = getColor(pointToVector(eye), d);
-			frameBuffer[i][j] = color;
+			color0 = getColor(pointToVector(eye), d, eye);
+
+			w = mapXY(i, j, xmax, ymax, xmin, ymin, 0.0, 0.0);
+			d.x = w.x - eye.x;
+			d.y = w.y - eye.y;
+			d.z = w.z - eye.z;
+			d = normalizeVector(d);
+			color1 = getColor(pointToVector(eye), d, eye);
+
+			w = mapXY(i, j, xmax, ymax, xmin, ymin, 0.0,1.0);
+			d.x = w.x - eye.x;
+			d.y = w.y - eye.y;
+			d.z = w.z - eye.z;
+			d = normalizeVector(d);
+			color2 = getColor(pointToVector(eye), d, eye);
+
+			w = mapXY(i, j, xmax, ymax, xmin, ymin, 1.0, 1.0);
+			d.x = w.x - eye.x;
+			d.y = w.y - eye.y;
+			d.z = w.z - eye.z;
+			d = normalizeVector(d);
+			color3 = getColor(pointToVector(eye), d, eye);
+
+			w = mapXY(i, j, xmax, ymax, xmin, ymin, 1.0, 0.0);
+			d.x = w.x - eye.x;
+			d.y = w.y - eye.y;
+			d.z = w.z - eye.z;
+			d = normalizeVector(d);
+			color4 = getColor(pointToVector(eye), d, eye);
+
+			frameBuffer[i][j].r = (color0.r + color1.r + color2.r + color3.r + color4.r)/5;
+			frameBuffer[i][j].g = (color0.g + color1.g + color2.g + color3.g + color4.g)/5;
+			frameBuffer[i][j].b = (color0.b + color1.b + color2.b + color3.b + color4.b)/5;
+			//frameBuffer[i][j] = color0;
 		}
 	}
 
@@ -323,167 +370,51 @@ int main(int argc, char** argv){
    gluOrtho2D(-0.5, H_SIZE +0.5, -0.5, V_SIZE + 0.5);
    glutDisplayFunc(draw_scene);
 
-   //setBackground(0.0, 0.4, 0.8);
-   //setEye(750.0, 800.0, -1500.0);
-   //setWindow(0, 0, 1500, 1000);
+   setBackground(0.0, 0.0, 0.0);
+   setEye(750.0, 800.0, -1500.0);
+   setWindow(0, 0, 1500, 1000);
 
 
-      globalConfig();
-      loadInfo();
+      //globalConfig();
+      //loadInfo();
+   //createSphere(double radius, POINT center, COLOR color, long double kd, long double ka,
+  //			long double kn, long double ks, long double o1, long double o2);
 
-      POINT c;
-      COLOR cl;
-   // POLIGONO ARENA
-   POINT anchor; // ancla
-      anchor.x = -200;
-      anchor.y = 850;
-      anchor.z = 800;
+    POINT c;
+    c.x = 750.0;
+    c.y = 700.0;
+    c.z = 300.0;
 
-      VECTOR axis;
-      axis.x = 1000.0;
-      axis.y = 0.0;
-      axis.z = -200.0;
+    COLOR cl;
+    cl.r = 0.6;
+    cl.g = 0.0;
+    cl.b = 0.1;
 
-      cl.r = 0.9019;
-      cl.g = 0.8745;
-      cl.b = 0.0;
-
-      addObject(createCylinder(50, anchor, axis, 20.0, 300.0, cl, 0.7, 0.6, 8, 0.3));
-
-      c.x = 85;
-      c.y = 850;
-      c.z = 770;
-
-      cl.r = 1.0;
-      cl.g = 0.8;
-      cl.b = 0.0;
-
-      addObject(createSphere(50, c, cl, 0.7, 0.6, 8, 0.3));
+    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.2, 0.8));
 
 
-      c.x = 30;
-      c.y = 850;
-      c.z = 726;
+  
+    c.x = 600.0;
+    c.y = 750.0;
+    c.z = -100.0;
 
-      cl.r = 0.9647;
-      cl.g = 0.1058;
-      cl.b = 0.1058;
+    cl.r = 0.4;
+    cl.g = 1.0;
+    cl.b = 0.1;
 
-      addObject(createSphere(30, c, cl, 0.7, 0.6, 8, 0.3));
-
-      c.x = -50;
-      c.y = 850;
-      c.z = 745;
-
-      addObject(createSphere(30, c, cl, 0.7, 0.6, 8, 0.3));
-
-      c.x = -123;
-      c.y = 850;
-      c.z = 761;
-
-      addObject(createSphere(30, c, cl, 0.7, 0.6, 8, 0.3));
-
-   //ventanas
-      c.x = 24;
-      c.y = 850;
-      c.z = 714;
-
-      cl.r = 0.4901;
-      cl.g = 0.8666;
-      cl.b = 1.0;
-
-      addObject(createSphere(20, c, cl, 0.7, 0.6, 8, 0.8));
-
-      c.x = -55;
-      c.y = 850;
-      c.z = 734;
-
-      addObject(createSphere(20, c, cl, 0.7, 0.6, 8, 0.8));
-
-      c.x = -126;
-      c.y = 850;
-      c.z = 750.5;
-
-      addObject(createSphere(20, c, cl, 0.7, 0.6, 8, 0.8));
-
-   //parte arriba
-
-      anchor.x = 20;
-      anchor.y = 860;
-      anchor.z = 735;
-
-      axis.x = 0.0;
-      axis.y = 10000.0;
-      axis.z = -200.0;
-
-      cl.r = 0.9019;
-      cl.g = 0.8745;
-      cl.b = 0.0;
-
-      addObject(createCylinder(15, anchor, axis, 20.0, 80.0, cl, 0.7, 0.6, 8, 0.3));
-
-
-      c.x = 20;
-      c.y = 947;
-      c.z = 735;
-
-
-
-
-      addObject(createSphere(15, c, cl, 0.7, 0.6, 8, 0.8));
-      cl.r = 0.9019;
-      cl.g = 0.8745;
-      cl.b = 0.0;
-
-      anchor.x = 20;
-      anchor.y = 947;
-      anchor.z = 712;
-
-      axis.x = 10000.0;
-      axis.y = 0.0;
-      axis.z = -200.0;
-
-      addObject(createCylinder(15, anchor, axis, 20.0, 60.0, cl, 0.7, 0.6, 8, 0.3));
-
-
-      c.x = 72;
-      c.y = 947;
-      c.z = 715;
-
-      cl.r = 0.4901;
-      cl.g = 0.8666;
-      cl.b = 1.0;
-
-      addObject(createSphere(15, c, cl, 0.7, 0.6, 8, 0.8));
-
-      //parte atras
-
-      anchor.x = -160;
-      anchor.y = 850;
-      anchor.z = 800;
-
-      axis.x = -10000.0;
-      axis.y = 0.0;
-      axis.z = 900.0;
-
-     cl.r = 1.0;
-      cl.g = 0.8;
-      cl.b = 0.0;
-
-
-      addObject(createCone(20, anchor, axis, 0, 50, cl, 10.4, 12.3, 0.7, 0.6, 8, 0.3));
+    addObject(createSphere(80, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0));
 
 
 // ----------------------------------------- LUCES ------------------------------------------------------
-    c.x = 100.0;
-    c.y = 800.0;
+    c.x = 900.0;
+    c.y = 700.0;
     c.z = -800.0;
     addLight(createLight(c, 0.4, 0.0, 0.0, 0.4));
 
     c.x = 1600.0;
     c.y = 1000.0;
     c.z = -1200.0;
-    addLight(createLight(c, 0.6, 0.0, 0.0, 0.3));
+    //addLight(createLight(c, 0.6, 0.0, 0.0, 0.3));
 
     Ia = 0.65;
 
