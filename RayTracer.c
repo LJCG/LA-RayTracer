@@ -366,6 +366,8 @@ void tracer(){
 
 
 
+
+
 int main(int argc, char** argv){
    init_buffer();
    glutInit(&argc, argv);
