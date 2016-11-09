@@ -39,4 +39,8 @@ VECTOR rotate_cone(VECTOR axis, int grados);
 
 int sameColor(COLOR c1, COLOR c2);
 
+double colorDistance(COLOR c1, COLOR c2);
+
+COLOR avgColor(COLOR c1, COLOR c2, COLOR c3, COLOR c4);
+
 #endif

@@ -227,3 +227,18 @@ int sameColor(COLOR c1, COLOR c2){
 
 	return 0;
 }
+
+double colorDistance(COLOR c1, COLOR c2){
+	double distance = sqrt(pow((c1.r - c2.r),2) + pow((c1.g - c2.g),2) + pow((c1.b - c2.b),2));
+	return distance;
+}
+
+COLOR avgColor(COLOR c1, COLOR c2, COLOR c3, COLOR c4){
+
+	COLOR average;
+	average.r = (c1.r + c2.r + c3.r + c4.r) / 4;
+	average.g = (c1.g + c2.g + c3.g + c4.g) / 4;
+	average.b = (c1.b + c2.b + c3.b + c4.b) / 4;
+
+	return average;
+}

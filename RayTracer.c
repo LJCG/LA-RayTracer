@@ -294,7 +294,6 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 				color.r = color.r*reflexObject.o1 + reflexColor.r*reflexObject.o2;
 				color.g = color.g*reflexObject.o1 + reflexColor.g*reflexObject.o2;
 				color.b = color.b*reflexObject.o1 + reflexColor.b*reflexObject.o2;
-				printf("hola2\n");
 			}
 		}
 
@@ -304,6 +303,44 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 }
 
 // ---------------------------------- GENERAR DIBUJO --------------------------------------
+
+COLOR antialiasing(float i, float j, float value){
+	COLOR color, color1, color2, color3, color4;
+	POINT w; // (xw, yw, zw)
+	VECTOR d; // (xd, yd, zd)
+
+	w = mapXY(i, j, xmax, ymax, xmin, ymin, 0.0, 0.0);
+	d.x = w.x - eye.x;
+	d.y = w.y - eye.y;
+	d.z = w.z - eye.z;
+	d = normalizeVector(d);
+	color1 = getColor(pointToVector(eye), d, eye);
+
+	w = mapXY(i, j, xmax, ymax, xmin, ymin, value, 0.0);
+	d.x = w.x - eye.x;
+	d.y = w.y - eye.y;
+	d.z = w.z - eye.z;
+	d = normalizeVector(d);
+	color2 = getColor(pointToVector(eye), d, eye);
+
+	w = mapXY(i, j, xmax, ymax, xmin, ymin, 0.0, value);
+	d.x = w.x - eye.x;
+	d.y = w.y - eye.y;
+	d.z = w.z - eye.z;
+	d = normalizeVector(d);
+	color3 = getColor(pointToVector(eye), d, eye);
+
+    w = mapXY(i, j, xmax, ymax, xmin, ymin, value, value);
+	d.x = w.x - eye.x;
+	d.y = w.y - eye.y;
+	d.z = w.z - eye.z;
+	d = normalizeVector(d);
+	color4 = getColor(pointToVector(eye), d, eye);
+
+
+	return avgColor(color1, color2, color3, color4); 
+}
+
 void tracer(){
 	int i, j;
 	POINT w; // (xw, yw, zw)
@@ -313,45 +350,14 @@ void tracer(){
 
 	for(i = 0; i < H_SIZE; i++){
 		for(j = 0; j < V_SIZE; j++){
-			w = mapXY(i, j, xmax, ymax, xmin, ymin, 0.5, 0.5);
-			d.x = w.x - eye.x;
-			d.y = w.y - eye.y;
-			d.z = w.z - eye.z;
-			d = normalizeVector(d);
-			color0 = getColor(pointToVector(eye), d, eye);
 
-			w = mapXY(i, j, xmax, ymax, xmin, ymin, 0.0, 0.0);
-			d.x = w.x - eye.x;
-			d.y = w.y - eye.y;
-			d.z = w.z - eye.z;
-			d = normalizeVector(d);
-			color1 = getColor(pointToVector(eye), d, eye);
+			color1 = antialiasing(i, j, 0.5);
+			color2 = antialiasing(i+0.5, j, 0.5);
+			color3 = antialiasing(i, j+0.5, 0.5);
+			color4 = antialiasing(i+0.5, j+0.5, 0.5);
 
-			w = mapXY(i, j, xmax, ymax, xmin, ymin, 0.0,1.0);
-			d.x = w.x - eye.x;
-			d.y = w.y - eye.y;
-			d.z = w.z - eye.z;
-			d = normalizeVector(d);
-			color2 = getColor(pointToVector(eye), d, eye);
+			frameBuffer[i][j] = avgColor(color1, color2, color3, color4);
 
-			w = mapXY(i, j, xmax, ymax, xmin, ymin, 1.0, 1.0);
-			d.x = w.x - eye.x;
-			d.y = w.y - eye.y;
-			d.z = w.z - eye.z;
-			d = normalizeVector(d);
-			color3 = getColor(pointToVector(eye), d, eye);
-
-			w = mapXY(i, j, xmax, ymax, xmin, ymin, 1.0, 0.0);
-			d.x = w.x - eye.x;
-			d.y = w.y - eye.y;
-			d.z = w.z - eye.z;
-			d = normalizeVector(d);
-			color4 = getColor(pointToVector(eye), d, eye);
-
-			frameBuffer[i][j].r = (color0.r + color1.r + color2.r + color3.r + color4.r)/5;
-			frameBuffer[i][j].g = (color0.g + color1.g + color2.g + color3.g + color4.g)/5;
-			frameBuffer[i][j].b = (color0.b + color1.b + color2.b + color3.b + color4.b)/5;
-			//frameBuffer[i][j] = color0;
 		}
 	}
 
@@ -390,17 +396,17 @@ int main(int argc, char** argv){
     cl.g = 0.0;
     cl.b = 0.1;
 
-    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.2, 0.8));
+    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5));
 
 
   
     c.x = 600.0;
     c.y = 750.0;
-    c.z = -100.0;
+    c.z = 100.0;
 
     cl.r = 0.4;
-    cl.g = 1.0;
-    cl.b = 0.1;
+    cl.g = 0.2;
+    cl.b = 1.0;
 
     addObject(createSphere(80, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0));
 
