@@ -5,6 +5,8 @@ OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double 
 
 double getD(VECTOR normal, POINT punto);
 
+PEQUATION getABCD(POINT *points);
+
 INTERSECTION findIntersection_polygon(VECTOR direction, POINT eye, POLYGON p);
 
 void flattenPolygon(POLYGON p);

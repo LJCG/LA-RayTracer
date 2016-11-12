@@ -228,6 +228,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 	}
 
 	else{
+		
 		color = obj.color;
 		long double I = 0.0; // INTENSIDAD
 		long double E = 0.0; // REFLEXION ESPECULAR
@@ -363,7 +364,6 @@ void tracer(){
 
 	save(frameBuffer);
 }
-
 
 
 
