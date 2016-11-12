@@ -77,6 +77,12 @@ typedef struct{
 } POLYGON;
 
 typedef struct{
+	double radius;
+	POINT center;
+	PEQUATION equation;
+} DISK;
+
+typedef struct{
 	char id;
 	long double kd; // coef reflexión difusa
 	long double ka; // coef amb
@@ -89,6 +95,7 @@ typedef struct{
 	CONE cone;
 	CYLINDER cylinder;
 	POLYGON polygon;
+	DISK disk;
 } OBJECT;
 
 typedef struct{
