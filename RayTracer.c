@@ -12,6 +12,7 @@
 #include "cylinder.h"
 #include "cone.h"
 #include "data.h"
+#include "disk.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -200,9 +201,21 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 		}
 		else if(object.id == 'N'){
 			//calcular interseccion cono
-      CONE cone = object.cone;
+     		CONE cone = object.cone;
 			intersection = findIntersection_cone(vectorD, point, cone.anchor, cone.radius, cone.axis, cone.d1, cone.d2,cone.k1,cone.k2);
 		}
+
+		else if(object.id == 'D'){
+			DISK disk = object.disk;
+			POLYGON poly;
+			poly.equation = disk.equation;
+
+			if(pFlag == 1){
+				disk.equation = reverse(poly);
+			}
+			intersection = findIntersection_disk(vectorD, point, disk);
+		}
+
 		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
 
 			tmin = intersection.tmin;
@@ -398,11 +411,11 @@ int main(int argc, char** argv){
     cl.g = 0.0;
     cl.b = 0.1;
 
-    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5));
+    //addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5));
 
 
   
-    c.x = 600.0;
+    c.x = 420.0;
     c.y = 750.0;
     c.z = 100.0;
 
@@ -410,9 +423,34 @@ int main(int argc, char** argv){
     cl.g = 0.2;
     cl.b = 1.0;
 
-    addObject(createSphere(80, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0));
+    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5));
 
+//------------------------------------------------------------------------------------------------------
+    POINT c1, c2;
 
+  
+    c.x = 600.0;
+    c.y = 750.0;
+    c.z = -200.0;
+
+    c1.x = 250.0;
+    c1.y = 850.0;
+    c1.z = -200.0;
+
+    c2.x = 650.0;
+    c2.y = 750.0;
+    c2.z = -200.0;
+
+    cl.r = 1.0;
+    cl.g = 1.0;
+    cl.b = 1.0;
+
+    OBJECT o = createDisk(60, c, cl, c1, c2);
+  
+
+    addObject(o);
+    DISK disk = o.disk;
+    printf("A:%lf  B:%lf  C:%lf\n  D:%lf", disk.equation.a, disk.equation.b, disk.equation.c, disk.equation.d);
 
 // ----------------------------------------- LUCES ------------------------------------------------------
     c.x = 900.0;

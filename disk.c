@@ -19,6 +19,10 @@ OBJECT createDisk(double radius, POINT center, COLOR color, POINT p1, POINT p2){
 
 	disk.equation = getABCD(points);
 
+	disk.equation.a = disk.equation.a * -1;
+	disk.equation.b = disk.equation.b * -1;
+	disk.equation.c = disk.equation.c * -1;
+	disk.equation.d = disk.equation.d * -1;
 
 	OBJECT newObject;
 	newObject.id = 'D';
@@ -28,45 +32,44 @@ OBJECT createDisk(double radius, POINT center, COLOR color, POINT p1, POINT p2){
 	return newObject;
 }
 
-INTERSECTION findIntersection_disk(VECTOR d, POINT eye, DISK disk){
-	
-	INTERSECTION intersection;
-	POINT interPoint, center;
-	double pointProd, t;
 
-	pointProd = pointProduct(d, eq2vector(disk.equation));
-	center = disk.center;
-
-	if(pointProd == 0){
-		intersection.flag = 0;
-		intersection.tmax = 0;
-		intersection.tmin = 0;
+bool verifyPointD(POINT interPoint, POINT center, double radius){
+	double distance = pow((interPoint.x - center.x),2) + pow((interPoint.y - center.y),2) + pow((interPoint.z - center.z),2) - pow(radius,2);
+	if(distance <= 0){
+		return true;
 	}
-
-	else{
-		PEQUATION eq = disk.equation;
-		t = -(eq.a*eye.x + eq.b*eye.y + eq.c*eye.z)/(eq.a*d.x + eq.b*d.y + eq.c*d.z);
-
-		interPoint = getIntersectionPoint(pointToVector(eye), d, t);
-
-		double distance = pow((interPoint.x - center.x),2) + pow((interPoint.y - center.y),2) 
-						  + pow((interPoint.z - center.z),2) - pow(disk.radius,2);
-
-		if(distance <= 0){
-			intersection.flag = 1;
-			intersection.tmin = t;
-		}
-
-		else{
-			intersection.flag = 0;
-			intersection.tmax = 0;
-			intersection.tmin = 0;
-		}
-
-	}
-
-	return intersection;
+	return false;
 }
 
+INTERSECTION findIntersection_disk(VECTOR direction, POINT eye, DISK disk){
+	VECTOR norm = eq2vector(disk.equation); // Construye la normal a partir de la ecuación del disco
+	INTERSECTION intersection;
 
+	// Primera fase: Revisa si hay intersección con el plano
+	if(pointProduct(norm, direction) > EPSILON){ // Hay interseccion	
+
+		// Calcula t
+		double t = -(norm.x*eye.x + norm.y*eye.y + norm.z*eye.z + disk.equation.d)/(norm.x*direction.x + norm.y*direction.y + norm.z*direction.z);		
+		POINT intersectionPoint = getIntersectionPoint(pointToVector(eye), direction, t);
+
+		// Segunda fase: Revisa si el punto está en el interior del polígono
+		if(verifyPointD(intersectionPoint, disk.center, disk.radius)){
+			intersection.tmin = t;
+			intersection.tmax = 0;
+			intersection.flag = 1;
+			
+		}
+		else{
+			intersection.tmin = 0;
+			intersection.tmax = 0;
+			intersection.flag = 0;
+		}
+	}
+	else{
+		intersection.tmin = 0;
+		intersection.tmax = 0;
+		intersection.flag = 0;
+	}
+	return intersection;
+}
 

@@ -145,8 +145,6 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		yl = y-o.y;
 		zl = z-o.z;
 
-		//AQUI SE DESPICHA LA HOSTIA
-
 		l = sqrt(pow(xl,2)+pow(yl,2)+pow(zl,2));
 
 		xl = xl/l;
@@ -170,6 +168,9 @@ VECTOR getN(OBJECT obj, POINT intersection){
 
 
 		N = normalizeVector(N);
+	}
+	else if(obj.id == 'D'){
+		N = eq2vector(obj.disk.equation);
 	}
 
 	return N;
