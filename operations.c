@@ -242,3 +242,15 @@ COLOR avgColor(COLOR c1, COLOR c2, COLOR c3, COLOR c4){
 
 	return average;
 }
+
+VECTOR getG(VECTOR q){
+	VECTOR G;
+	G.y = -(q.x + q.z)/q.y;
+	G.x = 1;
+	G.z = 1;
+
+	if(round(getMagnitude(G)) == 1){
+		return G;
+	}
+	return normalizeVector(G);
+}

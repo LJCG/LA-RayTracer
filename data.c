@@ -397,8 +397,7 @@ void loadInfo(){
         cl.g = g;
         cl.b = b;
 
-
-        OBJECT p = createPolygon(points, numVertices, cl,kd,ka,ks,kn, 0.0, 0.0);
+        OBJECT p = createPolygon(points, numVertices, cl,kd,ka,ks,kn, 0.0, 0.0); 
         p.polygon.equation = reverse(p.polygon);
 
         addObject(p);

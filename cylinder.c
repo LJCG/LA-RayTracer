@@ -1,6 +1,7 @@
 #include "objects.h"
 #include "operations.h"
 #include "cylinder.h"
+#include "polygon.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -12,6 +13,18 @@ OBJECT createCylinder(double radius, POINT anchor, VECTOR axis, double d1, doubl
 	cylinder.axis = normalizeVector(axis); // EJE
 	cylinder.d1 = d1;		 			   // TAPA 1
 	cylinder.d2 = d2;	     			   // TAPA 2
+	cylinder.G = getG(cylinder.axis);
+
+	VECTOR temp = cruxProduct(cylinder.G, cylinder.axis);
+	double d = getD(temp, cylinder.anchor);
+	double magnitude = getMagnitude(temp);
+	temp = normalizeVector(temp);
+	d = d / magnitude;
+	cylinder.equation.a = temp.x;
+	cylinder.equation.b = temp.y;
+	cylinder.equation.c = temp.z;
+	cylinder.equation.d = d;
+
 
 
 	OBJECT newObject;

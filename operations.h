@@ -43,4 +43,6 @@ double colorDistance(COLOR c1, COLOR c2);
 
 COLOR avgColor(COLOR c1, COLOR c2, COLOR c3, COLOR c4);
 
+VECTOR getG(VECTOR q);
+
 #endif

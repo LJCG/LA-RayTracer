@@ -54,14 +54,6 @@ typedef struct{
 } CONE;
 
 typedef struct{
-	double radius;
-	POINT anchor; // ancla del cilindro
-	VECTOR axis; // Q, eje del cilindro
-	double d1;	// Tapa 1
-	double d2;	// Tapa 2
-} CYLINDER;
-
-typedef struct{
 	double a;
 	double b;
 	double c;
@@ -69,17 +61,33 @@ typedef struct{
 } PEQUATION;
 
 typedef struct{
+	PEQUATION equation;
+	VECTOR G; // señala el punto donde inicia la textura
+	double radius;
+	POINT anchor; // ancla del cilindro
+	VECTOR axis; // Q, eje del cilindro
+	double d1;	// Tapa 1
+	double d2;	// Tapa 2
+} CYLINDER;
+
+
+typedef struct{
+//	POINT* rectangle;
 	POINT* points;
 	int sizePoints;
 	POINT2D* points2D;
 	PEQUATION equation;
 	char tag;
+	//VECTOR U;
+	//VECTOR V;
+	//double H;
+	//double L;
 } POLYGON;
 
 typedef struct{
-	double radius;
-	POINT center;
-	PEQUATION equation;
+  double radius;
+  POINT center;
+  PEQUATION equation;
 } DISK;
 
 typedef struct{
@@ -90,6 +98,8 @@ typedef struct{
 	long double kn; // factor especular
 	long double o1; // grado color del objeto
 	long double o2; // grado color del reflejo
+	int textureFlag; // 0 si no tiene textura, 1 si tiene
+	char* fileName; // nombre de la textura
 	COLOR color;
 	SPHERE sphere;
 	CONE cone;
@@ -118,3 +128,4 @@ typedef struct{
 	double tmax;
 	int flag;
 } INTERSECTION;
+

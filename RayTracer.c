@@ -12,6 +12,7 @@
 #include "cylinder.h"
 #include "cone.h"
 #include "data.h"
+#include "textures.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -32,6 +33,11 @@ LIGHT lights[3000];
 int numLights = 0;
 
 int xmax, ymax, xmin, ymin;
+
+// Matriz y datos de la imagen de textura
+char* readTexture = "moon.avs";
+COLOR **image;
+int W, H;
 
 void init_buffer(){
    int i, j;
@@ -135,6 +141,94 @@ void save(COLOR **frameBuffer){
    	}
 }
 
+// ------------------------------------ RELLENO CON TEXTURA --------------------------------------
+
+void init_image(){
+   int i, j;
+   image = (COLOR **)malloc(W * sizeof(COLOR*));
+   for (i = 0; i < W; i++){
+        image[i] = (COLOR *)malloc(H * sizeof(COLOR));
+       }
+
+   for (i = 0; i < W; i++) {
+        for (j = 0; j < H; j++)
+            {
+             image[i][j].r = 0.0;
+             image[i][j].g = 0.0;
+             image[i][j].b = 0.0;
+            }
+   }
+}
+
+void fill_image(char *file){ // Recupera los colores de la textura y los guarda en array global Image
+   int i, j, a, width, height;
+   double r, g, b;
+   FILE *fptr;
+
+   // Abre el archivo de textura
+   if((fptr = fopen(file,"r")) == NULL) {
+      fprintf(stderr,"Failed to open input file \"%s\"\n", file);
+      exit(-1);
+   }
+
+   // Lee los datos de la imagen del encabezado
+   fread(&width, sizeof(int), 1, fptr);
+   width = FIX(width);
+   W = width;
+         
+   fread(&height, sizeof(int), 1, fptr);
+   height = FIX(height);
+   H = height;
+
+   init_image();
+
+  // Obtiene el ARGB para cada pixel
+   for(j=0;j<height;j++) {
+      for(i=0;i<width;i++) {
+         a = fgetc(fptr); // La transparencia se ignora
+		 r = (double)fgetc(fptr)/255;
+         g = (double)fgetc(fptr)/255;
+         b = (double)fgetc(fptr)/255;      
+         
+         if (a == EOF || g == EOF || r == EOF || b == EOF) {
+            fprintf(stderr,"Unexpected end of file\n");
+            exit(-1);
+         }
+		 image[i][j].r = r;
+         image[i][j].g = g;
+         image[i][j].b = b;	
+        // printf("r: %lf, g: %lf, b: %lf\n", r,g,b);
+      }
+   }
+
+   fclose(fptr);
+}
+
+OBJECT obj;
+COLOR getTextureColor(POINT intersection){
+
+	POINT2D coord;
+	if(obj.id == 'P'){
+		coord = getRectangleTexture(obj, intersection);
+	}
+	else if(obj.id == 'C'){
+		coord = getCylinderTexture(obj, intersection);
+	}
+	printf("u: %lf, v: %lf\n", coord.u, coord.v);
+
+	COLOR cl;
+	int i = round(coord.u*W);
+	int j = round(coord.v*H);
+	printf("holi1\n");
+	cl.r = (double)image[i][j].r;
+	cl.g = (double)image[i][j].g;
+	cl.b = (double)image[i][j].b;
+
+	printf("holi\n");
+
+	return cl;
+}
+
 // ---------------------------------- GENERAR ESCENA --------------------------------------
 void setBackground(double r, double g, double b){
    background.r = r;
@@ -155,7 +249,10 @@ void setWindow(int pxmin, int pymin, int pxmax, int pymax){
 	ymax = pymax;
 }
 
-void addObject(OBJECT newObject){
+void addObject(OBJECT newObject, int textureFlag, char* fileName){
+	newObject.textureFlag = textureFlag;
+	newObject.fileName = fileName;
+
 	objects[sizeObjects] = newObject;
 	sizeObjects++;
 }
@@ -166,7 +263,6 @@ void addLight(LIGHT newLight){
 }
 
 // ---------------------------------- OBTENER INTERSECCIONES --------------------------------------
-OBJECT obj;
 int intersectionFlag = 0;
 POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 	INTERSECTION intersection;
@@ -228,8 +324,16 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 	}
 
 	else{
-		
-		color = obj.color;
+		if(obj.textureFlag == 0){
+			color = obj.color;
+		}
+		else{
+			/*if(strcmp(readTexture, obj.fileName) != 0){
+				fill_image(obj.fileName);
+			}*/
+			color = getTextureColor(intersection);
+		}
+
 		long double I = 0.0; // INTENSIDAD
 		long double E = 0.0; // REFLEXION ESPECULAR
 		VECTOR V = numberByVector(vectorD, -1); // Vector que va desde P hasta el ojo
@@ -297,7 +401,6 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 				color.b = color.b*reflexObject.o1 + reflexColor.b*reflexObject.o2;
 			}
 		}
-
 	}
 	intersectionFlag = 0;
 	return color;
@@ -353,12 +456,12 @@ void tracer(){
 		for(j = 0; j < V_SIZE; j++){
 
 			color1 = antialiasing(i, j, 0.5);
-			color2 = antialiasing(i+0.5, j, 0.5);
-			color3 = antialiasing(i, j+0.5, 0.5);
-			color4 = antialiasing(i+0.5, j+0.5, 0.5);
+			//color2 = antialiasing(i+0.5, j, 0.5);
+			//color3 = antialiasing(i, j+0.5, 0.5);
+			//color4 = antialiasing(i+0.5, j+0.5, 0.5);
 
-			frameBuffer[i][j] = avgColor(color1, color2, color3, color4);
-
+			//frameBuffer[i][j] = avgColor(color1, color2, color3, color4);
+			frameBuffer[i][j] = color1;
 		}
 	}
 
@@ -368,12 +471,13 @@ void tracer(){
 
 
 
+
 int main(int argc, char** argv){
    init_buffer();
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
    glutInitWindowSize(H_SIZE,V_SIZE);
-   glutCreateWindow("Proyecto 2: RayTracer");
+   glutCreateWindow("Proyecto 3: RayTracer Avanzado");
    glClear(GL_COLOR_BUFFER_BIT);
    gluOrtho2D(-0.5, H_SIZE +0.5, -0.5, V_SIZE + 0.5);
    glutDisplayFunc(draw_scene);
@@ -383,36 +487,62 @@ int main(int argc, char** argv){
    setWindow(0, 0, 1500, 1000);
 
 
-      //globalConfig();
-      //loadInfo();
-   //createSphere(double radius, POINT center, COLOR color, long double kd, long double ka,
-  //			long double kn, long double ks, long double o1, long double o2);
+    //globalConfig();
+    //loadInfo();
+   POINT p1, p2, p3, p4;
 
-    POINT c;
-    c.x = 750.0;
-    c.y = 700.0;
+   p1.x = 500;
+   p1.y = 100;
+   p1.z = 300;
+
+   p2.x = 500;
+   p2.y = 400;
+   p2.z = 300;
+
+   p3.x = 800;
+   p3.y = 400;
+   p3.z = 300;
+
+   p4.x = 800;
+   p4.y = 100;
+   p4.z = 300;
+
+   COLOR cl;
+   cl.r = 1.0;
+   cl.g = 1.0;
+   cl.b = 1.0;
+
+   POINT points[4];
+   points[0] = p1;
+   points[1] = p2;
+   points[2] = p3;
+   points[3] = p4;
+
+   OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
+   p.polygon.equation = reverse(p.polygon);
+
+   //addObject(p, 1, "4.avs");
+
+
+       POINT c;
+    c.x = 400.0;
+    c.y = 400.0;
     c.z = 300.0;
 
-    COLOR cl;
     cl.r = 0.6;
     cl.g = 0.0;
     cl.b = 0.1;
 
-    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5));
+    VECTOR axis;
+    axis.x = 1000;
+    axis.y = 600;
+    axis.z = 500;
+
+    addObject(createCylinder(100, c, axis, 10, 350, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0),1,"1.avs");
 
 
-  
-    c.x = 600.0;
-    c.y = 750.0;
-    c.z = 100.0;
 
-    cl.r = 0.4;
-    cl.g = 0.2;
-    cl.b = 1.0;
-
-    addObject(createSphere(80, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0));
-
-
+  //  addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5), 0, "moon.avs");
 
 // ----------------------------------------- LUCES ------------------------------------------------------
     c.x = 900.0;
@@ -427,8 +557,8 @@ int main(int argc, char** argv){
 
     Ia = 0.65;
 
+    fill_image("1.avs");
+
    tracer();
-
    glutMainLoop();
-
 }
