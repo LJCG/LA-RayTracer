@@ -214,17 +214,17 @@ COLOR getTextureColor(POINT intersection){
 	else if(obj.id == 'C'){
 		coord = getCylinderTexture(obj, intersection);
 	}
-	printf("u: %lf, v: %lf\n", coord.u, coord.v);
+	//printf("u: %lf, v: %lf\n", coord.u, coord.v);
 
 	COLOR cl;
 	int i = round(coord.u*W);
 	int j = round(coord.v*H);
-	printf("holi1\n");
+	//printf("holi1\n");
 	cl.r = (double)image[i][j].r;
 	cl.g = (double)image[i][j].g;
 	cl.b = (double)image[i][j].b;
 
-	printf("holi\n");
+	//printf("holi\n");
 
 	return cl;
 }
@@ -328,9 +328,10 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 			color = obj.color;
 		}
 		else{
-			/*if(strcmp(readTexture, obj.fileName) != 0){
+			if(strcmp(readTexture, obj.fileName) != 0){
+				free(image);
 				fill_image(obj.fileName);
-			}*/
+			}
 			color = getTextureColor(intersection);
 		}
 
@@ -518,13 +519,13 @@ int main(int argc, char** argv){
    points[2] = p3;
    points[3] = p4;
 
-   OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
+  /* OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
    p.polygon.equation = reverse(p.polygon);
 
-   //addObject(p, 1, "4.avs");
+   addObject(p, 1, "4.avs");*/
 
 
-       POINT c;
+    POINT c;
     c.x = 400.0;
     c.y = 400.0;
     c.z = 300.0;
@@ -538,7 +539,7 @@ int main(int argc, char** argv){
     axis.y = 600;
     axis.z = 500;
 
-    addObject(createCylinder(100, c, axis, 10, 350, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0),1,"1.avs");
+    addObject(createCylinder(100, c, axis, 10, 350, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0),1,"4.avs");
 
 
 
@@ -557,7 +558,7 @@ int main(int argc, char** argv){
 
     Ia = 0.65;
 
-    fill_image("1.avs");
+    fill_image("2.avs");
 
    tracer();
    glutMainLoop();
