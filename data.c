@@ -194,7 +194,7 @@ void loadInfo(){
   long double ka;
   long double kn;
   long double ks;
-
+	long double kr;
 
   long double radius;
   //solo para el cono
@@ -271,7 +271,7 @@ void loadInfo(){
         cl.b = b;
 
         //crea objeto esfera
-        addObject(createSphere(radius, c, cl, kd, ka, kn, ks, 0.0, 0.0));
+        addObject(createSphere(radius, c, cl, kd, ka, kn, ks,kr, 0.0, 0.0,0.0));
 
       }
       else if(strcmp(id,"$Cylinder\n") == 0){

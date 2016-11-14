@@ -96,10 +96,13 @@ typedef struct{
 	long double ka; // coef amb
 	long double ks; // coef reflexion especular
 	long double kn; // factor especular
+    long double kr;
 	long double o1; // grado color del objeto
 	long double o2; // grado color del reflejo
+	long double o3;
 	int textureFlag; // 0 si no tiene textura, 1 si tiene
 	char* fileName; // nombre de la textura
+  
 	COLOR color;
 	SPHERE sphere;
 	CONE cone;
