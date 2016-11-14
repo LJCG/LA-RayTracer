@@ -220,6 +220,21 @@ VECTOR rotate_cone(VECTOR axis, int grados){
  return axis_aux;
 }
 
+double vectorByVector(VECTOR N,VECTOR V){
+		double temp = N.x*V.x+N.y*V.y+N.z*V.z;
+		return temp;
+
+}
+
+VECTOR transparency(long double ot,double kr, VECTOR N, VECTOR V){
+	VECTOR temp;
+	temp.x = (ot*N.x) - (kr*V.x);
+	temp.y = (ot*N.y) - (kr*V.y);
+	temp.z = (ot*N.z) - (kr*V.z);
+	return temp;
+
+}
+
 int sameColor(COLOR c1, COLOR c2){
 	if((c1.r == c2.r) && (c1.g == c2.g) && (c1.b == c2.b)){
 		return 1;

@@ -37,6 +37,10 @@ VECTOR eq2vector(PEQUATION eq);
 
 VECTOR rotate_cone(VECTOR axis, int grados);
 
+double vectorByVector(VECTOR N,VECTOR V);
+
+VECTOR transparency(long double ot,double kr, VECTOR N, VECTOR V);
+
 int sameColor(COLOR c1, COLOR c2);
 
 double colorDistance(COLOR c1, COLOR c2);

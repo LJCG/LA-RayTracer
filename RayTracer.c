@@ -228,19 +228,24 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 	}
 
 	else{
-		
+
 		color = obj.color;
 		long double I = 0.0; // INTENSIDAD
 		long double E = 0.0; // REFLEXION ESPECULAR
 		VECTOR V = numberByVector(vectorD, -1); // Vector que va desde P hasta el ojo
-		
+
 		VECTOR R; // Vector de rebote de la luz
+
+
+    VECTOR T; //####vector transparencia
+
 		bool Rflag = false;
+    bool Tflag = false;
 		for(k=0; k < numLights; k++){ //Se recorren todas las luces
 
 			VECTOR L = getL(intersection, lights[k]); //Vector entre la luz y el objeto
 			VECTOR N = getN(obj, intersection);       //Vector normal
-			
+
 
 			if(obj.id == 'P' && pointProduct(N, vectorD) > 0){
 				N = numberByVector(N, -1.0);
@@ -261,6 +266,14 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 					R = numberByVector(R, pointProd);
 					R = substractVectors(R, L);
 					Rflag = true;
+
+          //transparencia
+          double kr = obj.kr;
+          long double NV = vectorByVector(N,V);
+          long double ot = (kr*NV) - sqrt(1-(pow(kr,2)*(1-(pow(NV,2)))));
+          T = transparency(ot,kr,N,V);
+          Tflag = true;
+
 
 					double pointProdVR = pointProduct(V, R);
 					if(pointProdVR > EPSILON){
@@ -290,13 +303,25 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 		if((obj.o1 + obj.o2) == 1.0 && Rflag){
 			OBJECT reflexObject = obj;
 			COLOR reflexColor = getColor(pointToVector(intersection), R, intersection);
-			
+
 			if(sameColor(reflexColor, background) == 0){
 				color.r = color.r*reflexObject.o1 + reflexColor.r*reflexObject.o2;
 				color.g = color.g*reflexObject.o1 + reflexColor.g*reflexObject.o2;
 				color.b = color.b*reflexObject.o1 + reflexColor.b*reflexObject.o2;
 			}
 		}
+
+    //transparencia
+    if((obj.o3) > 0 && Tflag){
+      OBJECT transpObject = obj;
+      COLOR transpColor = getColor(pointToVector(intersection), T, intersection);
+
+      if(sameColor(transpColor, background) == 0){
+        color.r = color.r*transpObject.o3 + transpColor.r*transpObject.o3;
+        color.g = color.g*transpObject.o3 + transpColor.g*transpObject.o3;
+        color.b = color.b*transpObject.o3 + transpColor.b*transpObject.o3;
+      }
+    }
 
 	}
 	intersectionFlag = 0;
@@ -339,7 +364,7 @@ COLOR antialiasing(float i, float j, float value){
 	color4 = getColor(pointToVector(eye), d, eye);
 
 
-	return avgColor(color1, color2, color3, color4); 
+	return avgColor(color1, color2, color3, color4);
 }
 
 void tracer(){
@@ -386,7 +411,7 @@ int main(int argc, char** argv){
       //globalConfig();
       //loadInfo();
    //createSphere(double radius, POINT center, COLOR color, long double kd, long double ka,
-  //			long double kn, long double ks, long double o1, long double o2);
+  //			long double kn, long double ks,long double kr, long double o1, long double o2,long double 03);
 
     POINT c;
     c.x = 750.0;
@@ -398,10 +423,10 @@ int main(int argc, char** argv){
     cl.g = 0.0;
     cl.b = 0.1;
 
-    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5));
+    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5,5, 0.5, 0.5,0.0));
 
 
-  
+
     c.x = 600.0;
     c.y = 750.0;
     c.z = 100.0;
@@ -410,7 +435,7 @@ int main(int argc, char** argv){
     cl.g = 0.2;
     cl.b = 1.0;
 
-    addObject(createSphere(80, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0));
+   addObject(createSphere(250, c, cl, 0.7, 0.6, 5, 0.5, 1.0, 0.0, 0.0,1.0));
 
 
 
