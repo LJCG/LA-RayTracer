@@ -5,6 +5,8 @@
 
 long double min(long double val1, long double val2);
 
+int minInt(int val1, int val2);
+
 char max(double a, double b, double c);
 
 POINT mapXY(int x, int y, int xmax, int ymax, int xmin, int ymin, float iValue, float jValue);

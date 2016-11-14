@@ -34,10 +34,9 @@ int numLights = 0;
 
 int xmax, ymax, xmin, ymin;
 
-// Matriz y datos de la imagen de textura
-char* readTexture = "moon.avs";
-COLOR **image;
-int W, H;
+// LISTA DE TEXTURAS
+TEXTURE textures[1000];
+int sizeTextures = 0;
 
 void init_buffer(){
    int i, j;
@@ -143,90 +142,106 @@ void save(COLOR **frameBuffer){
 
 // ------------------------------------ RELLENO CON TEXTURA --------------------------------------
 
-void init_image(){
+void init_image(int k){
    int i, j;
-   image = (COLOR **)malloc(W * sizeof(COLOR*));
+   int W = textures[k].W;
+   int H = textures[k].H;
+
+   textures[k].image = (COLOR **)malloc(W * sizeof(COLOR*));
    for (i = 0; i < W; i++){
-        image[i] = (COLOR *)malloc(H * sizeof(COLOR));
+        textures[k].image[i] = (COLOR *)malloc(H * sizeof(COLOR));
        }
 
    for (i = 0; i < W; i++) {
         for (j = 0; j < H; j++)
             {
-             image[i][j].r = 0.0;
-             image[i][j].g = 0.0;
-             image[i][j].b = 0.0;
+             textures[k].image[i][j].r = 0.0;
+             textures[k].image[i][j].g = 0.0;
+             textures[k].image[i][j].b = 0.0;
             }
    }
 }
 
-void fill_image(char *file){ // Recupera los colores de la textura y los guarda en array global Image
-   int i, j, a, width, height;
+void fill_images(){ // Recupera los colores de las texturas
+   int k, i, j, a, width, height;
    double r, g, b;
-   FILE *fptr;
 
-   // Abre el archivo de textura
-   if((fptr = fopen(file,"r")) == NULL) {
-      fprintf(stderr,"Failed to open input file \"%s\"\n", file);
-      exit(-1);
-   }
+   for(k = 0; k<sizeTextures; k++){
+   	    FILE *fptr;
+   		const char* file = textures[k].name;
 
-   // Lee los datos de la imagen del encabezado
-   fread(&width, sizeof(int), 1, fptr);
-   width = FIX(width);
-   W = width;
-         
-   fread(&height, sizeof(int), 1, fptr);
-   height = FIX(height);
-   H = height;
+	   // Abre el archivo de textura
+	   if((fptr = fopen(file,"r")) == NULL) {
+	      fprintf(stderr,"Failed to open input file \"%s\"\n", file);
+	      exit(-1);
+	   }
 
-   init_image();
+	   // Lee los datos de la imagen del encabezado
+	   fread(&width, sizeof(int), 1, fptr);
+	   width = FIX(width);
+	   textures[k].W = width;
+	         
+	   fread(&height, sizeof(int), 1, fptr);
+	   height = FIX(height);
+	   textures[k].H = height;
 
-  // Obtiene el ARGB para cada pixel
-   for(j=0;j<height;j++) {
-      for(i=0;i<width;i++) {
-         a = fgetc(fptr); // La transparencia se ignora
-		 r = (double)fgetc(fptr)/255;
-         g = (double)fgetc(fptr)/255;
-         b = (double)fgetc(fptr)/255;      
-         
-         if (a == EOF || g == EOF || r == EOF || b == EOF) {
-            fprintf(stderr,"Unexpected end of file\n");
-            exit(-1);
-         }
-		 image[i][j].r = r;
-         image[i][j].g = g;
-         image[i][j].b = b;	
-        // printf("r: %lf, g: %lf, b: %lf\n", r,g,b);
-      }
-   }
+	   init_image(k);
 
-   fclose(fptr);
+	  // Obtiene el ARGB para cada pixel
+	   for(j=0;j<height;j++) {
+	      for(i=0;i<width;i++) {
+	         a = fgetc(fptr); // La transparencia se ignora
+			 r = (double)fgetc(fptr)/255;
+	         g = (double)fgetc(fptr)/255;
+	         b = (double)fgetc(fptr)/255;      
+	         
+	         if (a == EOF || g == EOF || r == EOF || b == EOF) {
+	            fprintf(stderr,"Unexpected end of file\n");
+	            exit(-1);
+	         }
+			 textures[k].image[i][j].r = r;
+	         textures[k].image[i][j].g = g;
+	         textures[k].image[i][j].b = b;	
+	        // printf("r: %lf, g: %lf, b: %lf\n", r,g,b);
+	      }
+	   }
+
+	   fclose(fptr);
+	}
 }
 
 OBJECT obj;
 COLOR getTextureColor(POINT intersection){
-
+	int k;
 	POINT2D coord;
-	if(obj.id == 'P'){
-		coord = getRectangleTexture(obj, intersection);
-	}
-	else if(obj.id == 'C'){
-		coord = getCylinderTexture(obj, intersection);
-	}
-	//printf("u: %lf, v: %lf\n", coord.u, coord.v);
-
 	COLOR cl;
-	int i = round(coord.u*W);
-	int j = round(coord.v*H);
-	//printf("holi1\n");
-	cl.r = (double)image[i][j].r;
-	cl.g = (double)image[i][j].g;
-	cl.b = (double)image[i][j].b;
 
-	//printf("holi\n");
+	for(k=0; k<sizeTextures; k++){
+		if(strcmp(textures[k].name, obj.fileName) == 0){
+			if(obj.id == 'P'){
+				coord = getRectangleTexture(obj, intersection);
+			}
+			else if(obj.id == 'C'){
+				coord = getCylinderTexture(obj, intersection);
+			}
 
-	return cl;
+			int W = textures[k].W;
+			int H = textures[k].H;
+
+			
+			int i = round(coord.u*W);
+			int j = round(coord.v*H);
+
+			i = minInt(i,(W-1));
+			j = minInt(j,(H-1));
+
+			cl.r = (double)textures[k].image[i][j].r;
+			cl.g = (double)textures[k].image[i][j].g;
+			cl.b = (double)textures[k].image[i][j].b;
+			break;
+		}	
+	}
+	return cl;	
 }
 
 // ---------------------------------- GENERAR ESCENA --------------------------------------
@@ -251,7 +266,19 @@ void setWindow(int pxmin, int pymin, int pxmax, int pymax){
 
 void addObject(OBJECT newObject, int textureFlag, char* fileName){
 	newObject.textureFlag = textureFlag;
-	newObject.fileName = fileName;
+
+	if(textureFlag == 1){
+		newObject.fileName = fileName;
+
+		// crea la textura
+		TEXTURE texture;
+		texture.name = fileName;
+
+		// agrega la textura a la lista
+		textures[sizeTextures] = texture;
+		sizeTextures++;
+	}
+
 
 	objects[sizeObjects] = newObject;
 	sizeObjects++;
@@ -326,12 +353,9 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 	else{
 		if(obj.textureFlag == 0){
 			color = obj.color;
+			printf("obj%c\n", obj.id);
 		}
 		else{
-			if(strcmp(readTexture, obj.fileName) != 0){
-				free(image);
-				fill_image(obj.fileName);
-			}
 			color = getTextureColor(intersection);
 		}
 
@@ -457,9 +481,9 @@ void tracer(){
 		for(j = 0; j < V_SIZE; j++){
 
 			color1 = antialiasing(i, j, 0.5);
-			//color2 = antialiasing(i+0.5, j, 0.5);
-			//color3 = antialiasing(i, j+0.5, 0.5);
-			//color4 = antialiasing(i+0.5, j+0.5, 0.5);
+			/*color2 = antialiasing(i+0.5, j, 0.5);
+			color3 = antialiasing(i, j+0.5, 0.5);
+			color4 = antialiasing(i+0.5, j+0.5, 0.5);*/
 
 			//frameBuffer[i][j] = avgColor(color1, color2, color3, color4);
 			frameBuffer[i][j] = color1;
@@ -468,8 +492,6 @@ void tracer(){
 
 	save(frameBuffer);
 }
-
-
 
 
 
@@ -519,10 +541,10 @@ int main(int argc, char** argv){
    points[2] = p3;
    points[3] = p4;
 
-  /* OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
+   OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
    p.polygon.equation = reverse(p.polygon);
 
-   addObject(p, 1, "4.avs");*/
+   addObject(p, 1, "2.avs");
 
 
     POINT c;
@@ -539,11 +561,15 @@ int main(int argc, char** argv){
     axis.y = 600;
     axis.z = 500;
 
-    addObject(createCylinder(100, c, axis, 10, 350, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0),1,"4.avs");
+    addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0),1, "4.avs");
 
-
-
-  //  addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5), 0, "moon.avs");
+    cl.r = 0.6;
+    cl.g = 1.0;
+    cl.b = 0.1;
+    c.x = 200.0;
+    c.y = 400.0;
+    c.z = 450.0;
+   // addObject(createSphere(170, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5), 0, "moon.avs");
 
 // ----------------------------------------- LUCES ------------------------------------------------------
     c.x = 900.0;
@@ -558,8 +584,9 @@ int main(int argc, char** argv){
 
     Ia = 0.65;
 
-    fill_image("2.avs");
+  //  fill_image("2.avs");
 
+   fill_images();
    tracer();
    glutMainLoop();
 }

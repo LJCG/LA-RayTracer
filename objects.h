@@ -129,3 +129,9 @@ typedef struct{
 	int flag;
 } INTERSECTION;
 
+typedef struct{
+	COLOR **image;
+	const char* name;
+	int W;
+	int H;
+} TEXTURE;
