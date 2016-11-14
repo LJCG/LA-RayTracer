@@ -82,6 +82,19 @@ typedef struct{
 	PEQUATION equation;
 } DISK;
 
+typedef struct {
+	double A;
+	double B;
+	double C;
+	double D;
+	double E;
+	double F;
+	double G;
+	double H;
+	double J;
+	double K;
+}QUAD;
+
 typedef struct{
 	char id;
 	long double kd; // coef reflexión difusa
@@ -96,6 +109,7 @@ typedef struct{
 	CYLINDER cylinder;
 	POLYGON polygon;
 	DISK disk;
+	QUAD quad;
 } OBJECT;
 
 typedef struct{

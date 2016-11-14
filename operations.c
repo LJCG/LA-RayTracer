@@ -172,6 +172,18 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		N = normalizeVector(N);
 	}
 
+    else if(obj.id == 'D'){
+		N = eq2vector(obj.disk.equation);
+	}
+
+    else if(obj.id == 'Q'){
+		QUAD quad = obj.quad;
+		N.x = quad.A*intersection.x + quad.D*intersection.y + quad.F*intersection.z + quad.G;
+		N.y = quad.D*intersection.x + quad.B*intersection.y + quad.E*intersection.z + quad.H;
+		N.z = quad.F*intersection.x + quad.E*intersection.y + quad.C*intersection.z + quad.J; 
+		N = normalizeVector(N);
+	}
+
 	return N;
 }
 

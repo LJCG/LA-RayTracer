@@ -12,6 +12,7 @@
 #include "cylinder.h"
 #include "cone.h"
 #include "data.h"
+#include "quad.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -200,11 +201,17 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 		}
 		else if(object.id == 'N'){
 			//calcular interseccion cono
-      CONE cone = object.cone;
+            CONE cone = object.cone;
 			intersection = findIntersection_cone(vectorD, point, cone.anchor, cone.radius, cone.axis, cone.d1, cone.d2,cone.k1,cone.k2);
 		}
-		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
 
+		else if(object.id == 'Q'){
+
+			QUAD quad = object.quad;
+            intersection = findIntersection_quad(vectorD, point, quad);
+		}
+		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
+			//printf("quad\n");
 			tmin = intersection.tmin;
 			obj = object;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
@@ -379,7 +386,7 @@ int main(int argc, char** argv){
    glutDisplayFunc(draw_scene);
 
    setBackground(0.0, 0.0, 0.0);
-   setEye(750.0, 800.0, -1500.0);
+   setEye(0.0, 50000.0, -50000.0);
    setWindow(0, 0, 1500, 1000);
 
 
@@ -398,7 +405,7 @@ int main(int argc, char** argv){
     cl.g = 0.0;
     cl.b = 0.1;
 
-    addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5));
+   // addObject(createSphere(150, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5));
 
 
   
@@ -410,13 +417,16 @@ int main(int argc, char** argv){
     cl.g = 0.2;
     cl.b = 1.0;
 
-    addObject(createSphere(80, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0));
+    //addObject(createSphere(80, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0));
+
+    //addObject(createQuad(cl, 0.6, 0.6, 0.6, 2, 0, 0, 0, -1.6, 0.65, 0, 0, 0, 0.25, 0, 0, 0));
+      addObject(createQuad(cl, 0.6, 0.6, 0.6, 2, 0, 0, 0.416, -1.6, 0.234, 0, 0, -0.312, 0.3, 0, 0.4, 0));
 
 
 
 // ----------------------------------------- LUCES ------------------------------------------------------
-    c.x = 900.0;
-    c.y = 700.0;
+    c.x = 100.0;
+    c.y = 500.0;
     c.z = -800.0;
     addLight(createLight(c, 0.4, 0.0, 0.0, 0.4));
 
