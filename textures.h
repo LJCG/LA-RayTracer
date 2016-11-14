@@ -5,4 +5,6 @@ POINT2D getRectangleTexture(OBJECT obj, POINT intersection);
 
 POINT2D getCylinderTexture(OBJECT obj, POINT intersection);
 
+POINT2D getConeTexture(OBJECT obj, POINT intersection);
+
 #endif

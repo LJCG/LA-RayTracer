@@ -181,7 +181,7 @@ void fill_images(){ // Recupera los colores de las texturas
 	   fread(&width, sizeof(int), 1, fptr);
 	   width = FIX(width);
 	   textures[k].W = width;
-	         
+
 	   fread(&height, sizeof(int), 1, fptr);
 	   height = FIX(height);
 	   textures[k].H = height;
@@ -194,15 +194,15 @@ void fill_images(){ // Recupera los colores de las texturas
 	         a = fgetc(fptr); // La transparencia se ignora
 			 r = (double)fgetc(fptr)/255;
 	         g = (double)fgetc(fptr)/255;
-	         b = (double)fgetc(fptr)/255;      
-	         
+	         b = (double)fgetc(fptr)/255;
+
 	         if (a == EOF || g == EOF || r == EOF || b == EOF) {
 	            fprintf(stderr,"Unexpected end of file\n");
 	            exit(-1);
 	         }
 			 textures[k].image[i][j].r = r;
 	         textures[k].image[i][j].g = g;
-	         textures[k].image[i][j].b = b;	
+	         textures[k].image[i][j].b = b;
 	        // printf("r: %lf, g: %lf, b: %lf\n", r,g,b);
 	      }
 	   }
@@ -225,11 +225,14 @@ COLOR getTextureColor(POINT intersection){
 			else if(obj.id == 'C'){
 				coord = getCylinderTexture(obj, intersection);
 			}
+      else if(obj.id == 'N'){
+        coord = getConeTexture(obj, intersection);
+      }
 
 			int W = textures[k].W;
 			int H = textures[k].H;
 
-			
+
 			int i = round(coord.u*W);
 			int j = round(coord.v*H);
 
@@ -240,9 +243,9 @@ COLOR getTextureColor(POINT intersection){
 			cl.g = (double)textures[k].image[i][j].g;
 			cl.b = (double)textures[k].image[i][j].b;
 			break;
-		}	
+		}
 	}
-	return cl;	
+	return cl;
 }
 
 // ---------------------------------- GENERAR ESCENA --------------------------------------
@@ -410,8 +413,10 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 
           //transparencia
           double kr = obj.kr;
-          long double NV = vectorByVector(N,V);
-          long double ot = (kr*NV) - sqrt(1-(pow(kr,2)*(1-(pow(NV,2)))));
+          long double NV = pointProduct(N,V);
+          //Descomentar para obtener refraccion
+          //long double ot = (kr*NV) - sqrt(1-(pow(kr,2)*(1-(pow(NV,2)))));
+          long double ot = 0;
           T = transparency(ot,kr,N,V);
           Tflag = true;
 
@@ -581,32 +586,39 @@ int main(int argc, char** argv){
    OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
    p.polygon.equation = reverse(p.polygon);
 
-   addObject(p, 1, "2.avs");
+   //addObject(p, 1, "2.avs");
 
     POINT c;
-    c.x = 400.0;
-    c.y = 400.0;
-    c.z = 300.0;
+    c.x = 1140.0;
+    c.y = 325.0;
+    c.z = 535.0;
 
     cl.r = 0.6;
     cl.g = 0.0;
     cl.b = 0.1;
 
     VECTOR axis;
-    axis.x = 1000;
-    axis.y = 600;
-    axis.z = 500;
+    axis.x = 600;
+    axis.y = 200;
+    axis.z = -500;
 
-    addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 1, "4.avs");
+    //addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 1, "4.avs");
+addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9, 0.5, 5, 1.0,0.0, 0.0, 0.0,0.0),1 , "4.avs");
 
-    cl.r = 1.0;
-    cl.g = 0.0;
-    cl.b = 0.5;
 
-    c.x = 200.0;
-    c.y = 100.0;
-    c.z = 250.0;
-    addObject(createSphere(170, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5, 0.5, 0.0), 0, "moon.avs");
+
+    cl.r = 0.38;
+    cl.g = 0.38;
+    cl.b = 0.38;
+
+    c.x = 1500.0;
+    c.y = 325.0;
+    c.z = 1300.0;
+    addObject(createSphere(400, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.0, 1.0, 0.0), 0, "moon.avs");
+
+
+
+
 
 //------------------------------------------ PRUEBA DISCO --------------------------------------------------
     POINT c1, c2;
@@ -627,7 +639,7 @@ int main(int argc, char** argv){
     c2.y = 750.0;
     c2.z = -200.0;
 
-    addObject(createSphere(250, c, cl, 0.7, 0.6, 5, 0.5, 1.0, 0.0, 0.0, 1.0), 0, "moon.avs");
+    //addObject(createSphere(250, c, cl, 0.7, 0.6, 5, 0.5, 1.0, 0.0, 0.0, 1.0), 0, "moon.avs");
 
     cl.r = 1.0;
     cl.g = 1.0;

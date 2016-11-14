@@ -44,6 +44,15 @@ typedef struct{
 } SPHERE;
 
 typedef struct{
+	double a;
+	double b;
+	double c;
+	double d;
+} PEQUATION;
+
+typedef struct{
+  PEQUATION equation;
+	VECTOR G; // señala el punto donde inicia la textura
 	double radius;
   POINT anchor;
   VECTOR axis;
@@ -52,13 +61,6 @@ typedef struct{
   double k1;
   double k2;
 } CONE;
-
-typedef struct{
-	double a;
-	double b;
-	double c;
-	double d;
-} PEQUATION;
 
 typedef struct{
 	PEQUATION equation;
@@ -102,7 +104,7 @@ typedef struct{
 	long double o3;
 	int textureFlag; // 0 si no tiene textura, 1 si tiene
 	char* fileName; // nombre de la textura
-  
+
 	COLOR color;
 	SPHERE sphere;
 	CONE cone;
