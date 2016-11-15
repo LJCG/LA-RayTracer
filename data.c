@@ -356,7 +356,7 @@ void loadInfo(){
           cl.b = b;
 
 
-          addObject(createCone(radius, anchor, rotate_cone(axis,degrees),d1, d2,cl, k1, k2, kd, ka, kn, ks, 0.0, 0.0));
+          addObject(createCone(radius, anchor, rotate_cone(axis,degrees),d1, d2,cl, k1, k2, kd, ka, kn, ks,kr, 0.0, 0.0,0.0));
 
       }
       else if(strcmp(id,"$Polygon\n") == 0){
@@ -397,7 +397,7 @@ void loadInfo(){
         cl.g = g;
         cl.b = b;
 
-        OBJECT p = createPolygon(points, numVertices, cl,kd,ka,ks,kn, 0.0, 0.0); 
+        OBJECT p = createPolygon(points, numVertices, cl,kd,ka,ks,kn, 0.0, 0.0);
         p.polygon.equation = reverse(p.polygon);
 
         addObject(p);

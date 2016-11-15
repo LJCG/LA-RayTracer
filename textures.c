@@ -93,3 +93,37 @@ POINT2D getCylinderTexture(OBJECT obj, POINT intersection){
 
 	return coord;
 }
+
+POINT2D getConeTexture(OBJECT obj, POINT intersection){
+	CONE cone = obj.cone;
+
+	VECTOR d;
+	VECTOR temp;
+	POINT2D coord;
+	double u;
+
+	d.x = (intersection.x - cone.anchor.x)*cone.axis.x;
+	d.y = (intersection.y - cone.anchor.y)*cone.axis.y;
+	d.z = (intersection.z - cone.anchor.z)*cone.axis.z;
+
+	coord.v = pointProduct(cone.axis,d)/(cone.d2 - cone.d1);
+
+	temp.x = intersection.x-(cone.anchor.x - d.x*cone.axis.x);
+	temp.y = intersection.y-(cone.anchor.y - d.y*cone.axis.y);
+	temp.z = intersection.z-(cone.anchor.z - d.z*cone.axis.z);
+
+	double magnitude = getMagnitude(temp);
+
+	u = acosf(temp.x/magnitude)/(2*PI);
+
+	PEQUATION eq = cone.equation;
+	double darkSide = eq.a*intersection.x + eq.b*intersection.y + eq.c*intersection.z + eq.d;
+
+	if(darkSide < 0) u = 1 - u;
+
+	coord.u = u;
+
+	return coord;
+
+
+}

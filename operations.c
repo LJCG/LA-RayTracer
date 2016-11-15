@@ -232,11 +232,6 @@ VECTOR rotate_cone(VECTOR axis, int grados){
  return axis_aux;
 }
 
-double vectorByVector(VECTOR N,VECTOR V){
-		double temp = N.x*V.x+N.y*V.y+N.z*V.z;
-		return temp;
-
-}
 
 VECTOR transparency(long double ot,double kr, VECTOR N, VECTOR V){
 	VECTOR temp;

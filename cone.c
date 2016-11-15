@@ -8,7 +8,8 @@
 
 OBJECT createCone(double radius, POINT anchor, VECTOR axis, double d1,
                   double d2, COLOR color, double k1, double k2, long double kd,
-                  long double ka, long double kn, long double ks, long double o1, long double o2){
+                  long double ka, long double kn, long double ks, long double kr,
+                  long double o1, long double o2,long double o3){
 
   CONE cone;
   cone.radius = radius;
@@ -18,6 +19,17 @@ OBJECT createCone(double radius, POINT anchor, VECTOR axis, double d1,
   cone.d2 = d2;	// TAPA 2
   cone.k1 = k1;
   cone.k2 = k2;
+  cone.G = getG(cone.axis);
+
+	VECTOR temp = cruxProduct(cone.G, cone.axis);
+	double d = getD(temp, cone.anchor);
+	double magnitude = getMagnitude(temp);
+	temp = normalizeVector(temp);
+	d = d / magnitude;
+	cone.equation.a = temp.x;
+	cone.equation.b = temp.y;
+	cone.equation.c = temp.z;
+	cone.equation.d = d;
 
 
   OBJECT newObject;
@@ -28,8 +40,10 @@ OBJECT createCone(double radius, POINT anchor, VECTOR axis, double d1,
   newObject.kd = kd;
   newObject.ks = ks;
   newObject.kn = kn;
+  newObject.kr = kr;
   newObject.o1 = o1;
   newObject.o2 = o2;
+  newObject.o3 = o3;
 
   return newObject;
 }
