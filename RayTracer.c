@@ -247,21 +247,9 @@ COLOR getTextureColor(POINT intersection, TEXTURE* textures, int sizeTextures, i
        			coord = getConeTexture(object, intersection);
      		}
 
-      else if(obj.id == 'S'){
-        coord = getSphereTexture(obj, intersection);
-      }
-      else if(object.id == 'E'){
-			ELIPSE elipse = object.elipse;
-			POLYGON poly;
-			poly.equation = elipse.equation;
-
-			if(pFlag == 1){
-				elipse.equation = reverse(poly);
-			}
-			intersection = findIntersection_elipse(vectorD, point, elipse);
-    }
-
-
+	        else if(obj.id == 'S'){
+    	        coord = getSphereTexture(obj, intersection);
+      		}
 
 			int W = textures[k].W;
 			int H = textures[k].H;
@@ -274,7 +262,7 @@ COLOR getTextureColor(POINT intersection, TEXTURE* textures, int sizeTextures, i
 			i = minInt(i,(W-1));
 			j = minInt(j,(H-1));
 
-			printf("u = %lf, v = %lf\n", coord.u, coord.v);
+			//printf("u = %lf, v = %lf\n", coord.u, coord.v);
 			cl.r = (double)textures[k].image[i][j].r;
 			cl.g = (double)textures[k].image[i][j].g;
 			cl.b = (double)textures[k].image[i][j].b;
@@ -411,14 +399,12 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 		if(object.fretworkFlag == 1 && intersection.flag == 1 && intersection.tmin < tmin){
 				//calado 
 				//obj = object;
-				fret = getTextureColor(getIntersectionPoint(vectorW, vectorD, tmin), fretworks, sizeFretworks, 1, object);
+				POINT pt = getIntersectionPoint(vectorW, vectorD, intersection.tmin);
+				fret = getTextureColor(pt, fretworks, sizeFretworks, 1, object);
  
 				if(isBlack(fret)){
-					printf("negrooooo\n");
 					intersection.tmin = 900000;
-				}
-				else{
-					//printf("no\n");
+					intersection.flag = 0;
 				}
 			}
 
@@ -604,7 +590,6 @@ void tracer(){
 
 	for(i = 0; i < H_SIZE; i++){
 		for(j = 0; j < V_SIZE; j++){
-
 			color1 = antialiasing(i, j, 0.5);
 			/*color2 = antialiasing(i+0.5, j, 0.5);
 			color3 = antialiasing(i, j+0.5, 0.5);
@@ -668,7 +653,7 @@ int main(int argc, char** argv){
    OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
    p.polygon.equation = reverse(p.polygon);
 
-   addObject(p, 1, "ss.avs", 0, "mapa1.avs");
+   addObject(p, 0, "4.avs", 1, "mapa1.avs");
 
     POINT c;
     c.x = 1140.0;
@@ -703,9 +688,9 @@ int main(int argc, char** argv){
     cl.g = 0.2;
     cl.b = 0.5;
 
-    c.x = 600.0;
-    c.y = 400.0;
-    c.z = 600.0;
+    c.x = 700.0;
+    c.y = 300.0;
+    c.z = 700.0;
 
     c1.x = 250.0;
     c1.y = 850.0;
@@ -715,7 +700,7 @@ int main(int argc, char** argv){
     c2.y = 750.0;
     c2.z = -200.0;
 
-   // addObject(createSphere(200, c, cl, 0.5, 0.5, 5, 0.5, 1.0, 0.0, 0.0, 0.0), 0, "moon.avs");
+    addObject(createSphere(200, c, cl, 0.5, 0.5, 5, 0.5, 1.0, 0.0, 0.0, 0.0), 0, "moon.avs",0,"");
 
     cl.r = 0.0;
     cl.g = 1.0;
@@ -738,9 +723,9 @@ int main(int argc, char** argv){
    //addObject(createElipse(800,  F1,  F2, cl, 0.6, 0.6, 0.6, 5, 0.0, 0.0, 0.0), 0, "", 0 "");
 
 // ----------------------------------------- LUCES ------------------------------------------------------
-    c.x = 500.0;
-    c.y = 1200.0;
-    c.z = 400.0;
+    c.x = 700.0;
+    c.y = 800.0;
+    c.z = -500.0;
     addLight(createLight(c, 0.8, 0.0, 0.0, 0.0));
 
     c.x = 1600.0;
