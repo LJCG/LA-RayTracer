@@ -72,16 +72,12 @@ typedef struct{
 
 
 typedef struct{
-//	POINT* rectangle;
+	POINT* rectangle;
 	POINT* points;
 	int sizePoints;
 	POINT2D* points2D;
 	PEQUATION equation;
 	char tag;
-	//VECTOR U;
-	//VECTOR V;
-	//double H;
-	//double L;
 } POLYGON;
 
 typedef struct{
@@ -89,6 +85,14 @@ typedef struct{
   POINT center;
   PEQUATION equation;
 } DISK;
+
+typedef struct{
+	double k;
+	POINT center;
+	POINT F1;
+	POINT F2;
+	PEQUATION equation;
+} ELIPSE;
 
 typedef struct{
 	char id;
@@ -101,14 +105,15 @@ typedef struct{
 	long double o2; // grado color del reflejo
 	long double o3;
 	int textureFlag; // 0 si no tiene textura, 1 si tiene
-	char* fileName; // nombre de la textura
-  
+	char* fileName; // nombre de la textura  
 	COLOR color;
+	
 	SPHERE sphere;
 	CONE cone;
 	CYLINDER cylinder;
 	POLYGON polygon;
 	DISK disk;
+	ELIPSE elipse;
 } OBJECT;
 
 typedef struct{

@@ -4,8 +4,42 @@
 #include <stdio.h>
 #include <math.h>
 
+/*
 POINT2D getRectangleTexture(OBJECT obj, POINT intersection){
 	POLYGON polygon = obj.polygon;
+
+	double H = getDistance(polygon.rectangle[0], polygon.rectangle[1]);
+	double L = getDistance(polygon.rectangle[0], polygon.rectangle[4]);
+
+
+	VECTOR U;
+	U.x = (polygon.rectangle[1].x - polygon.rectangle[0].x)/H;
+	U.y = (polygon.rectangle[1].y - polygon.rectangle[0].y)/H;
+	U.z = (polygon.rectangle[1].z - polygon.rectangle[0].z)/H;
+
+	VECTOR V;
+	V.x = (polygon.rectangle[4].x - polygon.rectangle[0].x)/L;
+	V.y = (polygon.rectangle[4].y - polygon.rectangle[0].y)/L;
+	V.z = (polygon.rectangle[4].z - polygon.rectangle[0].z)/L;
+
+	VECTOR d;
+	d.x = intersection.x - polygon.rectangle[0].x;
+	d.y = intersection.y - polygon.rectangle[0].y;
+	d.z = intersection.z - polygon.rectangle[0].z;
+
+	POINT2D coord;
+
+	coord.u = pointProduct(d, U)/H;
+	coord.v = pointProduct(d, V)/L;
+
+	return coord;
+}
+*/
+
+POINT2D getRectangleTexture(OBJECT obj, POINT intersection){
+	POLYGON polygon = obj.polygon;
+
+	POINT p = polygon.rectangle[4];
 
 	double H = getDistance(polygon.points[0], polygon.points[1]);
 	double L = getDistance(polygon.points[0], polygon.points[3]);
@@ -31,6 +65,7 @@ POINT2D getRectangleTexture(OBJECT obj, POINT intersection){
 
 	return coord;
 }
+
 
 
 POINT2D getCylinderTexture(OBJECT obj, POINT intersection){
