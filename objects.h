@@ -38,10 +38,6 @@ typedef struct{
 	double z;
 } VECTOR;
 
-typedef struct{
-	double radius;
-	POINT center;
-} SPHERE;
 
 typedef struct{
 	double a;
@@ -49,6 +45,13 @@ typedef struct{
 	double c;
 	double d;
 } PEQUATION;
+
+typedef struct{
+  PEQUATION equation;
+	VECTOR G; // señala el punto donde inicia la textura
+	double radius;
+	POINT center;
+} SPHERE;
 
 typedef struct{
   PEQUATION equation;
