@@ -229,6 +229,12 @@ COLOR getTextureColor(POINT intersection){
         coord = getConeTexture(obj, intersection);
       }
 
+      else if(obj.id == 'S'){
+        coord = getSphereTexture(obj, intersection);
+      }
+
+
+
 			int W = textures[k].W;
 			int H = textures[k].H;
 
@@ -603,7 +609,7 @@ int main(int argc, char** argv){
     axis.z = -500;
 
     //addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 1, "4.avs");
-addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9, 0.5, 5, 1.0,0.0, 0.0, 0.0,0.0),1 , "4.avs");
+//addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9, 0.5, 5, 1.0,0.0, 0.0, 0.0,0.0),1 , "4.avs");
 
 
 
@@ -614,9 +620,18 @@ addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9,
     c.x = 1500.0;
     c.y = 325.0;
     c.z = 1300.0;
-    addObject(createSphere(400, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.0, 1.0, 0.0), 0, "moon.avs");
+    addObject(createSphere(400, c, cl, 0.7, 0.6, 5, 0.5, 0.9, 0.0, 0.0, 1.0), 1, "earth.avs");
 
 
+
+    cl.r = 0.38;
+    cl.g = 0.38;
+    cl.b = 0.38;
+
+    c.x = 1500.0;
+    c.y = 325.0;
+    c.z = 1300.0;
+    addObject(createSphere(200, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0, 0.0, 0.0), 1, "moon.avs");
 
 
 

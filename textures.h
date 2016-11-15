@@ -7,4 +7,6 @@ POINT2D getCylinderTexture(OBJECT obj, POINT intersection);
 
 POINT2D getConeTexture(OBJECT obj, POINT intersection);
 
+POINT2D getSphereTexture(OBJECT obj, POINT intersection);
+
 #endif
