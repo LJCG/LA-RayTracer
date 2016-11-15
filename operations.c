@@ -295,3 +295,11 @@ POINT getMidPoint(POINT p1, POINT p2){
 
 	return midPoint;
 }
+
+bool isBlack(COLOR color){
+	if(color.r == 0.0 && color.g == 0.0 && color.b == 0.0){
+		printf("negro\n");
+		return true;
+	}
+	return false;
+}

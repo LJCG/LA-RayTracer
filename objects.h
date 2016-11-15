@@ -108,6 +108,10 @@ typedef struct{
 	long double o3;
 	int textureFlag; // 0 si no tiene textura, 1 si tiene
 	char* fileName; // nombre de la textura  
+
+	int fretworkFlag; // 0 si no tiene calado, 1 si tiene
+	char* fretworkName; // nombre del mapa de calado  
+
 	COLOR color;
 	
 	SPHERE sphere;

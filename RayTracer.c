@@ -1,4 +1,4 @@
-// Autores: Lucy Chaves, Andrés Salazar
+// Autores: Lucy Chaves, Andrés Salazar, Xavier Vega
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -37,8 +37,12 @@ int numLights = 0;
 int xmax, ymax, xmin, ymin;
 
 // LISTA DE TEXTURAS
-TEXTURE textures[1000];
-int sizeTextures = 0;
+TEXTURE globalTextures[100];
+int sizeGlobalTextures = 0;
+
+// LISTA DE MAPAS DE CALADO
+TEXTURE fretworks[100];
+int sizeFretworks = 0;
 
 void init_buffer(){
    int i, j;
@@ -144,7 +148,7 @@ void save(COLOR **frameBuffer){
 
 // ------------------------------------ RELLENO CON TEXTURA --------------------------------------
 
-void init_image(int k){
+void init_image(int k, TEXTURE* textures){
    int i, j;
    int W = textures[k].W;
    int H = textures[k].H;
@@ -164,7 +168,7 @@ void init_image(int k){
    }
 }
 
-void fill_images(){ // Recupera los colores de las texturas
+void fill_images(TEXTURE* textures, int sizeTextures){ // Recupera los colores de las texturas
    int k, i, j, a, width, height;
    double r, g, b;
 
@@ -187,7 +191,7 @@ void fill_images(){ // Recupera los colores de las texturas
 	   height = FIX(height);
 	   textures[k].H = height;
 
-	   init_image(k);
+	   init_image(k, textures);
 
 	  // Obtiene el ARGB para cada pixel
 	   for(j=0;j<height;j++) {
@@ -204,7 +208,7 @@ void fill_images(){ // Recupera los colores de las texturas
 			 textures[k].image[i][j].r = r;
 	         textures[k].image[i][j].g = g;
 	         textures[k].image[i][j].b = b;
-	        // printf("r: %lf, g: %lf, b: %lf\n", r,g,b);
+	         //printf("r: %lf, g: %lf, b: %lf\n", textures[k].image[i][j].r,textures[k].image[i][j].g,textures[k].image[i][j].b);
 	      }
 	   }
 
@@ -213,22 +217,35 @@ void fill_images(){ // Recupera los colores de las texturas
 }
 
 OBJECT obj;
-COLOR getTextureColor(POINT intersection){
+COLOR getTextureColor(POINT intersection, TEXTURE* textures, int sizeTextures, int fretFlag, OBJECT object){
 	int k;
 	POINT2D coord;
 	COLOR cl;
+	const char * name;
 
+
+	if(fretFlag == 1){
+		name = object.fretworkName;
+	}
+
+	else{
+		name = object.fileName;
+	}
+
+	
 	for(k=0; k<sizeTextures; k++){
-		if(strcmp(textures[k].name, obj.fileName) == 0){
-			if(obj.id == 'P'){
-				coord = getRectangleTexture(obj, intersection);
+		
+		if(strcmp(textures[k].name, name) == 0){
+			
+			if(object.id == 'P'){
+				coord = getRectangleTexture(object, intersection);
 			}
-			else if(obj.id == 'C'){
-				coord = getCylinderTexture(obj, intersection);
+			else if(object.id == 'C'){
+				coord = getCylinderTexture(object, intersection);
 			}
-      else if(obj.id == 'N'){
-        coord = getConeTexture(obj, intersection);
-      }
+     		else if(object.id == 'N'){
+       			coord = getConeTexture(object, intersection);
+     		}
 
 			int W = textures[k].W;
 			int H = textures[k].H;
@@ -237,12 +254,15 @@ COLOR getTextureColor(POINT intersection){
 			int i = round(coord.u*W);
 			int j = round(coord.v*H);
 
+
 			i = minInt(i,(W-1));
 			j = minInt(j,(H-1));
 
+			printf("u = %lf, v = %lf\n", coord.u, coord.v);
 			cl.r = (double)textures[k].image[i][j].r;
 			cl.g = (double)textures[k].image[i][j].g;
 			cl.b = (double)textures[k].image[i][j].b;
+
 			break;
 		}
 	}
@@ -269,8 +289,9 @@ void setWindow(int pxmin, int pymin, int pxmax, int pymax){
 	ymax = pymax;
 }
 
-void addObject(OBJECT newObject, int textureFlag, char* fileName){
+void addObject(OBJECT newObject, int textureFlag, char* fileName, int fretworkFlag, char* fretworkName){
 	newObject.textureFlag = textureFlag;
+	newObject.fretworkFlag = fretworkFlag;
 
 	if(textureFlag == 1){
 		newObject.fileName = fileName;
@@ -280,10 +301,21 @@ void addObject(OBJECT newObject, int textureFlag, char* fileName){
 		texture.name = fileName;
 
 		// agrega la textura a la lista
-		textures[sizeTextures] = texture;
-		sizeTextures++;
+		globalTextures[sizeGlobalTextures] = texture;
+		sizeGlobalTextures++;
 	}
 
+	if(fretworkFlag == 1){
+		newObject.fretworkName = fretworkName;
+
+		// crea el mapa
+		TEXTURE fretwork;
+		fretwork.name = fretworkName;
+
+		// agrega el mapa a la lista
+		fretworks[sizeFretworks] = fretwork;
+		sizeFretworks++;
+	}
 
 	objects[sizeObjects] = newObject;
 	sizeObjects++;
@@ -303,6 +335,12 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 	double tmin = 9000000;
 	int i;
 
+	COLOR fret;
+	fret.r = 1.0;
+	fret.g = 1.0;
+	fret.b = 1.0;
+
+
 	intersectionFlag = 0;
 	for(i = 0; i < sizeObjects; i++){
 		object = objects[i];
@@ -312,11 +350,13 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 			//calcular interseccion esfera
 			SPHERE sphere = object.sphere;
 			intersection = findIntersection_sphere(vectorD, point, sphere.center, sphere.radius);
+
 		}
 		else if(object.id == 'C'){
 			//calcular interseccion cilindro
 			CYLINDER cylinder = object.cylinder;
 			intersection = findIntersection_cylinder(vectorD, point, cylinder.anchor, cylinder.radius, cylinder.axis, cylinder.d1, cylinder.d2);
+
 		}
 		else if(object.id == 'P'){
 			//calcular interseccion poligono
@@ -352,11 +392,26 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 			intersection = findIntersection_elipse(vectorD, point, elipse);
 		}
 
+		if(object.fretworkFlag == 1 && intersection.flag == 1 && intersection.tmin < tmin){
+				//calado 
+				//obj = object;
+				fret = getTextureColor(getIntersectionPoint(vectorW, vectorD, tmin), fretworks, sizeFretworks, 1, object);
+ 
+				if(isBlack(fret)){
+					printf("negrooooo\n");
+					intersection.tmin = 900000;
+				}
+				else{
+					//printf("no\n");
+				}
+			}
+
 		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
 
 			tmin = intersection.tmin;
 			obj = object;
 			intersectionPoint = getIntersectionPoint(vectorW, vectorD, tmin);
+
 			intersectionFlag = 1;
 		}
 	}
@@ -372,6 +427,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 	long double fatt;   //Factor de atenuacion
 
 	intersection = firstIntersection(vectorW, vectorD, pEye, 0);
+
 	if(intersectionFlag == 0){ //No hay interseccion entonces se devuelve el color de fondo
 		color = background;
 	}
@@ -381,7 +437,7 @@ COLOR getColor(VECTOR vectorW, VECTOR vectorD, POINT pEye){
 			color = obj.color;
 		}
 		else{
-			color = getTextureColor(intersection);
+			color = getTextureColor(intersection, globalTextures, sizeGlobalTextures, 0, obj);
 		}
 
 		long double I = 0.0; // INTENSIDAD
@@ -566,42 +622,37 @@ int main(int argc, char** argv){
     //loadInfo();
    POINT p1, p2, p3, p4, p5;
 
-   p1.x = 500;
+   p1.x = 400;
    p1.y = 100;
    p1.z = 300;
 
-   p2.x = 500;
+   p2.x = 400;
    p2.y = 500;
    p2.z = 300;
 
-   p3.x = 750;
-   p3.y = 400;
+   p3.x = 1000;
+   p3.y = 500;
    p3.z = 300;
 
-   p4.x = 800;
+   p4.x = 1000;
    p4.y = 100;
    p4.z = 300;
-
-   p5.x = 600;
-   p5.y = 300;
-   p5.z = 300;
 
    COLOR cl;
    cl.r = 1.0;
    cl.g = 1.0;
    cl.b = 1.0;
 
-   POINT points[5];
+   POINT points[4];
    points[0] = p1;
    points[1] = p2;
    points[2] = p3;
    points[3] = p4;
-   points[4] = p5;
 
-   OBJECT p = createPolygon(points, 5, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
+   OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
    p.polygon.equation = reverse(p.polygon);
 
-  // addObject(p, 1, "ss.avs");
+   addObject(p, 1, "ss.avs", 0, "mapa1.avs");
 
     POINT c;
     c.x = 1140.0;
@@ -617,10 +668,7 @@ int main(int argc, char** argv){
     axis.y = 200;
     axis.z = -500;
 
-    //addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 1, "4.avs");
-addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9, 0.5, 5, 1.0,0.0, 0.0, 0.0,0.0),1 , "4.avs");
-
-
+	//addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9, 0.5, 5, 1.0,0.0, 0.0, 0.0,0.0),1 , "4.avs");
 
     cl.r = 0.38;
     cl.g = 0.38;
@@ -629,7 +677,7 @@ addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9,
     c.x = 1500.0;
     c.y = 325.0;
     c.z = 1300.0;
-    addObject(createSphere(400, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.0, 1.0, 0.0), 0, "moon.avs");
+ //   addObject(createSphere(400, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.0, 1.0, 0.0), 0, "moon.avs");
 
 
   //  addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 1, "4.avs");
@@ -678,7 +726,7 @@ addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9,
     F2.y = 600;
     F2.z = 100;
 
-    addObject(createElipse(800,  F1,  F2, cl, 0.6, 0.6, 0.6, 5, 0.0, 0.0, 0.0), 0, "");
+ //   addObject(createElipse(800,  F1,  F2, cl, 0.6, 0.6, 0.6, 5, 0.0, 0.0, 0.0), 0, "");
 
 // ----------------------------------------- LUCES ------------------------------------------------------
     c.x = 500.0;
@@ -695,7 +743,9 @@ addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9,
 
   //  fill_image("2.avs");
 
-   fill_images();
+   fill_images(globalTextures, sizeGlobalTextures);
+   fill_images(fretworks, sizeFretworks);
+
    tracer();
    glutMainLoop();
 }

@@ -55,4 +55,6 @@ POINT getZ(PEQUATION eq, double x, double y);
 
 POINT getMidPoint(POINT p1, POINT p2);
 
+bool isBlack(COLOR color);
+
 #endif
