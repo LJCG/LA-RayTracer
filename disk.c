@@ -6,7 +6,8 @@
 #include <stdio.h>
 #include <math.h>
 
-OBJECT createDisk(double radius, POINT center, COLOR color, POINT p1, POINT p2){
+OBJECT createDisk(double radius, POINT center, COLOR color, POINT p1, POINT p2, long double kd, long double ka, 
+	long double ks, long double kn, long double o1, long double o2, long double o3){
 	
 	DISK disk;
 	disk.radius = radius;
@@ -28,6 +29,14 @@ OBJECT createDisk(double radius, POINT center, COLOR color, POINT p1, POINT p2){
 	newObject.id = 'D';
 	newObject.disk = disk;
 	newObject.color = color;
+	newObject.ka = ka;
+	newObject.kd = kd;
+	newObject.ks = ks;
+	newObject.kn = kn;
+	newObject.o1 = o1;
+	newObject.o2 = o2;
+	newObject.o2 = o3;
+
 
 	return newObject;
 }
@@ -52,7 +61,7 @@ INTERSECTION findIntersection_disk(VECTOR direction, POINT eye, DISK disk){
 		double t = -(norm.x*eye.x + norm.y*eye.y + norm.z*eye.z + disk.equation.d)/(norm.x*direction.x + norm.y*direction.y + norm.z*direction.z);		
 		POINT intersectionPoint = getIntersectionPoint(pointToVector(eye), direction, t);
 
-		// Segunda fase: Revisa si el punto está en el interior del polígono
+		// Segunda fase: Revisa si el punto está en el interior del círculo
 		if(verifyPointD(intersectionPoint, disk.center, disk.radius)){
 			intersection.tmin = t;
 			intersection.tmax = 0;

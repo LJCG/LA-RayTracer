@@ -51,4 +51,8 @@ COLOR avgColor(COLOR c1, COLOR c2, COLOR c3, COLOR c4);
 
 VECTOR getG(VECTOR q);
 
+POINT getZ(PEQUATION eq, double x, double y);
+
+POINT getMidPoint(POINT p1, POINT p2);
+
 #endif

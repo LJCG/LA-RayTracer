@@ -180,6 +180,10 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		N = eq2vector(obj.disk.equation);
 	}
 
+	else if(obj.id == 'E'){
+		N = eq2vector(obj.elipse.equation);
+	}
+
 	return N;
 }
 
@@ -271,4 +275,23 @@ VECTOR getG(VECTOR q){
 		return G;
 	}
 	return normalizeVector(G);
+}
+
+POINT getZ(PEQUATION eq, double x, double y){
+	double z = (-eq.d - eq.a*x -eq.b*y)/eq.c;
+	POINT p;
+	p.x = x;
+	p.y = y;
+	p.z = z;
+	
+	return p;
+}
+
+POINT getMidPoint(POINT p1, POINT p2){
+	POINT midPoint;
+	midPoint.x = (p1.x + p2.x)/2;
+	midPoint.y = (p1.y + p2.y)/2;
+	midPoint.z = (p1.z + p2.z)/2;
+
+	return midPoint;
 }

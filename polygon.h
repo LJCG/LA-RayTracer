@@ -20,4 +20,13 @@ bool verifyPoint(POINT2D *points2D, int sizePoints, POINT2D intersectionPoint);
 
 PEQUATION reverse(POLYGON p);
 
+POINT getXmin(POINT *points, int sizePoints);
+
+POINT getXmax(POINT* points, int sizePoints);
+
+POINT getYmin(POINT* points, int sizePoints);
+
+POINT getYmax(POINT* points, int sizePoints);
+
+
 #endif

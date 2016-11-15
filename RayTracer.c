@@ -14,6 +14,7 @@
 #include "data.h"
 #include "textures.h"
 #include "disk.h"
+#include "elipse.h"
 
 #define SWAP(x) ( ((x) << 24) | \
          (((x) << 8) & 0x00ff0000) | \
@@ -232,6 +233,16 @@ COLOR getTextureColor(POINT intersection){
       else if(obj.id == 'S'){
         coord = getSphereTexture(obj, intersection);
       }
+      else if(object.id == 'E'){
+			ELIPSE elipse = object.elipse;
+			POLYGON poly;
+			poly.equation = elipse.equation;
+
+			if(pFlag == 1){
+				elipse.equation = reverse(poly);
+			}
+			intersection = findIntersection_elipse(vectorD, point, elipse);
+    }
 
 
 
@@ -336,7 +347,6 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
      		CONE cone = object.cone;
 			intersection = findIntersection_cone(vectorD, point, cone.anchor, cone.radius, cone.axis, cone.d1, cone.d2,cone.k1,cone.k2);
 		}
-
 		else if(object.id == 'D'){
 			DISK disk = object.disk;
 			POLYGON poly;
@@ -346,6 +356,16 @@ POINT firstIntersection(VECTOR vectorW, VECTOR vectorD, POINT point, int pFlag){
 				disk.equation = reverse(poly);
 			}
 			intersection = findIntersection_disk(vectorD, point, disk);
+		}
+		else if(object.id == 'E'){
+			ELIPSE elipse = object.elipse;
+			POLYGON poly;
+			poly.equation = elipse.equation;
+
+			if(pFlag == 1){
+				elipse.equation = reverse(poly);
+			}
+			intersection = findIntersection_elipse(vectorD, point, elipse);
 		}
 
 		if(intersection.flag == 1 && intersection.tmin < tmin && intersection.tmin > EPSILON){
@@ -560,17 +580,17 @@ int main(int argc, char** argv){
 
     //globalConfig();
     //loadInfo();
-   POINT p1, p2, p3, p4;
+   POINT p1, p2, p3, p4, p5;
 
    p1.x = 500;
    p1.y = 100;
    p1.z = 300;
 
    p2.x = 500;
-   p2.y = 400;
+   p2.y = 500;
    p2.z = 300;
 
-   p3.x = 800;
+   p3.x = 750;
    p3.y = 400;
    p3.z = 300;
 
@@ -578,21 +598,26 @@ int main(int argc, char** argv){
    p4.y = 100;
    p4.z = 300;
 
+   p5.x = 600;
+   p5.y = 300;
+   p5.z = 300;
+
    COLOR cl;
    cl.r = 1.0;
    cl.g = 1.0;
    cl.b = 1.0;
 
-   POINT points[4];
+   POINT points[5];
    points[0] = p1;
    points[1] = p2;
    points[2] = p3;
    points[3] = p4;
+   points[4] = p5;
 
-   OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
+   OBJECT p = createPolygon(points, 5, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
    p.polygon.equation = reverse(p.polygon);
 
-   //addObject(p, 1, "2.avs");
+  // addObject(p, 1, "ss.avs");
 
     POINT c;
     c.x = 1140.0;
@@ -610,7 +635,17 @@ int main(int argc, char** argv){
 
     //addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 1, "4.avs");
 //addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9, 0.5, 5, 1.0,0.0, 0.0, 0.0,0.0),1 , "4.avs");
+POINT F1, F2;
 
+   F1.x = 300;
+   F1.y = 400;
+   F1.z = 400;
+
+   F2.x = 800;
+   F2.y = 600;
+   F2.z = 100;
+
+addObject(createElipse(800, F1, F2, cl, 0.6, 0.6, 0.6, 5, 0.0, 0.0, 0.0), 0, "");
 
 
     cl.r = 0.38;
@@ -628,23 +663,30 @@ int main(int argc, char** argv){
     cl.g = 0.38;
     cl.b = 0.38;
 
+<<<<<<< HEAD
     c.x = 1500.0;
     c.y = 325.0;
     c.z = 1300.0;
     addObject(createSphere(200, c, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0, 0.0, 0.0), 1, "moon.avs");
+=======
+  //  addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 1, "4.avs");
+>>>>>>> 6a50b75ae599730443c38814b5db13eea2043a29
 
-
+    c.x = 200.0;
+    c.y = 100.0;
+    c.z = 250.0;
+   // addObject(createSphere(170, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5, 0.5, 0.0), 0, "moon.avs");
 
 //------------------------------------------ PRUEBA DISCO --------------------------------------------------
     POINT c1, c2;
 
-    cl.r = 0.0;
-    cl.g = 1.0;
+    cl.r = 0.2;
+    cl.g = 0.2;
     cl.b = 0.5;
 
     c.x = 600.0;
-    c.y = 750.0;
-    c.z = -200.0;
+    c.y = 400.0;
+    c.z = 600.0;
 
     c1.x = 250.0;
     c1.y = 850.0;
@@ -654,20 +696,33 @@ int main(int argc, char** argv){
     c2.y = 750.0;
     c2.z = -200.0;
 
-    //addObject(createSphere(250, c, cl, 0.7, 0.6, 5, 0.5, 1.0, 0.0, 0.0, 1.0), 0, "moon.avs");
+   // addObject(createSphere(200, c, cl, 0.5, 0.5, 5, 0.5, 1.0, 0.0, 0.0, 0.0), 0, "moon.avs");
 
-    cl.r = 1.0;
+    cl.r = 0.0;
     cl.g = 1.0;
-    cl.b = 1.0;
+    cl.b = 0.0;
 
-    OBJECT o = createDisk(60, c, cl, c1, c2);
+	//createDisk(radius, center, color, p1, p2, kd, ka, ks, kn, o1, o2, o3)
+   // OBJECT o = createDisk(60, c, cl, c1, c2, );
    // addObject(o, 0, "h");
 
+    POINT F1, F2;
+
+    F1.x = 300;
+    F1.y = 400;
+    F1.z = 400;
+
+    F2.x = 800;
+    F2.y = 600;
+    F2.z = 100;
+
+    addObject(createElipse(800,  F1,  F2, cl, 0.6, 0.6, 0.6, 5, 0.0, 0.0, 0.0), 0, "");
+
 // ----------------------------------------- LUCES ------------------------------------------------------
-    c.x = 900.0;
-    c.y = 700.0;
-    c.z = -800.0;
-    addLight(createLight(c, 0.4, 0.0, 0.0, 0.4));
+    c.x = 500.0;
+    c.y = 1200.0;
+    c.z = 400.0;
+    addLight(createLight(c, 0.8, 0.0, 0.0, 0.0));
 
     c.x = 1600.0;
     c.y = 1000.0;
