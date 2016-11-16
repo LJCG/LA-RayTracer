@@ -621,25 +621,102 @@ int main(int argc, char** argv){
 
     //globalConfig();
     //loadInfo();
-   POINT p1, p2, p3, p4, p5;
 
-   p1.x = 400;
-   p1.y = 100;
-   p1.z = 300;
-
-   p2.x = 400;
-   p2.y = 500;
-   p2.z = 300;
-
-   p3.x = 1000;
-   p3.y = 500;
-   p3.z = 300;
-
-   p4.x = 1000;
-   p4.y = 100;
-   p4.z = 300;
-
+   //PARED FONDO
+   POINT p1, p2, p3, p4, p5, c;
    COLOR cl;
+
+//--------------------------ESTRELLAS---------------------------------
+cl.r = 1.0;
+    cl.g = 1.0;
+    cl.b = 1.0;
+
+    c.x = 800.0;
+    c.y = 800.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0, "",0,"");
+
+   c.x = 300.0;
+    c.y = 500.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0, "",0,"");
+
+     c.x = 860.0;
+    c.y = 450.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0, "",0,"");
+
+    c.x = 980.0;
+    c.y = 650.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0, "",0,"");
+
+    c.x = 1000.0;
+    c.y = 350.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0,"",0,"");
+
+    c.x = 560.0;
+    c.y = 400.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0, "",0,"");
+
+    c.x = 1200.0;
+    c.y = 950.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0,"",0,"");
+   
+    c.x = 300.0;
+    c.y = 950.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0,"",0,"");
+
+    c.x = 1200.0;
+    c.y = 550.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0,"",0,"");
+
+    c.x = 700.0;
+    c.y = 550.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0, "",0,"");
+
+    c.x = 980.0;
+    c.y = 900.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0,"",0,"");
+
+    c.x = 360.0;
+    c.y = 580.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0, "",0,"");
+
+    c.x = 1300.0;
+    c.y = 400.0;
+    c.z = 900.0;
+    addObject(createSphere(5, c, cl, 1.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0), 0, "",0,"");
+
+//--------------------------------------------------------------------
+
+
+
+  // pared fondo
+   p1.x = -700;
+   p1.y = -700;
+   p1.z = 800;
+
+   p2.x = -700;
+   p2.y = 1900;
+   p2.z = 800;
+
+   p3.x = 2300;
+   p3.y = 1900;
+   p3.z = 800;
+
+   p4.x = 2300;
+   p4.y = -700;
+   p4.z = 800;
+
    cl.r = 1.0;
    cl.g = 1.0;
    cl.b = 1.0;
@@ -650,36 +727,154 @@ int main(int argc, char** argv){
    points[2] = p3;
    points[3] = p4;
 
-   OBJECT p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.5, 0.5);
+   OBJECT p;
+
+   p = createPolygon(points, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.0, 0.5);
    p.polygon.equation = reverse(p.polygon);
 
-   addObject(p, 0, "4.avs", 1, "mapa1.avs");
+   addObject(p, 1, "pared.avs", 1, "ventana.avs");
 
-    POINT c;
-    c.x = 1140.0;
-    c.y = 325.0;
-    c.z = 535.0;
-
-    cl.r = 0.6;
-    cl.g = 0.0;
-    cl.b = 0.1;
-
-    VECTOR axis;
-    axis.x = 600;
-    axis.y = 200;
-    axis.z = -500;
-
-    //addObject(createCylinder(100, c, axis, 10, 200, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 1, "4.avs");
-//addObject(createCone(100, c, rotate_cone(axis,60), 0.0, 550.0, cl,1.4, 0.4, 0.9, 0.5, 5, 1.0,0.0, 0.0, 0.0,0.0),1 , "4.avs");
-
-    cl.r = 0.38;
-    cl.g = 0.38;
-    cl.b = 0.38;
+//MARCO VENTANA---------------------------------
 
     c.x = 200.0;
-    c.y = 100.0;
-    c.z = 250.0;
-   // addObject(createSphere(170, c, cl, 0.7, 0.6, 5, 0.5, 0.5, 0.5, 0.5, 0.0), 0, "moon.avs");
+    c.y = 335.0;
+    c.z = 795.0;
+
+    cl.r = 0.2392;
+    cl.g = 0.011;
+    cl.b = 0.011;
+
+    VECTOR axis;
+    axis.x = 0;
+    axis.y = 1000;
+    axis.z = 0;
+
+    addObject(createCylinder(10, c, axis, 10, 660, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 0, "madera.avs", 0, "");
+
+
+    c.x = 1400.0;
+    c.y = 335.0;
+    c.z = 795.0;
+
+    axis.x = 0;
+    axis.y = 1000;
+    axis.z = 0;
+
+    addObject(createCylinder(10, c, axis, 10, 660, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 0, "madera.avs", 0, "");
+
+
+    c.x = 800.0;
+    c.y = 335.0;
+    c.z = 795.0;
+
+    axis.x = 0;
+    axis.y = 1000;
+    axis.z = 0;
+
+    addObject(createCylinder(10, c, axis, 10, 660, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 0, "madera.avs", 0, "");
+
+
+
+    c.x = 188.0;
+    c.y = 342.0;
+    c.z = 795.0;
+
+
+    axis.x = 1000;
+    axis.y = 0;
+    axis.z = 0;
+
+    addObject(createCylinder(10, c, axis, 10, 1216, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 0, "madera.avs", 0, "");
+
+
+    c.x = 188.0;
+    c.y = 990.0;
+    c.z = 795.0;
+
+
+    axis.x = 1000;
+    axis.y = 0;
+    axis.z = 0;
+
+    addObject(createCylinder(10, c, axis, 10, 1216, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 0, "madera.avs", 0, "");
+
+
+    c.x = 188.0;
+    c.y = 666.0;
+    c.z = 795.0;
+
+
+    axis.x = 1000;
+    axis.y = 0;
+    axis.z = 0;
+
+    addObject(createCylinder(10, c, axis, 10, 1216, cl, 0.7, 0.6, 5, 0.5, 0.0, 0.0), 0, "madera.avs", 0, "");
+
+
+//------------------MESA-----------------------------------
+      // mesa
+   p1.x = 200;
+   p1.y = 100;
+   p1.z = 800;
+
+   p2.x = 1500;
+   p2.y = 100;
+   p2.z = 800;
+
+   p3.x = 1500;
+   p3.y = 0;
+   p3.z = 0;
+
+   p4.x = 200;
+   p4.y = 0;
+   p4.z = 0;
+
+
+   POINT pts[4];
+   pts[0] = p1;
+   pts[1] = p2;
+   pts[2] = p3;
+   pts[3] = p4;
+
+   p = createPolygon(pts, 4, cl, 0.4, 0.5, 0.8, 20.0, 0.0, 0.6);
+   p.polygon.equation = reverse(p.polygon);
+
+   addObject(p, 1, "madera.avs", 0, "ventana.avs");
+
+    cl.r = 0.2;
+    cl.g = 0.2;
+    cl.b = 0.5;
+
+    c.x = 500.0;
+    c.y = 150.0;
+    c.z = 500.0;
+
+    addObject(createSphere(80, c, cl, 0.7, 0.5, 5, 0.5, 1.0, 0.5, 0.5, 0.0), 0, "",0,"");
+
+    cl.r = 0.2;
+    cl.g = 0.9;
+    cl.b = 0.3;
+
+    c.x = 660.0;
+    c.y = 150.0;
+    c.z = 500.0;
+
+    addObject(createSphere(80, c, cl, 0.7, 0.5, 5, 0.5, 1.0, 0.0, 0.5, 0.9), 0, "",0,"");
+
+
+    cl.r = 0.2;
+    cl.g = 0.2;
+    cl.b = 0.5;
+
+    c.x = 660.0;
+    c.y = 150.0;
+    c.z = 500.0;
+
+    addObject(createSphere(30, c, cl, 0.7, 0.5, 5, 0.5, 1.0, 0.0, 0.5, 0.0), 0, "",0,"");
+
+
+
+//---------------------------------------------------------------------------------------------------------
 
 //------------------------------------------ PRUEBA DISCO --------------------------------------------------
     POINT c1, c2;
@@ -688,19 +883,11 @@ int main(int argc, char** argv){
     cl.g = 0.2;
     cl.b = 0.5;
 
-    c.x = 700.0;
-    c.y = 300.0;
-    c.z = 700.0;
+    c.x = 500.0;
+    c.y = 800.0;
+    c.z = 900.0;
 
-    c1.x = 250.0;
-    c1.y = 850.0;
-    c1.z = -200.0;
-
-    c2.x = 650.0;
-    c2.y = 750.0;
-    c2.z = -200.0;
-
-    addObject(createSphere(200, c, cl, 0.5, 0.5, 5, 0.5, 1.0, 0.0, 0.0, 0.0), 0, "moon.avs",0,"");
+    addObject(createSphere(100, c, cl, 0.5, 0.5, 5, 0.5, 1.0, 0.0, 0.0, 0.0), 1, "moon.avs",0,"");
 
     cl.r = 0.0;
     cl.g = 1.0;
@@ -724,9 +911,9 @@ int main(int argc, char** argv){
 
 // ----------------------------------------- LUCES ------------------------------------------------------
     c.x = 700.0;
-    c.y = 800.0;
-    c.z = -500.0;
-    addLight(createLight(c, 0.8, 0.0, 0.0, 0.0));
+    c.y = 2000.0;
+    c.z = -1400.0;
+    addLight(createLight(c, 0.7, 0.4, 0.0, 0.0));
 
     c.x = 1600.0;
     c.y = 1000.0;
