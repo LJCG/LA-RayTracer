@@ -19,5 +19,6 @@ RayTracer Básico escrito en C.
 # Imágenes Generadas
 - Ray Tracer Básico
 ![alt tag](https://github.com/LJCG/LA-RayTracer/blob/master/Imagenes%20PNG%20-%20JPG/Mother_Octopus-Chaves_Salazar_Vega.png)
+- Ray Tracer Avanzado
 ![alt tag](https://github.com/LJCG/LA-RayTracer/blob/master/Imagenes%20PNG%20-%20JPG/Superluna.png)
 ![alt tag](https://github.com/LJCG/LA-RayTracer/blob/master/Imagenes%20PNG%20-%20JPG/Planetas.png)
