@@ -1,24 +1,26 @@
 # LA-RayTracer
-RayTracer Básico escrito en C. 
+This basic Ray Tracing engine was created as an assignment for the course "Introduction to Computer Graphics" at Tecnológico de Costa Rica. 
 
-# Figuras
-- Esferas
-- Polígonos
-- Cilindros
-- Conos
-- Discos
-- Elipses
+# Geometric Figures
+- Spheres
+- Polygons
+- Cylinders
+- Cones
+- Discs
+- Ellipses
 
-# Modelo de Iluminación
-- Reflexión Difusa
-- Reflexión Especular
-- Sombras
-- Transparencia
-- Espejos
+# Lighting Models
+- Diffuse Reflection
+- Specular reflection
+- Mirror Reflection
+- Shadows
+- Transparency
 
-# Imágenes Generadas
-- Ray Tracer Básico
+# Example of Generated Images
+- Basic
 ![alt tag](https://github.com/lucychaves/LA-RayTracer/blob/master/Imagenes%20PNG%20-%20JPG/Mother_Octopus-Chaves_Salazar_Vega.jpg)
-- Ray Tracer Avanzado
+- Advanced
 ![alt tag](https://github.com/LJCG/LA-RayTracer/blob/master/Imagenes%20PNG%20-%20JPG/Superluna.png)
 ![alt tag](https://github.com/LJCG/LA-RayTracer/blob/master/Imagenes%20PNG%20-%20JPG/Planetas.png)
+
+Yes, we know it... it's not a masterpiece of software engineering.
