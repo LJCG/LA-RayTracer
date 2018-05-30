@@ -4,6 +4,62 @@
 #include <stdio.h>
 #include <math.h>
 
+POINT getXmin(POINT *points, int sizePoints){
+	int i;
+	double xmin = 900000;
+	POINT p;
+
+	for(int i=0; i<sizePoints; i++){
+		if(points[i].x < xmin){
+			xmin = points[i].x;
+			p = points[i];
+		}
+	}
+	return p;
+}
+
+POINT getXmax(POINT* points, int sizePoints){
+	int i;
+	double xmax = -900000;
+	POINT p;
+
+	for(int i=0; i<sizePoints; i++){
+		if(points[i].x > xmax){
+			xmax = points[i].x;
+			p = points[i];
+		}
+	}
+	return p;
+}
+
+POINT getYmin(POINT* points, int sizePoints){
+	int i;
+	double ymin = 900000;
+	POINT p;
+
+	for(int i=0; i<sizePoints; i++){
+		if(points[i].y < ymin){
+			ymin = points[i].y;
+			p = points[i];
+		}
+	}
+	return p;
+}
+
+POINT getYmax(POINT* points, int sizePoints){
+	int i;
+	double ymax = -900000;
+	POINT p;
+
+	for(int i=0; i<sizePoints; i++){
+		if(points[i].y > ymax){
+			ymax = points[i].y;
+			p = points[i];
+		}
+	}
+	return p;
+}
+
 // Obtiene el valor de D
 double getD(VECTOR normal, POINT punto){
 	// D = -Ax -Bx -Cx
@@ -51,7 +107,7 @@ void flattenPolygon(POLYGON p){
 }
 
 // Crea un polígono y lo agrega a un objeto
-OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka, long double ks, long double kn){
+OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double kd, long double ka, long double ks, long double kn, long double o1, long double o2){
 	POLYGON p;
 	p.points = vertices;
 	p.sizePoints = numVertices;
@@ -59,6 +115,26 @@ OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double 
 	p.tag = max(fabs(p.equation.a), fabs(p.equation.b), fabs(p.equation.c));
 	p.points2D = (POINT*)malloc(p.sizePoints*sizeof(POINT));        // APLASTA EL POLÍGONO
 	flattenPolygon(p);
+
+	POINT xmin, ymin, xmax, ymax, p1, p2, p3, p4;
+
+	xmin = getXmin(vertices, numVertices);
+	ymin = getYmin(vertices, numVertices);
+	xmax = getXmax(vertices, numVertices);
+	ymax = getYmax(vertices, numVertices);
+
+	p1 = getZ(p.equation, xmin.x, ymin.y);
+	p2 = getZ(p.equation, xmin.x, ymax.y);
+	p3 = getZ(p.equation, xmax.x, ymax.y);
+	p4 = getZ(p.equation, xmax.x, ymin.y);
+
+	POINT rectangle[4];
+	rectangle[0] = p1;
+	rectangle[1] = p2;
+	rectangle[2] = p3;
+	rectangle[3] = p4;
+
+	p.rectangle = rectangle; 
 
 	OBJECT newObject;
 	newObject.id = 'P';
@@ -68,6 +144,9 @@ OBJECT createPolygon(POINT *vertices, int numVertices, COLOR color, long double 
 	newObject.kd = kd;
 	newObject.ks = ks;
 	newObject.kn = kn;
+	newObject.o1 = o1;
+	newObject.o2 = o2;
+
 
 	return newObject;
 }

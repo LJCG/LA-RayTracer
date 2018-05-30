@@ -1,6 +1,7 @@
 #include "objects.h"
 #include <math.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 // Construye la normal a partir de la ecuación del polígono
 VECTOR eq2vector(PEQUATION eq){
@@ -13,6 +14,13 @@ VECTOR eq2vector(PEQUATION eq){
 }
 
 long double min(long double val1, long double val2){ // Calcula el minimo entre dos valores
+	if(val1 < val2){
+		return val1;
+	}
+	return val2;
+}
+
+int minInt(int val1, int val2){ // Calcula el minimo entre dos valores
 	if(val1 < val2){
 		return val1;
 	}
@@ -32,11 +40,11 @@ char max(double a, double b, double c){ // Calcula el máximo entre tres valores
      return 'c';
 }
 
-POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin){
+POINT mapXY(int i, int j, int xmax, int ymax, int xmin, int ymin, float iValue, float jValue){
 	POINT point;
 
-	point.x = (((i + 0.5) * (xmax - xmin)) / H_SIZE) + xmin;
-	point.y = (((j + 0.5) * (ymax - ymin)) / V_SIZE) + ymin;
+	point.x = (((i + iValue) * (xmax - xmin)) / H_SIZE) + xmin;
+	point.y = (((j + jValue) * (ymax - ymin)) / V_SIZE) + ymin;
 	point.z = 0.0;
 	return point;
 }
@@ -144,8 +152,6 @@ VECTOR getN(OBJECT obj, POINT intersection){
 		yl = y-o.y;
 		zl = z-o.z;
 
-		//AQUI SE DESPICHA LA HOSTIA
-
 		l = sqrt(pow(xl,2)+pow(yl,2)+pow(zl,2));
 
 		xl = xl/l;
@@ -169,6 +175,13 @@ VECTOR getN(OBJECT obj, POINT intersection){
 
 
 		N = normalizeVector(N);
+	}
+	else if(obj.id == 'D'){
+		N = eq2vector(obj.disk.equation);
+	}
+
+	else if(obj.id == 'E'){
+		N = eq2vector(obj.elipse.equation);
 	}
 
 	return N;
@@ -217,4 +230,75 @@ VECTOR rotate_cone(VECTOR axis, int grados){
  axis_aux.z = 0;
 
  return axis_aux;
+}
+
+
+VECTOR transparency(long double ot,double kr, VECTOR N, VECTOR V){
+	VECTOR temp;
+	temp.x = (ot*N.x) - (kr*V.x);
+	temp.y = (ot*N.y) - (kr*V.y);
+	temp.z = (ot*N.z) - (kr*V.z);
+	return temp;
+
+}
+
+int sameColor(COLOR c1, COLOR c2){
+	if((c1.r == c2.r) && (c1.g == c2.g) && (c1.b == c2.b)){
+		return 1;
+	}
+
+	return 0;
+}
+
+double colorDistance(COLOR c1, COLOR c2){
+	double distance = sqrt(pow((c1.r - c2.r),2) + pow((c1.g - c2.g),2) + pow((c1.b - c2.b),2));
+	return distance;
+}
+
+COLOR avgColor(COLOR c1, COLOR c2, COLOR c3, COLOR c4){
+
+	COLOR average;
+	average.r = (c1.r + c2.r + c3.r + c4.r) / 4;
+	average.g = (c1.g + c2.g + c3.g + c4.g) / 4;
+	average.b = (c1.b + c2.b + c3.b + c4.b) / 4;
+
+	return average;
+}
+
+VECTOR getG(VECTOR q){
+	VECTOR G;
+	G.y = -(q.x + q.z)/q.y;
+	G.x = 1;
+	G.z = 1;
+
+	if(round(getMagnitude(G)) == 1){
+		return G;
+	}
+	return normalizeVector(G);
+}
+
+POINT getZ(PEQUATION eq, double x, double y){
+	double z = (-eq.d - eq.a*x -eq.b*y)/eq.c;
+	POINT p;
+	p.x = x;
+	p.y = y;
+	p.z = z;
+	
+	return p;
+}
+
+POINT getMidPoint(POINT p1, POINT p2){
+	POINT midPoint;
+	midPoint.x = (p1.x + p2.x)/2;
+	midPoint.y = (p1.y + p2.y)/2;
+	midPoint.z = (p1.z + p2.z)/2;
+
+	return midPoint;
+}
+
+bool isBlack(COLOR color){
+	if(color.r == 0.0 && color.g == 0.0 && color.b == 0.0){
+		return true;
+	}
+	return false;
 }

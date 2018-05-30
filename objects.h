@@ -38,12 +38,24 @@ typedef struct{
 	double z;
 } VECTOR;
 
+
 typedef struct{
+	double a;
+	double b;
+	double c;
+	double d;
+} PEQUATION;
+
+typedef struct{
+  PEQUATION equation;
+	VECTOR G; // señala el punto donde inicia la textura
 	double radius;
 	POINT center;
 } SPHERE;
 
 typedef struct{
+  PEQUATION equation;
+	VECTOR G; // señala el punto donde inicia la textura
 	double radius;
   POINT anchor;
   VECTOR axis;
@@ -54,6 +66,8 @@ typedef struct{
 } CONE;
 
 typedef struct{
+	PEQUATION equation;
+	VECTOR G; // señala el punto donde inicia la textura
 	double radius;
 	POINT anchor; // ancla del cilindro
 	VECTOR axis; // Q, eje del cilindro
@@ -61,14 +75,9 @@ typedef struct{
 	double d2;	// Tapa 2
 } CYLINDER;
 
-typedef struct{
-	double a;
-	double b;
-	double c;
-	double d;
-} PEQUATION;
 
 typedef struct{
+	POINT* rectangle;
 	POINT* points;
 	int sizePoints;
 	POINT2D* points2D;
@@ -77,16 +86,43 @@ typedef struct{
 } POLYGON;
 
 typedef struct{
+  double radius;
+  POINT center;
+  PEQUATION equation;
+} DISK;
+
+typedef struct{
+	double k;
+	POINT center;
+	POINT F1;
+	POINT F2;
+	PEQUATION equation;
+} ELIPSE;
+
+typedef struct{
 	char id;
 	long double kd; // coef reflexión difusa
 	long double ka; // coef amb
 	long double ks; // coef reflexion especular
 	long double kn; // factor especular
+    long double kr;
+	long double o1; // grado color del objeto
+	long double o2; // grado color del reflejo
+	long double o3;
+	int textureFlag; // 0 si no tiene textura, 1 si tiene
+	char* fileName; // nombre de la textura  
+
+	int fretworkFlag; // 0 si no tiene calado, 1 si tiene
+	char* fretworkName; // nombre del mapa de calado  
+
 	COLOR color;
+	
 	SPHERE sphere;
 	CONE cone;
 	CYLINDER cylinder;
 	POLYGON polygon;
+	DISK disk;
+	ELIPSE elipse;
 } OBJECT;
 
 typedef struct{
@@ -109,3 +145,10 @@ typedef struct{
 	double tmax;
 	int flag;
 } INTERSECTION;
+
+typedef struct{
+	COLOR **image;
+	const char* name;
+	int W;
+	int H;
+} TEXTURE;

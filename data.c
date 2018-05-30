@@ -194,7 +194,7 @@ void loadInfo(){
   long double ka;
   long double kn;
   long double ks;
-
+	long double kr;
 
   long double radius;
   //solo para el cono
@@ -271,7 +271,7 @@ void loadInfo(){
         cl.b = b;
 
         //crea objeto esfera
-        addObject(createSphere(radius, c, cl, kd, ka, kn, ks));
+        addObject(createSphere(radius, c, cl, kd, ka, kn, ks,kr, 0.0, 0.0,0.0));
 
       }
       else if(strcmp(id,"$Cylinder\n") == 0){
@@ -314,7 +314,7 @@ void loadInfo(){
 
 
 
-          addObject(createCylinder(radius, anchor, rotate_cone(axis,degrees), d1, d2, cl, kd, ka, kn, ks));
+          addObject(createCylinder(radius, anchor, rotate_cone(axis,degrees), d1, d2, cl, kd, ka, kn, ks, 0.0, 0.0));
 
       }
       else if(strcmp(id,"$Cone\n") == 0){
@@ -356,7 +356,7 @@ void loadInfo(){
           cl.b = b;
 
 
-          addObject(createCone(radius, anchor, rotate_cone(axis,degrees),d1, d2,cl, k1, k2, kd, ka, kn, ks));
+          addObject(createCone(radius, anchor, rotate_cone(axis,degrees),d1, d2,cl, k1, k2, kd, ka, kn, ks,kr, 0.0, 0.0,0.0));
 
       }
       else if(strcmp(id,"$Polygon\n") == 0){
@@ -397,8 +397,7 @@ void loadInfo(){
         cl.g = g;
         cl.b = b;
 
-
-        OBJECT p = createPolygon(points, numVertices, cl,kd,ka,ks,kn);
+        OBJECT p = createPolygon(points, numVertices, cl,kd,ka,ks,kn, 0.0, 0.0);
         p.polygon.equation = reverse(p.polygon);
 
         addObject(p);
